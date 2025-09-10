@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "source": "cloud-functions",
+    "runtime": "nodejs18"
+  },
+  "hosting": {
+    "public": "Web-Dashboard",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

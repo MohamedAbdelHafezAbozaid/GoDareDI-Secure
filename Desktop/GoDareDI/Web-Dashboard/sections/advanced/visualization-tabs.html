@@ -1,0 +1,103 @@
+                <div class="p-8">
+                    <div class="max-w-7xl mx-auto">
+                    <!-- Enhanced Visualization Tabs -->
+                    <div class="mb-8">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-4 shadow-inner">
+                            <button id="viz-mermaid-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 bg-white text-gray-900 shadow-lg border border-gray-200 hover:shadow-xl" onclick="dashboard.showVisualizationTab('mermaid')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg mr-3">
+                                        <i class="fas fa-sitemap text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Mermaid</span>
+                                </div>
+                            </button>
+                            <button id="viz-graphviz-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('graphviz')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-lg mr-3">
+                                        <i class="fas fa-project-diagram text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Graphviz</span>
+                                </div>
+                            </button>
+                            <button id="viz-json-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('json')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg mr-3">
+                                        <i class="fas fa-code text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">JSON</span>
+                                </div>
+                            </button>
+                            <button id="viz-tree-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('tree')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg mr-3">
+                                        <i class="fas fa-tree text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Tree</span>
+                                </div>
+                            </button>
+                            <button id="viz-network-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('network')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-teal-400 to-cyan-500 rounded-lg mr-3">
+                                        <i class="fas fa-network-wired text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Network</span>
+                                </div>
+                            </button>
+                            <button id="viz-hierarchical-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('hierarchical')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg mr-3">
+                                        <i class="fas fa-sitemap text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Hierarchical</span>
+                                </div>
+                            </button>
+                            <button id="viz-circular-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('circular')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg mr-3">
+                                        <i class="fas fa-circle text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Circular</span>
+                                </div>
+                            </button>
+                            <button id="viz-layered-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('layered')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-lg mr-3">
+                                        <i class="fas fa-layer-group text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Layered</span>
+                                </div>
+                            </button>
+                            <button id="viz-interactive-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('interactive')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg mr-3">
+                                        <i class="fas fa-mouse-pointer text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Interactive</span>
+                                </div>
+                            </button>
+                            <button id="viz-heatmap-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('heatmap')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-red-400 to-pink-500 rounded-lg mr-3">
+                                        <i class="fas fa-fire text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Heatmap</span>
+                                </div>
+                            </button>
+                            <button id="viz-timeline-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('timeline')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-gray-400 to-slate-500 rounded-lg mr-3">
+                                        <i class="fas fa-clock text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Timeline</span>
+                                </div>
+                            </button>
+                            <button id="viz-cluster-tab" class="px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-600 hover:text-gray-900 hover:bg-white hover:shadow-md" onclick="dashboard.showVisualizationTab('cluster')">
+                                <div class="flex items-center justify-center">
+                                    <div class="p-2 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg mr-3">
+                                        <i class="fas fa-th text-white text-sm"></i>
+                                    </div>
+                                    <span class="text-sm">Cluster</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>

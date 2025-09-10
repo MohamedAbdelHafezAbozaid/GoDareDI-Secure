@@ -1,0 +1,46 @@
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-gray-900">GoDareDI Dashboard</h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-500" id="user-info">
+                        Loading...
+                    </div>
+                    <button id="sign-out-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tab Navigation -->
+    <div class="bg-gray-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8">
+                <button id="overview-tab" class="tab-button py-4 px-1 border-b-2 border-blue-500 text-blue-600 font-medium text-sm" onclick="dashboard.switchTab('overview')">
+                    <i class="fas fa-chart-pie mr-2"></i>Overview
+                </button>
+                <button id="tokens-tab" class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="dashboard.switchTab('tokens')">
+                    <i class="fas fa-key mr-2"></i>Tokens
+                </button>
+                <button id="advanced-tab" class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="dashboard.switchTab('advanced')">
+                    <i class="fas fa-cogs mr-2"></i>Advanced
+                </button>
+                <button id="visualizations-tab" class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="dashboard.switchTab('visualizations')">
+                    <i class="fas fa-project-diagram mr-2"></i>Visualizations
+                </button>
+                <button id="analytics-tab" class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="dashboard.switchTab('analytics')">
+                    <i class="fas fa-chart-line mr-2"></i>Analytics
+                </button>
+                <button id="admin-tab" class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="dashboard.switchTab('admin')">
+                    <i class="fas fa-shield-alt mr-2"></i>Admin
+                </button>
+            </div>
+        </div>
+    </div>
