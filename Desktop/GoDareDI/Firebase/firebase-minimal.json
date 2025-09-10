@@ -1,6 +1,0 @@
-{
-  "functions": {
-    "source": "cloud-functions",
-    "runtime": "nodejs18"
-  }
-}
