@@ -1,0 +1,221 @@
+{
+  "": {
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/master.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Analytics/DIAnalyticsProvider.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIAnalyticsProvider.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIAnalyticsProvider.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIAnalyticsProvider~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIAnalyticsProvider.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Analytics/DICrashlyticsIntegration.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DICrashlyticsIntegration.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DICrashlyticsIntegration.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DICrashlyticsIntegration~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DICrashlyticsIntegration.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Analytics/DIDashboardSync.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIDashboardSync.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIDashboardSync.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIDashboardSync~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIDashboardSync.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Analytics/DITokenValidation.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DITokenValidation.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DITokenValidation.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DITokenValidation~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DITokenValidation.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/AdvancedDIContainer.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainer.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainer.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainer~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainer.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/AdvancedDIContainerImpl.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainerImpl.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainerImpl.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainerImpl~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/AdvancedDIContainerImpl.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/ContainerBuilder.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerBuilder.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerBuilder.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerBuilder~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerBuilder.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/ContainerExtensions.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerExtensions.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerExtensions.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ContainerExtensions.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/DIContainerConfig.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIContainerConfig.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIContainerConfig.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIContainerConfig~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DIContainerConfig.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/GraphAnalysis.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/Performance.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Performance.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Performance.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Performance~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Performance.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/Preloading.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Preloading.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Preloading.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Preloading~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Preloading.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/Registration.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Registration.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Registration.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Registration~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Registration.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/Resolution.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Resolution.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Resolution.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Resolution~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/Resolution.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/ScopeManagement.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeManagement.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeManagement.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeManagement~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeManagement.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Container/ScopeResolution.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeResolution.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeResolution.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeResolution~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ScopeResolution.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Extensions/DependencyGraph+Extensions.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraph+Extensions.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraph+Extensions.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraph+Extensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraph+Extensions.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Extensions/GraphAnalysis+Extensions.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis+Extensions.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis+Extensions.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis+Extensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphAnalysis+Extensions.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/GoDareDI.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Security/GoDareDILicense.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDILicense.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDILicense.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDILicense~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDILicense.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Security/GoDareDISecureInit.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDISecureInit.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDISecureInit.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDISecureInit~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GoDareDISecureInit.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Types/DependencyTypes.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyTypes.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyTypes.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyTypes~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyTypes.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Types/ErrorTypes.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ErrorTypes.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ErrorTypes.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ErrorTypes~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ErrorTypes.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Types/GraphTypes.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphTypes.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphTypes.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphTypes~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/GraphTypes.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Core/DependencyVisualizer.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizer.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizer.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizer~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizer.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Debug/DependencyGraphView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphView.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Generators/DiagramGenerators.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DiagramGenerators.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DiagramGenerators.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DiagramGenerators~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DiagramGenerators.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Types/VisualizationTypes.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/VisualizationTypes.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/VisualizationTypes.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/VisualizationTypes~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/VisualizationTypes.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/ColorExtensions.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ColorExtensions.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ColorExtensions.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ColorExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/ColorExtensions.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/DashboardUpdateView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DashboardUpdateView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DashboardUpdateView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DashboardUpdateView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DashboardUpdateView.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/DependencyGraphSupportingViews.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphSupportingViews.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphSupportingViews.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphSupportingViews~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyGraphSupportingViews.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/DependencyVisualizationView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizationView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizationView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizationView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DependencyVisualizationView.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/DetailRow.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DetailRow.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DetailRow.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DetailRow~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/DetailRow.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/InteractiveDependencyGraphView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/InteractiveDependencyGraphView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/InteractiveDependencyGraphView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/InteractiveDependencyGraphView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/InteractiveDependencyGraphView.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/NodeDetailView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/NodeDetailView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/NodeDetailView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/NodeDetailView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/NodeDetailView.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/Visualizer/Views/SimpleDependencyGraphView.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/SimpleDependencyGraphView.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/SimpleDependencyGraphView.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/SimpleDependencyGraphView~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/macos/arm64-apple-macosx/debug/GoDareDI.build/SimpleDependencyGraphView.swiftdeps"
+  }
+}
