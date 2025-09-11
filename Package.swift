@@ -5,7 +5,7 @@ let package = Package(
     name: "GoDareDI",
     platforms: [
         .iOS(.v14),
-        .macOS(.v11),
+        .macOS(.v10_13),
         .tvOS(.v14),
         .watchOS(.v7)
     ],
