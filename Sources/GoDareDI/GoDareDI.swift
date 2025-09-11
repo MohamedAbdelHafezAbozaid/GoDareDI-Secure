@@ -57,6 +57,57 @@ public enum DITokenValidationError: Error, LocalizedError {
     }
 }
 
+// MARK: - Visualization Types
+public struct DependencyGraph: Sendable {
+    public let nodes: [String: DependencyNode]
+    public let edges: [DependencyEdge]
+    
+    public init(nodes: [String: DependencyNode] = [:], edges: [DependencyEdge] = []) {
+        self.nodes = nodes
+        self.edges = edges
+    }
+}
+
+public struct DependencyNode: Sendable {
+    public let id: String
+    public let type: String
+    public let scope: String
+    public let hasInstance: Bool
+    
+    public init(id: String, type: String, scope: String, hasInstance: Bool = false) {
+        self.id = id
+        self.type = type
+        self.scope = scope
+        self.hasInstance = hasInstance
+    }
+}
+
+public struct DependencyEdge: Sendable {
+    public let from: String
+    public let to: String
+    public let relationship: String
+    
+    public init(from: String, to: String, relationship: String = "depends_on") {
+        self.from = from
+        self.to = to
+        self.relationship = relationship
+    }
+}
+
+public struct DependencyAnalysis: Sendable {
+    public let totalNodes: Int
+    public let totalEdges: Int
+    public let circularDependencies: [String]
+    public let depth: Int
+    
+    public init(totalNodes: Int = 0, totalEdges: Int = 0, circularDependencies: [String] = [], depth: Int = 0) {
+        self.totalNodes = totalNodes
+        self.totalEdges = totalEdges
+        self.circularDependencies = circularDependencies
+        self.depth = depth
+    }
+}
+
 // MARK: - DI Module Protocol
 public protocol DIModule {
     func configure(container: AdvancedDIContainer) async throws
@@ -72,12 +123,20 @@ public protocol AdvancedDIContainer: Sendable {
     func enableDashboardSync(token: String)
     func preloadAllGeneric() async throws
     func getDependencyGraphData() throws -> [String: Any]
+    
+    // MARK: - Visualization Methods
+    func getDependencyGraph() async -> DependencyGraph
+    func analyzeDependencyGraph() async -> DependencyAnalysis
+    
+    // MARK: - Token Access
+    func getAnalyticsToken() -> String?
 }
 
 // MARK: - Advanced DI Container Implementation
-public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Sendable {
+public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     
-    // MARK: - Private Properties
+    // MARK: - Thread-Safe Properties
+    private let lock = NSLock()
     private var services: [String: Any] = [:]
     private var factories: [String: (AdvancedDIContainer) async throws -> Any] = [:]
     private var scopes: [String: ServiceScope] = [:]
@@ -100,7 +159,9 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
         
         // Validate token
         try validateToken(token)
-        self.analyticsToken = token
+        lock.lock()
+        analyticsToken = token
+        lock.unlock()
         
         print("🔒 GoDareDI: Secure Binary Framework Initialized with Token")
     }
@@ -119,16 +180,22 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
     // MARK: - Service Registration
     public func register<T>(_ type: T.Type, scope: ServiceScope, factory: @escaping (AdvancedDIContainer) async throws -> T) async throws {
         let key = String(describing: type)
+        
+        // Store factory and scope
+        lock.lock()
         factories[key] = factory
         scopes[key] = scope
+        lock.unlock()
         
         if scope == .singleton || scope == .application {
             let instance = try await factory(self)
+            lock.lock()
             if scope == .singleton {
                 services[key] = instance
             } else {
                 applicationInstances[key] = instance
             }
+            lock.unlock()
         }
         
         print("📦 GoDareDI: Registered \(key) with scope \(scope)")
@@ -138,19 +205,30 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
     public func resolve<T>(_ type: T.Type) async throws -> T {
         let key = String(describing: type)
         
-        guard let scope = scopes[key], let factory = factories[key] else {
+        lock.lock()
+        let scope = scopes[key]
+        let factory = factories[key]
+        lock.unlock()
+        
+        guard let scope = scope, let factory = factory else {
             throw GoDareDIError.serviceNotRegistered(type)
         }
         
         switch scope {
         case .singleton:
-            guard let instance = services[key] as? T else {
+            lock.lock()
+            let instance = services[key] as? T
+            lock.unlock()
+            guard let instance = instance else {
                 throw GoDareDIError.serviceResolutionFailed(type)
             }
             return instance
             
         case .application:
-            guard let instance = applicationInstances[key] as? T else {
+            lock.lock()
+            let instance = applicationInstances[key] as? T
+            lock.unlock()
+            guard let instance = instance else {
                 throw GoDareDIError.serviceResolutionFailed(type)
             }
             return instance
@@ -159,11 +237,16 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
             return try await factory(self) as! T
             
         case .scoped:
-            if let instance = scopedInstances[key] as? T {
+            lock.lock()
+            let existingInstance = scopedInstances[key] as? T
+            lock.unlock()
+            if let instance = existingInstance {
                 return instance
             } else {
                 let instance = try await factory(self) as! T
+                lock.lock()
                 scopedInstances[key] = instance
+                lock.unlock()
                 return instance
             }
         }
@@ -173,19 +256,30 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
     public func resolveSync<T>(_ type: T.Type) throws -> T {
         let key = String(describing: type)
         
-        guard let scope = scopes[key], let _ = factories[key] else {
+        lock.lock()
+        let scope = scopes[key]
+        let _ = factories[key]
+        lock.unlock()
+        
+        guard let scope = scope else {
             throw GoDareDIError.serviceNotRegistered(type)
         }
         
         switch scope {
         case .singleton:
-            guard let instance = services[key] as? T else {
+            lock.lock()
+            let instance = services[key] as? T
+            lock.unlock()
+            guard let instance = instance else {
                 throw GoDareDIError.serviceResolutionFailed(type)
             }
             return instance
             
         case .application:
-            guard let instance = applicationInstances[key] as? T else {
+            lock.lock()
+            let instance = applicationInstances[key] as? T
+            lock.unlock()
+            guard let instance = instance else {
                 throw GoDareDIError.serviceResolutionFailed(type)
             }
             return instance
@@ -196,34 +290,47 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
             throw GoDareDIError.serviceResolutionFailed(type)
             
         case .scoped:
-            if let instance = scopedInstances[key] as? T {
-                return instance
-            } else {
+            lock.lock()
+            let instance = scopedInstances[key] as? T
+            lock.unlock()
+            guard let instance = instance else {
                 throw GoDareDIError.serviceResolutionFailed(type)
             }
+            return instance
         }
     }
     
     // MARK: - Premium Features
     public func enableAnalytics(token: String) {
-        self.isAnalyticsEnabled = true
-        self.analyticsToken = token
+        lock.lock()
+        isAnalyticsEnabled = true
+        analyticsToken = token
+        lock.unlock()
         print("📊 GoDareDI: Analytics enabled with token")
     }
     
     public func enableCrashlytics() {
-        self.isCrashlyticsEnabled = true
+        lock.lock()
+        isCrashlyticsEnabled = true
+        lock.unlock()
         print("🛡️ GoDareDI: Crashlytics enabled")
     }
     
     public func enableDashboardSync(token: String) {
-        self.isDashboardSyncEnabled = true
+        lock.lock()
+        isDashboardSyncEnabled = true
+        lock.unlock()
         print("📱 GoDareDI: Dashboard sync enabled")
     }
     
     // MARK: - Preload All Generic Types
     public func preloadAllGeneric() async throws {
         // Preload all registered services that are singletons or application-scoped
+        lock.lock()
+        let scopes = self.scopes
+        let factories = self.factories
+        lock.unlock()
+        
         for (key, scope) in scopes {
             if scope == .singleton || scope == .application {
                 // Try to resolve to preload
@@ -239,6 +346,14 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
     // MARK: - Dependency Graph Data
     public func getDependencyGraphData() throws -> [String: Any] {
         var graphData: [String: Any] = [:]
+        
+        // Get thread-safe copies of the data
+        lock.lock()
+        let scopes = self.scopes
+        let factories = self.factories
+        let services = self.services
+        let applicationInstances = self.applicationInstances
+        lock.unlock()
         
         // Build dependency graph from registered services
         for (key, scope) in scopes {
@@ -270,6 +385,76 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Send
         }
         
         return graphData
+    }
+    
+    // MARK: - Visualization Methods
+    public func getDependencyGraph() async -> DependencyGraph {
+        lock.lock()
+        let scopes = self.scopes
+        let services = self.services
+        let applicationInstances = self.applicationInstances
+        lock.unlock()
+        
+        var nodes: [String: DependencyNode] = [:]
+        var edges: [DependencyEdge] = []
+        
+        // Create nodes for all registered services
+        for (key, scope) in scopes {
+            let hasInstance: Bool
+            if scope == .singleton {
+                hasInstance = services[key] != nil
+            } else if scope == .application {
+                hasInstance = applicationInstances[key] != nil
+            } else {
+                hasInstance = false
+            }
+            
+            let node = DependencyNode(
+                id: key,
+                type: key,
+                scope: scopeString(scope),
+                hasInstance: hasInstance
+            )
+            nodes[key] = node
+        }
+        
+        // For now, we don't track actual dependencies, so edges are empty
+        // In a real implementation, you would track dependencies during registration
+        
+        return DependencyGraph(nodes: nodes, edges: edges)
+    }
+    
+    public func analyzeDependencyGraph() async -> DependencyAnalysis {
+        let graph = await getDependencyGraph()
+        
+        let totalNodes = graph.nodes.count
+        let totalEdges = graph.edges.count
+        
+        // Simple circular dependency detection (placeholder)
+        let circularDependencies: [String] = []
+        
+        // Calculate depth (placeholder - would need actual graph traversal)
+        let depth = calculateGraphDepth(graph)
+        
+        return DependencyAnalysis(
+            totalNodes: totalNodes,
+            totalEdges: totalEdges,
+            circularDependencies: circularDependencies,
+            depth: depth
+        )
+    }
+    
+    private func calculateGraphDepth(_ graph: DependencyGraph) -> Int {
+        // Simple depth calculation - in a real implementation, this would do actual graph traversal
+        return min(graph.nodes.count, 10) // Cap at 10 for now
+    }
+    
+    // MARK: - Token Access
+    public func getAnalyticsToken() -> String? {
+        lock.lock()
+        let token = analyticsToken
+        lock.unlock()
+        return token
     }
     
     private func scopeString(_ scope: ServiceScope) -> String {
@@ -308,8 +493,8 @@ public enum GoDareDIError: Error, LocalizedError {
 }
 
 // MARK: - Framework Version
-public let GoDareDIVersion = "1.0.4"
-public let GoDareDIBuildNumber = "4"
+public let GoDareDIVersion = "1.0.5"
+public let GoDareDIBuildNumber = "5"
 
 // MARK: - Dependency Graph Visualization
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
