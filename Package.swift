@@ -19,12 +19,9 @@ let package = Package(
         // No external dependencies
     ],
     targets: [
-        // This will be replaced with a binary target once the framework is built
         .target(
             name: "GoDareDI",
-            dependencies: [],
-            path: "Sources/GoDareDI",
-            publicHeadersPath: "../PublicHeaders"
+            dependencies: []
         ),
     ]
 )

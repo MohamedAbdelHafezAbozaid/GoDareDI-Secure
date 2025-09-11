@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/master.swiftdeps"
+  },
+  "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/Sources/GoDareDI/GoDareDI.swift": {
+    "dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.d",
+    "object": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.swift.o",
+    "swiftmodule": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI~partial.swiftmodule",
+    "swift-dependencies": "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI.swiftdeps"
+  }
+}
