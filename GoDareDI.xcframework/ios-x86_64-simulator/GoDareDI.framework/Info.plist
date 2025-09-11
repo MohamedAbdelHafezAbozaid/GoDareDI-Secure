@@ -19,10 +19,10 @@
     <key>CFBundleVersion</key>
     <string>16</string>
     <key>MinimumOSVersion</key>
-    <string>10.15</string>
+    <string>13.0</string>
     <key>CFBundleSupportedPlatforms</key>
     <array>
-        <string>MacOSX</string>
+        <string>iPhoneSimulator</string>
     </array>
 </dict>
 </plist>
