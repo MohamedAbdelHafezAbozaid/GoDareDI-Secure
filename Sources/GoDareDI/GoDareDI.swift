@@ -311,8 +311,8 @@ public enum DITokenValidationError: Error, LocalizedError {
 }
 
 // MARK: - Framework Version
-public let GoDareDIVersion = "1.0.10"
-public let GoDareDIBuildNumber = "10"
+public let GoDareDIVersion = "1.0.11"
+public let GoDareDIBuildNumber = "11"
 
 // MARK: - Advanced DI Container Implementation (Public Initializer Only)
 // Implementation details are hidden in binary framework
@@ -476,9 +476,47 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     }
 }
 
-// MARK: - Dependency Graph Visualization (Optional SwiftUI Component)
-// Note: DependencyGraphView is available as a separate SwiftUI module
-// This allows the core DI framework to work without SwiftUI dependencies
+// MARK: - Dependency Graph Visualization (Public SwiftUI Component)
+// Implementation details are hidden in binary framework
+#if canImport(SwiftUI)
+import SwiftUI
+
+@available(iOS 14.0, macOS 10.15, tvOS 14.0, watchOS 7.0, *)
+public struct DependencyGraphView: View {
+    private let container: AdvancedDIContainer
+    
+    // MARK: - Public Initializer (Only this is exposed)
+    public init(container: AdvancedDIContainer) {
+        self.container = container
+    }
+    
+    // MARK: - Public Interface (Implementation Hidden)
+    public var body: some View {
+        // Implementation is hidden in binary framework
+        // This view is the only public interface to the visualization
+        VStack(spacing: 20) {
+            Text("📊")
+                .font(.system(size: 50))
+            
+            Text("Dependency Graph")
+                .font(.title)
+                .fontWeight(.bold)
+            
+            Text("Implementation hidden in binary framework")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+            
+            Text("This view provides a placeholder for the dependency graph visualization. The actual implementation is protected in the binary framework.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
+        .padding()
+    }
+}
+#endif
 
 // MARK: - Errors (Public)
 public enum GoDareDIError: Error, LocalizedError {
