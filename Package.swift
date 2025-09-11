@@ -21,7 +21,8 @@ let package = Package(
     targets: [
         .target(
             name: "GoDareDI",
-            dependencies: []
+            dependencies: [],
+            path: "Sources/GoDareDI"
         ),
     ]
 )
