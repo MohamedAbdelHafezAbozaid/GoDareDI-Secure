@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - GoDareDI Framework
 // Advanced Dependency Injection Framework
@@ -257,5 +258,197 @@ public enum GoDareDIError: Error, LocalizedError {
 }
 
 // MARK: - Framework Version
-public let GoDareDIVersion = "1.0.0"
-public let GoDareDIBuildNumber = "1"
+public let GoDareDIVersion = "1.0.2"
+public let GoDareDIBuildNumber = "2"
+
+// MARK: - Dependency Graph Visualization
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public struct DependencyGraphView: View {
+    private let container: AdvancedDIContainer
+    @State private var dependencyData: [String: Any] = [:]
+    @State private var isLoading = true
+    @State private var errorMessage: String?
+    
+    public init(container: AdvancedDIContainer) {
+        self.container = container
+    }
+    
+    public var body: some View {
+        NavigationView {
+            VStack {
+                if isLoading {
+                    loadingView
+                } else if let errorMessage = errorMessage {
+                    errorView(message: errorMessage)
+                } else {
+                    contentView
+                }
+            }
+            .modifier(NavigationTitleModifier())
+            .onAppear {
+                loadDependencyData()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var loadingView: some View {
+        if #available(macOS 11.0, *) {
+            ProgressView("Loading dependency graph...")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            VStack {
+                Text("Loading dependency graph...")
+                    .font(.headline)
+                Text("⏳")
+                    .font(.system(size: 30))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    private func errorView(message: String) -> some View {
+        VStack {
+            if #available(macOS 11.0, *) {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.system(size: 50))
+                    .foregroundColor(.orange)
+            } else {
+                Text("⚠️")
+                    .font(.system(size: 50))
+            }
+            Text("Error")
+                .font(.title)
+                .fontWeight(.bold)
+            Text(message)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+    }
+    
+    @ViewBuilder
+    private var contentView: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Dependency Graph")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                ForEach(Array(dependencyData.keys.sorted()), id: \.self) { key in
+                    DependencyNodeView(key: key, data: dependencyData[key])
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func loadDependencyData() {
+        // Simulate loading dependency graph data
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.dependencyData = [
+                "NetworkService": ["type": "Singleton", "dependencies": []],
+                "UserService": ["type": "Singleton", "dependencies": ["NetworkService"]],
+                "AnalyticsService": ["type": "Transient", "dependencies": ["NetworkService"]],
+                "DashboardService": ["type": "Application", "dependencies": ["UserService", "AnalyticsService"]]
+            ]
+            self.isLoading = false
+        }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+private struct DependencyNodeView: View {
+    let key: String
+    let data: Any?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Circle()
+                    .fill(colorForType)
+                    .frame(width: 12, height: 12)
+                Text(key)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(typeString)
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(8)
+            }
+            
+            if let dependencies = dependencies, !dependencies.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Dependencies:")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    ForEach(dependencies, id: \.self) { dependency in
+                        HStack {
+                            Text("•")
+                                .foregroundColor(.blue)
+                            Text(dependency)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.leading, 16)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.05))
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+        )
+    }
+    
+    private var colorForType: Color {
+        switch typeString {
+        case "Singleton":
+            return .green
+        case "Transient":
+            return .blue
+        case "Scoped":
+            return .orange
+        case "Application":
+            return .purple
+        default:
+            return .gray
+        }
+    }
+    
+    private var typeString: String {
+        if let dict = data as? [String: Any],
+           let type = dict["type"] as? String {
+            return type
+        }
+        return "Unknown"
+    }
+    
+    private var dependencies: [String]? {
+        if let dict = data as? [String: Any],
+           let deps = dict["dependencies"] as? [String] {
+            return deps
+        }
+        return nil
+    }
+}
+
+// MARK: - Navigation Title Modifier for macOS Compatibility
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+private struct NavigationTitleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 11.0, *) {
+            content.navigationTitle("GoDareDI Graph")
+        } else {
+            content
+        }
+    }
+}
