@@ -63,7 +63,7 @@ public protocol DIModule {
 }
 
 // MARK: - Dependency Injection Container Protocol
-public protocol AdvancedDIContainer {
+public protocol AdvancedDIContainer: Sendable {
     func register<T>(_ type: T.Type, scope: ServiceScope, factory: @escaping (AdvancedDIContainer) async throws -> T) async throws
     func resolve<T>(_ type: T.Type) async throws -> T
     func resolveSync<T>(_ type: T.Type) throws -> T
@@ -75,7 +75,7 @@ public protocol AdvancedDIContainer {
 }
 
 // MARK: - Advanced DI Container Implementation
-public class AdvancedDIContainerImpl: AdvancedDIContainer {
+public final class AdvancedDIContainerImpl: AdvancedDIContainer, @unchecked Sendable {
     
     // MARK: - Private Properties
     private var services: [String: Any] = [:]
