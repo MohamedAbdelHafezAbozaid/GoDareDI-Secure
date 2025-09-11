@@ -71,6 +71,7 @@ public protocol AdvancedDIContainer {
     func enableCrashlytics()
     func enableDashboardSync(token: String)
     func preloadAllGeneric() async throws
+    func getDependencyGraphData() throws -> [String: Any]
 }
 
 // MARK: - Advanced DI Container Implementation
@@ -234,6 +235,55 @@ public class AdvancedDIContainerImpl: AdvancedDIContainer {
         }
         print("✅ GoDareDI: All generic types preloaded")
     }
+    
+    // MARK: - Dependency Graph Data
+    public func getDependencyGraphData() throws -> [String: Any] {
+        var graphData: [String: Any] = [:]
+        
+        // Build dependency graph from registered services
+        for (key, scope) in scopes {
+            var serviceInfo: [String: Any] = [:]
+            
+            // Add service type/scope
+            serviceInfo["type"] = scopeString(scope)
+            
+            // Add dependencies (this would need to be tracked during registration)
+            // For now, return empty dependencies array
+            serviceInfo["dependencies"] = []
+            
+            // Add registration info
+            serviceInfo["registered"] = true
+            serviceInfo["hasFactory"] = factories[key] != nil
+            
+            // Add instance info if available
+            if scope == .singleton || scope == .application {
+                if scope == .singleton {
+                    serviceInfo["hasInstance"] = services[key] != nil
+                } else {
+                    serviceInfo["hasInstance"] = applicationInstances[key] != nil
+                }
+            } else {
+                serviceInfo["hasInstance"] = false
+            }
+            
+            graphData[key] = serviceInfo
+        }
+        
+        return graphData
+    }
+    
+    private func scopeString(_ scope: ServiceScope) -> String {
+        switch scope {
+        case .singleton:
+            return "Singleton"
+        case .transient:
+            return "Transient"
+        case .scoped:
+            return "Scoped"
+        case .application:
+            return "Application"
+        }
+    }
 }
 
 // MARK: - Errors
@@ -345,15 +395,16 @@ public struct DependencyGraphView: View {
     }
     
     private func loadDependencyData() {
-        // Simulate loading dependency graph data
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.dependencyData = [
-                "NetworkService": ["type": "Singleton", "dependencies": []],
-                "UserService": ["type": "Singleton", "dependencies": ["NetworkService"]],
-                "AnalyticsService": ["type": "Transient", "dependencies": ["NetworkService"]],
-                "DashboardService": ["type": "Application", "dependencies": ["UserService", "AnalyticsService"]]
-            ]
-            self.isLoading = false
+        // Load actual dependency graph data from the container
+        DispatchQueue.main.async {
+            do {
+                // Get dependency information from the container
+                self.dependencyData = try self.container.getDependencyGraphData()
+                self.isLoading = false
+            } catch {
+                self.errorMessage = "Failed to load dependency data: \(error.localizedDescription)"
+                self.isLoading = false
+            }
         }
     }
 }
