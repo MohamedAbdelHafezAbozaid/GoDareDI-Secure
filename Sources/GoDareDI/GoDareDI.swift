@@ -314,77 +314,188 @@ public enum DITokenValidationError: Error, LocalizedError {
 public let GoDareDIVersion = "1.0.11"
 public let GoDareDIBuildNumber = "11"
 
+// MARK: - Analytics Provider (Simple Implementation)
+internal class DIAnalyticsProvider {
+    let token: String
+    
+    init(token: String) {
+        self.token = token
+    }
+}
+
 // MARK: - Advanced DI Container Implementation (Public Initializer Only)
 // Implementation details are hidden in binary framework
 @MainActor
 public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     
+    // MARK: - Properties
+    internal let config: DIContainerConfig
+    public var singletons: [String: Sendable] = [:]
+    internal var scopedInstances: [String: [String: Sendable]] = [:]
+    internal var lazyInstances: [String: Sendable] = [:]
+    internal var resolutionStack: [String] = []
+    internal var scopeId: String = "default"
+    internal var dependencyMap: [String: Set<String>] = [:]
+    internal var performanceMetrics: [String: TimeInterval] = [:]
+    internal var resolutionCounts: [String: Int] = [:]
+    internal var cacheHits: [String: Int] = [:]
+    public var factories: [String: FactoryType] = [:]
+    
+    // 🚀 UNIFIED: Single metadata storage for both resolution and preloading
+    internal var typeRegistry: [String: DependencyMetadata] = [:]
+    
+    // 🔥 CRASHLYTICS: Analytics and crashlytics integration
+    internal var analyticsProvider: DIAnalyticsProvider?
+    
+    // MARK: - Factory Union Type
+    public enum FactoryType {
+        case sync(@Sendable (AdvancedDIContainer) throws -> Sendable)
+        case async(@Sendable (AdvancedDIContainer) async throws -> Sendable)
+    }
+    
     // MARK: - Public Initializer (Only this is exposed)
     public init(config: DIContainerConfig, token: String) async throws {
-        // Implementation is hidden in binary framework
-        // This initializer is the only public interface to the implementation
-        fatalError("AdvancedDIContainerImpl implementation is hidden in binary framework")
+        self.config = config
+        // Token validation would happen here in the real implementation
+        // For now, we'll just store the token and proceed
+        self.analyticsProvider = DIAnalyticsProvider(token: token)
     }
     
     // MARK: - Freemium Initializer (No Token Required)
     public init(config: DIContainerConfig = DIContainerConfig(), enableFreemium: Bool = true) {
-        // Implementation is hidden in binary framework
-        // This initializer is the only public interface to the implementation
-        fatalError("AdvancedDIContainerImpl implementation is hidden in binary framework")
+        self.config = config
+        // No token validation for freemium mode
+        // Advanced features will be gated in the UI
     }
     
-    // MARK: - Protocol Conformance (Implementation Hidden)
-    // All protocol methods are implemented but hidden in binary framework
+    // MARK: - Protocol Conformance (Working Implementation)
     public func register<T: Sendable>(_ type: T.Type, scope: DependencyScope, lifetime: DependencyLifetime, factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T) {
-        fatalError("Implementation hidden in binary framework")
+        let key = String(describing: type)
+        factories[key] = .async(factory)
+        
+        // Store metadata for this type
+        let metadata = DependencyMetadata(
+            type: T.self,
+            scope: scope,
+            lifetime: lifetime
+        )
+        typeRegistry[key] = metadata
     }
     
     public func register<T: Sendable>(_ type: T.Type, scope: DependencyScope, factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T) {
-        fatalError("Implementation hidden in binary framework")
+        // Store the factory for async resolution
+        let key = String(describing: type)
+        factories[key] = .async(factory)
+        
+        let metadata = DependencyMetadata(
+            type: T.self,
+            scope: scope,
+            lifetime: .request
+        )
+        typeRegistry[key] = metadata
     }
     
     public func registerSync<T: Sendable>(_ type: T.Type, scope: DependencyScope, lifetime: DependencyLifetime, factory: @escaping @Sendable (AdvancedDIContainer) throws -> T) {
-        fatalError("Implementation hidden in binary framework")
+        let key = String(describing: type)
+        factories[key] = .sync(factory)
+        
+        let metadata = DependencyMetadata(
+            type: T.self,
+            scope: scope,
+            lifetime: lifetime
+        )
+        typeRegistry[key] = metadata
     }
     
     public func registerSync<T: Sendable>(_ type: T.Type, scope: DependencyScope, factory: @escaping @Sendable (AdvancedDIContainer) throws -> T) {
-        fatalError("Implementation hidden in binary framework")
+        try registerSync(type, scope: scope, lifetime: .request, factory: factory)
     }
     
     public func resolve<T: Sendable>() async throws -> T {
-        fatalError("Implementation hidden in binary framework")
+        return try await resolve(T.self)
     }
     
     public func resolve<T: Sendable>(_ type: T.Type) async throws -> T {
-        fatalError("Implementation hidden in binary framework")
+        let key = String(describing: type)
+        
+        guard let factory = factories[key] else {
+            throw GoDareDIError.typeNotRegistered(key)
+        }
+        
+        // Check for singleton cache
+        if let cached = singletons[key] as? T {
+            return cached
+        }
+        
+        // Create instance
+        let instance: T
+        switch factory {
+        case .async(let asyncFactory):
+            instance = try await asyncFactory(self) as! T
+        case .sync(let syncFactory):
+            instance = try syncFactory(self) as! T
+        }
+        
+        // Cache singleton
+        singletons[key] = instance
+        
+        return instance
     }
     
     public func resolveSync<T: Sendable>() throws -> T {
-        fatalError("Implementation hidden in binary framework")
+        return try resolveSync(T.self)
     }
     
     public func resolveSync<T: Sendable>(_ type: T.Type) throws -> T {
-        fatalError("Implementation hidden in binary framework")
+        let key = String(describing: type)
+        
+        guard let factory = factories[key] else {
+            throw GoDareDIError.typeNotRegistered(key)
+        }
+        
+        // Check for singleton cache
+        if let cached = singletons[key] as? T {
+            return cached
+        }
+        
+        // Create instance (only sync factories)
+        let instance: T
+        switch factory {
+        case .async:
+            throw GoDareDIError.asyncFactoryInSyncContext(key)
+        case .sync(let syncFactory):
+            instance = try syncFactory(self) as! T
+        }
+        
+        // Cache singleton
+        singletons[key] = instance
+        
+        return instance
     }
     
     public func createScope(_ scopeId: String) async {
-        fatalError("Implementation hidden in binary framework")
+        scopedInstances[scopeId] = [:]
     }
     
     public func disposeScope(_ scopeId: String) async {
-        fatalError("Implementation hidden in binary framework")
+        scopedInstances.removeValue(forKey: scopeId)
     }
     
     public func setCurrentScope(_ scopeId: String) async {
-        fatalError("Implementation hidden in binary framework")
+        self.scopeId = scopeId
     }
     
     public func getCurrentScope() -> String {
-        fatalError("Implementation hidden in binary framework")
+        return scopeId
     }
     
     public func validateDependencies() async throws {
-        fatalError("Implementation hidden in binary framework")
+        // Basic validation - check that all registered types have factories
+        for (key, _) in typeRegistry {
+            guard factories[key] != nil else {
+                throw GoDareDIError.typeNotRegistered(key)
+            }
+        }
     }
     
     public func getDependencyGraph() async -> DependencyGraph {
@@ -416,7 +527,33 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     }
     
     public func preloadAllGeneric() async throws {
-        fatalError("Implementation hidden in binary framework")
+        // Preload all registered types by attempting to resolve them
+        for (key, _) in factories {
+            // Try to resolve each type to preload it
+            // This is a simplified preload - in a real implementation, 
+            // we would analyze dependencies and preload in the correct order
+            do {
+                _ = try await resolveAny(key)
+            } catch {
+                // Some types might not be resolvable without parameters
+                // This is expected for some types
+                continue
+            }
+        }
+    }
+    
+    // Helper method to resolve any type by key
+    private func resolveAny(_ key: String) async throws -> Any {
+        guard let factory = factories[key] else {
+            throw GoDareDIError.typeNotRegistered(key)
+        }
+        
+        switch factory {
+        case .async(let asyncFactory):
+            return try await asyncFactory(self)
+        case .sync(let syncFactory):
+            return try syncFactory(self)
+        }
     }
     
     public func preloadSmart() async throws {
@@ -472,7 +609,7 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     }
     
     public func getAnalyticsToken() -> String? {
-        fatalError("Implementation hidden in binary framework")
+        return analyticsProvider?.token
     }
 }
 
@@ -525,6 +662,8 @@ public enum GoDareDIError: Error, LocalizedError {
     case circularDependencyDetected
     case configurationError(String)
     case tokenValidationFailed
+    case typeNotRegistered(String)
+    case asyncFactoryInSyncContext(String)
     
     public var errorDescription: String? {
         switch self {
@@ -538,6 +677,10 @@ public enum GoDareDIError: Error, LocalizedError {
             return "Configuration error: \(message)"
         case .tokenValidationFailed:
             return "Token validation failed"
+        case .typeNotRegistered(let key):
+            return "Type \(key) is not registered"
+        case .asyncFactoryInSyncContext(let key):
+            return "Cannot use async factory for \(key) in sync context"
         }
     }
 }
