@@ -1,42 +1,20 @@
-# GoDareDI - Advanced Dependency Injection Framework
+# GoDareDI - Binary Framework Distribution
 
-A powerful, type-safe dependency injection framework for Swift with advanced features like analytics, visualization, and monitoring.
+## 🔒 **BINARY FRAMEWORK - SOURCE CODE PROTECTED**
 
-## 🔒 **SECURE BINARY DISTRIBUTION**
+This is a **compiled binary framework** distribution. The source code is **protected and encrypted** in the compiled libraries.
 
-**Important**: This framework is distributed as a **compiled binary** to protect intellectual property while providing full functionality to developers.
-
-### What This Means for You
-
+### What You Get:
 - ✅ **Full Functionality**: All features work exactly as documented
-- ✅ **Type Safety**: Complete Swift type system integration  
+- ✅ **Type Safety**: Complete Swift type system integration
 - ✅ **Performance**: Optimized compiled code
 - ✅ **Security**: Source code is protected and cannot be reverse-engineered
-- ✅ **Updates**: Easy updates through Swift Package Manager
 
-### What You Get
-
-- **Complete API**: Full access to all framework features
-- **Documentation**: Comprehensive guides and examples
-- **Support**: Developer support and community
-- **Updates**: Regular updates and security patches
-
-### What's Protected
-
-- **Implementation Details**: Core algorithms and optimizations
-- **Internal Architecture**: Framework's internal structure
-- **Proprietary Logic**: Business logic and advanced features
-- **Performance Optimizations**: Compiled optimizations
-
-## 🚀 Features
-
-- **Type-Safe DI**: Compile-time dependency resolution
-- **Multiple Scopes**: Singleton, Transient, Scoped lifetimes
-- **Analytics Integration**: Built-in usage tracking and analytics
-- **Visualization**: Dependency graph visualization
-- **Performance Monitoring**: Built-in performance metrics
-- **Crashlytics Integration**: Automatic crash reporting
-- **Dashboard Sync**: Real-time dashboard synchronization
+### What's Protected:
+- ❌ **Source Code**: Implementation details are compiled and hidden
+- ❌ **Internal Architecture**: Framework's internal structure is encrypted
+- ❌ **Proprietary Logic**: Business logic and advanced features are protected
+- ❌ **Performance Optimizations**: Compiled optimizations are hidden
 
 ## 📦 Installation
 
@@ -46,7 +24,7 @@ Add GoDareDI to your project using Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git", from: "1.0.0")
+    .package(url: "https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git", from: "1.0.12")
 ]
 ```
 
@@ -83,8 +61,10 @@ let networkService = try await container.resolve(NetworkService.self)
 import GoDareDI
 
 // Initialize with analytics
-let container = AdvancedDIContainerImpl()
-container.enableAnalytics(token: "your-premium-token")
+let container = try await AdvancedDIContainerImpl(
+    config: DIContainerConfig(),
+    token: "your-premium-token"
+)
 
 // Enable premium features
 container.enableCrashlytics()
@@ -106,7 +86,7 @@ let userService = try await container.resolve(UserService.self)
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🛡️ Security & Privacy
 
@@ -117,12 +97,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- [GitHub Issues](https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure/issues)
+- GitHub Issues
 - Email: bota78336@gmail.com
-- [Web Dashboard](https://godaredi-60569.web.app)
+- Web Dashboard
 
 ## 🎉 Acknowledgments
 
 - Built with ❤️ for the Swift community
 - Inspired by modern DI patterns
 - Powered by Swift's type system
+
+## 🔒 Security Notice
+
+This framework is distributed as compiled binary libraries to protect intellectual property. Source code is not available and cannot be reverse-engineered.

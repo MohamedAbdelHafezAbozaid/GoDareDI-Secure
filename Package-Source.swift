@@ -1,14 +1,13 @@
 // swift-tools-version: 5.9
 import PackageDescription
 
-// 🔒 BINARY FRAMEWORK PACKAGE - NO SOURCE CODE ACCESS
 let package = Package(
     name: "GoDareDI",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
-        .tvOS(.v13),
-        .watchOS(.v6)
+        .iOS(.v14),
+        .macOS(.v10_13),
+        .tvOS(.v14),
+        .watchOS(.v7)
     ],
     products: [
         .library(
@@ -16,11 +15,14 @@ let package = Package(
             targets: ["GoDareDI"]
         ),
     ],
+    dependencies: [
+        // No external dependencies
+    ],
     targets: [
-        // 🔒 BINARY TARGET - SOURCE CODE IS PROTECTED
-        .binaryTarget(
+        .target(
             name: "GoDareDI",
-            path: "GoDareDI.xcframework"
+            dependencies: [],
+            path: "Sources/GoDareDI"
         ),
     ]
 )

@@ -1,4 +1,0 @@
-module GoDareDI {
-    header "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/GoDareDI.build/GoDareDI-Swift.h"
-    requires objc
-}
