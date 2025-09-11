@@ -1,16 +1,262 @@
+//
+//  GoDareDI.swift
+//  GoDareDI-Secure
+//
+//  Created by mohamed ahmed on 31/08/2025.
+//
+
 import Foundation
 import SwiftUI
 
-// MARK: - GoDareDI Framework
+// MARK: - GoDareDI-Secure Framework
 // Advanced Dependency Injection Framework
-// Secure Binary Distribution - Source Code Protected
+// Protocol-Only Distribution - Implementation Protected
 
-// MARK: - Service Scope
+// MARK: - Core Dependency Types
+public enum DependencyScope: String, CaseIterable, Codable, Sendable {
+    case singleton = "singleton"
+    case scoped = "scoped"
+    case transient = "transient"
+    case lazy = "lazy"
+}
+
+public enum DependencyLifetime: String, Hashable, CaseIterable, Codable, Sendable {
+    case application = "application"
+    case session = "session"
+    case request = "request"
+    case custom = "custom"
+}
+
+public struct DependencyMetadata: Codable, Sendable {
+    public let type: String
+    public let scope: DependencyScope
+    public let lifetime: DependencyLifetime
+    let lazy: Bool
+    let dependencies: [String]
+    let registrationTime: Date
+    let lastAccessed: Date?
+    
+    init(type: Any.Type, scope: DependencyScope, lifetime: DependencyLifetime, lazy: Bool = false, dependencies: [String] = []) {
+        self.type = String(describing: type)
+        self.scope = scope
+        self.lifetime = lifetime
+        self.lazy = lazy
+        self.dependencies = dependencies
+        self.registrationTime = Date()
+        self.lastAccessed = nil
+    }
+}
+
+// MARK: - Performance Metrics
+public struct PerformanceMetrics: Codable, Sendable {
+    public let averageResolutionTime: TimeInterval
+    public let cacheHitRate: Double
+    public let memoryUsage: Double
+    public let totalResolutions: Int
+    public let circularDependencyCount: Int
+    
+    public init(averageResolutionTime: TimeInterval, cacheHitRate: Double, memoryUsage: Double, totalResolutions: Int, circularDependencyCount: Int) {
+        self.averageResolutionTime = averageResolutionTime
+        self.cacheHitRate = cacheHitRate
+        self.memoryUsage = memoryUsage
+        self.totalResolutions = totalResolutions
+        self.circularDependencyCount = circularDependencyCount
+    }
+}
+
+// MARK: - Graph Types
+public struct DependencyGraph: Codable, Sendable {
+    public let nodes: [DependencyNode]
+    public let edges: [DependencyEdge]
+    public let analysis: GraphAnalysis
+    
+    public init(nodes: [DependencyNode] = [], edges: [DependencyEdge] = [], analysis: GraphAnalysis = GraphAnalysis()) {
+        self.nodes = nodes
+        self.edges = edges
+        self.analysis = analysis
+    }
+}
+
+public struct DependencyNode: Hashable, Codable, Sendable {
+    public let id: String
+    public let type: String
+    public let scope: DependencyScope
+    public let dependencies: [String]
+    public let layer: Int
+    public let isCircular: Bool
+    
+    public init(id: String, type: String, scope: DependencyScope, dependencies: [String] = [], layer: Int = 0, isCircular: Bool = false) {
+        self.id = id
+        self.type = type
+        self.scope = scope
+        self.dependencies = dependencies
+        self.layer = layer
+        self.isCircular = isCircular
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    public static func == (lhs: DependencyNode, rhs: DependencyNode) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+public struct DependencyEdge: Hashable, Codable, Sendable {
+    public let from: String
+    public let to: String
+    public let relationship: String
+    public let isCircular: Bool
+    
+    public init(from: String, to: String, relationship: String = "depends_on", isCircular: Bool = false) {
+        self.from = from
+        self.to = to
+        self.relationship = relationship
+        self.isCircular = isCircular
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(from)
+        hasher.combine(to)
+    }
+    
+    public static func == (lhs: DependencyEdge, rhs: DependencyEdge) -> Bool {
+        return lhs.from == rhs.from && lhs.to == rhs.to
+    }
+}
+
+public struct GraphAnalysis: Codable, Sendable {
+    public let hasCircularDependencies: Bool
+    public let totalNodes: Int
+    public let totalDependencies: Int
+    public let maxDepth: Int
+    public let circularDependencyChains: [[String]]
+    public let analysisTime: TimeInterval
+    public let memoryUsage: Double
+    public let cacheEfficiency: Double
+    
+    public init(hasCircularDependencies: Bool = false, totalNodes: Int = 0, totalDependencies: Int = 0, maxDepth: Int = 0, circularDependencyChains: [[String]] = [], analysisTime: TimeInterval = 0, memoryUsage: Double = 0, cacheEfficiency: Double = 0) {
+        self.hasCircularDependencies = hasCircularDependencies
+        self.totalNodes = totalNodes
+        self.totalDependencies = totalDependencies
+        self.maxDepth = maxDepth
+        self.circularDependencyChains = circularDependencyChains
+        self.analysisTime = analysisTime
+        self.memoryUsage = memoryUsage
+        self.cacheEfficiency = cacheEfficiency
+    }
+}
+
+// MARK: - Advanced DI Container Protocol
+@MainActor
+public protocol AdvancedDIContainer: Sendable {
+    // MARK: - Core Registration (Async)
+    func register<T: Sendable>(
+        _ type: T.Type,
+        scope: DependencyScope,
+        lifetime: DependencyLifetime,
+        factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T
+    )
+    
+    func register<T: Sendable>(
+        _ type: T.Type,
+        scope: DependencyScope,
+        factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T
+    )
+    
+    // MARK: - Core Registration (Sync)
+    func registerSync<T: Sendable>(
+        _ type: T.Type,
+        scope: DependencyScope,
+        lifetime: DependencyLifetime,
+        factory: @escaping @Sendable (AdvancedDIContainer) throws -> T
+    )
+    
+    func registerSync<T: Sendable>(
+        _ type: T.Type,
+        scope: DependencyScope,
+        factory: @escaping @Sendable (AdvancedDIContainer) throws -> T
+    )
+    
+    // MARK: - Resolution
+    func resolve<T: Sendable>() async throws -> T
+    func resolve<T: Sendable>(_ type: T.Type) async throws -> T
+    
+    // Synchronous resolution for cached instances
+    func resolveSync<T: Sendable>() throws -> T
+    func resolveSync<T: Sendable>(_ type: T.Type) throws -> T
+    
+    // MARK: - Scope Management
+    func createScope(_ scopeId: String) async
+    func disposeScope(_ scopeId: String) async
+    func setCurrentScope(_ scopeId: String) async
+    func getCurrentScope() -> String
+    
+    // MARK: - Analysis and Validation
+    func validateDependencies() async throws
+    func getDependencyGraph() async -> DependencyGraph
+    func analyzeDependencyGraph() async -> GraphAnalysis
+    func analyzeDependencyGraphWithMetrics() async -> GraphAnalysis
+    func isRegistered<T>(_ type: T.Type) -> Bool
+    
+    // MARK: - Performance and Monitoring
+    func getPerformanceMetrics() async -> PerformanceMetrics
+    func preloadDependencies() async
+    func cleanup() async
+    
+    // MARK: - Generic Preloading
+    func preloadAllGeneric() async throws
+    func preloadSmart() async throws
+    func preloadViewModelsOnly() async throws
+    
+    // MARK: - Metadata
+    func getMetadata<T>(_ type: T.Type) -> DependencyMetadata?
+    func registerWithMetadata<T>(_ type: T.Type, metadata: DependencyMetadata)
+    
+    // MARK: - Metadata Access
+    func getMetadata(for key: String) -> DependencyMetadata?
+    func getDependencyMap() -> [String: Set<String>]
+    
+    func getRegisteredServicesCount() -> Int
+    
+    // MARK: - Debug Methods
+    func debugPrintMetadata()
+    func debugPrintFactories()
+    
+    // MARK: - Legacy Support (for backward compatibility)
+    func enableAnalytics(token: String)
+    func enableCrashlytics()
+    func enableDashboardSync(token: String)
+    func getDependencyGraphData() throws -> [String: Any]
+    func getAnalyticsToken() -> String?
+}
+
+// MARK: - DI Module Protocol
+public protocol DIModule {
+    func configure(container: AdvancedDIContainer) async throws
+}
+
+// MARK: - Legacy Service Scope (for backward compatibility)
 public enum ServiceScope {
     case singleton
     case transient
     case scoped
     case application
+    
+    // Conversion to new DependencyScope
+    public var dependencyScope: DependencyScope {
+        switch self {
+        case .singleton:
+            return .singleton
+        case .transient:
+            return .transient
+        case .scoped:
+            return .scoped
+        case .application:
+            return .singleton // Map application to singleton for compatibility
+        }
+    }
 }
 
 // MARK: - DI Container Configuration
@@ -22,7 +268,7 @@ public struct DIContainerConfig {
     public let enableCaching: Bool
     
     public init(
-        maxCircularDependencyDepth: Int = 10,
+        maxCircularDependencyDepth: Int = 3,
         enableCircularDependencyDetection: Bool = true,
         enableDependencyTracking: Bool = true,
         enablePerformanceMetrics: Bool = true,
@@ -36,19 +282,19 @@ public struct DIContainerConfig {
     }
 }
 
-// MARK: - Token Validation Errors
+// MARK: - Token Validation Error
 public enum DITokenValidationError: Error, LocalizedError {
     case invalidToken
-    case tokenExpired
+    case expiredToken
     case networkError
     case serverError
     
     public var errorDescription: String? {
         switch self {
         case .invalidToken:
-            return "Invalid SDK token"
-        case .tokenExpired:
-            return "SDK token has expired"
+            return "Invalid token provided"
+        case .expiredToken:
+            return "Token has expired"
         case .networkError:
             return "Network error during token validation"
         case .serverError:
@@ -57,446 +303,11 @@ public enum DITokenValidationError: Error, LocalizedError {
     }
 }
 
-// MARK: - Visualization Types
-public struct DependencyGraph: Sendable {
-    public let nodes: [String: DependencyNode]
-    public let edges: [DependencyEdge]
-    
-    public init(nodes: [String: DependencyNode] = [:], edges: [DependencyEdge] = []) {
-        self.nodes = nodes
-        self.edges = edges
-    }
-}
-
-public struct DependencyNode: Sendable {
-    public let id: String
-    public let type: String
-    public let scope: String
-    public let hasInstance: Bool
-    
-    public init(id: String, type: String, scope: String, hasInstance: Bool = false) {
-        self.id = id
-        self.type = type
-        self.scope = scope
-        self.hasInstance = hasInstance
-    }
-}
-
-public struct DependencyEdge: Sendable {
-    public let from: String
-    public let to: String
-    public let relationship: String
-    
-    public init(from: String, to: String, relationship: String = "depends_on") {
-        self.from = from
-        self.to = to
-        self.relationship = relationship
-    }
-}
-
-public struct DependencyAnalysis: Sendable {
-    public let totalNodes: Int
-    public let totalEdges: Int
-    public let circularDependencies: [String]
-    public let depth: Int
-    
-    public init(totalNodes: Int = 0, totalEdges: Int = 0, circularDependencies: [String] = [], depth: Int = 0) {
-        self.totalNodes = totalNodes
-        self.totalEdges = totalEdges
-        self.circularDependencies = circularDependencies
-        self.depth = depth
-    }
-}
-
-// MARK: - DI Module Protocol
-public protocol DIModule {
-    func configure(container: AdvancedDIContainer) async throws
-}
-
-// MARK: - Dependency Injection Container Protocol
-public protocol AdvancedDIContainer: Sendable {
-    func register<T>(_ type: T.Type, scope: ServiceScope, factory: @escaping (AdvancedDIContainer) async throws -> T) async throws
-    func resolve<T>(_ type: T.Type) async throws -> T
-    func resolveSync<T>(_ type: T.Type) throws -> T
-    func enableAnalytics(token: String)
-    func enableCrashlytics()
-    func enableDashboardSync(token: String)
-    func preloadAllGeneric() async throws
-    func getDependencyGraphData() throws -> [String: Any]
-    
-    // MARK: - Visualization Methods
-    func getDependencyGraph() async -> DependencyGraph
-    func analyzeDependencyGraph() async -> DependencyAnalysis
-    
-    // MARK: - Token Access
-    func getAnalyticsToken() -> String?
-}
-
-// MARK: - Advanced DI Container Implementation
-public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
-    
-    // MARK: - Thread-Safe Properties
-    private let lock = NSLock()
-    private var services: [String: Any] = [:]
-    private var factories: [String: (AdvancedDIContainer) async throws -> Any] = [:]
-    private var scopes: [String: ServiceScope] = [:]
-    private var scopedInstances: [String: Any] = [:]
-    private var applicationInstances: [String: Any] = [:]
-    private var isAnalyticsEnabled = false
-    private var isCrashlyticsEnabled = false
-    private var isDashboardSyncEnabled = false
-    private var analyticsToken: String?
-    private var config: DIContainerConfig
-    
-    // MARK: - Initialization
-    public init() {
-        self.config = DIContainerConfig()
-        print("🔒 GoDareDI: Secure Binary Framework Initialized")
-    }
-    
-    public init(config: DIContainerConfig, token: String) throws {
-        self.config = config
-        
-        // Validate token
-        try validateToken(token)
-        lock.lock()
-        analyticsToken = token
-        lock.unlock()
-        
-        print("🔒 GoDareDI: Secure Binary Framework Initialized with Token")
-    }
-    
-    // MARK: - Token Validation
-    private func validateToken(_ token: String) throws {
-        // Simple token validation - in a real implementation, this would make a network call
-        guard !token.isEmpty else {
-            throw DITokenValidationError.invalidToken
-        }
-        
-        // For demo purposes, accept the provided token
-        print("📡 GoDareDI: Token validated successfully")
-    }
-    
-    // MARK: - Service Registration
-    public func register<T>(_ type: T.Type, scope: ServiceScope, factory: @escaping (AdvancedDIContainer) async throws -> T) async throws {
-        let key = String(describing: type)
-        
-        // Store factory and scope
-        lock.lock()
-        factories[key] = factory
-        scopes[key] = scope
-        lock.unlock()
-        
-        if scope == .singleton || scope == .application {
-            let instance = try await factory(self)
-            lock.lock()
-            if scope == .singleton {
-                services[key] = instance
-            } else {
-                applicationInstances[key] = instance
-            }
-            lock.unlock()
-        }
-        
-        print("📦 GoDareDI: Registered \(key) with scope \(scope)")
-    }
-    
-    // MARK: - Service Resolution
-    public func resolve<T>(_ type: T.Type) async throws -> T {
-        let key = String(describing: type)
-        
-        lock.lock()
-        let scope = scopes[key]
-        let factory = factories[key]
-        lock.unlock()
-        
-        guard let scope = scope, let factory = factory else {
-            throw GoDareDIError.serviceNotRegistered(type)
-        }
-        
-        switch scope {
-        case .singleton:
-            lock.lock()
-            let instance = services[key] as? T
-            lock.unlock()
-            guard let instance = instance else {
-                throw GoDareDIError.serviceResolutionFailed(type)
-            }
-            return instance
-            
-        case .application:
-            lock.lock()
-            let instance = applicationInstances[key] as? T
-            lock.unlock()
-            guard let instance = instance else {
-                throw GoDareDIError.serviceResolutionFailed(type)
-            }
-            return instance
-            
-        case .transient:
-            return try await factory(self) as! T
-            
-        case .scoped:
-            lock.lock()
-            let existingInstance = scopedInstances[key] as? T
-            lock.unlock()
-            if let instance = existingInstance {
-                return instance
-            } else {
-                let instance = try await factory(self) as! T
-                lock.lock()
-                scopedInstances[key] = instance
-                lock.unlock()
-                return instance
-            }
-        }
-    }
-    
-    // MARK: - Synchronous Service Resolution
-    public func resolveSync<T>(_ type: T.Type) throws -> T {
-        let key = String(describing: type)
-        
-        lock.lock()
-        let scope = scopes[key]
-        let _ = factories[key]
-        lock.unlock()
-        
-        guard let scope = scope else {
-            throw GoDareDIError.serviceNotRegistered(type)
-        }
-        
-        switch scope {
-        case .singleton:
-            lock.lock()
-            let instance = services[key] as? T
-            lock.unlock()
-            guard let instance = instance else {
-                throw GoDareDIError.serviceResolutionFailed(type)
-            }
-            return instance
-            
-        case .application:
-            lock.lock()
-            let instance = applicationInstances[key] as? T
-            lock.unlock()
-            guard let instance = instance else {
-                throw GoDareDIError.serviceResolutionFailed(type)
-            }
-            return instance
-            
-        case .transient:
-            // For transient, we need to create a new instance synchronously
-            // This is a simplified implementation
-            throw GoDareDIError.serviceResolutionFailed(type)
-            
-        case .scoped:
-            lock.lock()
-            let instance = scopedInstances[key] as? T
-            lock.unlock()
-            guard let instance = instance else {
-                throw GoDareDIError.serviceResolutionFailed(type)
-            }
-            return instance
-        }
-    }
-    
-    // MARK: - Premium Features
-    public func enableAnalytics(token: String) {
-        lock.lock()
-        isAnalyticsEnabled = true
-        analyticsToken = token
-        lock.unlock()
-        print("📊 GoDareDI: Analytics enabled with token")
-    }
-    
-    public func enableCrashlytics() {
-        lock.lock()
-        isCrashlyticsEnabled = true
-        lock.unlock()
-        print("🛡️ GoDareDI: Crashlytics enabled")
-    }
-    
-    public func enableDashboardSync(token: String) {
-        lock.lock()
-        isDashboardSyncEnabled = true
-        lock.unlock()
-        print("📱 GoDareDI: Dashboard sync enabled")
-    }
-    
-    // MARK: - Preload All Generic Types
-    public func preloadAllGeneric() async throws {
-        // Preload all registered services that are singletons or application-scoped
-        lock.lock()
-        let scopes = self.scopes
-        let factories = self.factories
-        lock.unlock()
-        
-        for (key, scope) in scopes {
-            if scope == .singleton || scope == .application {
-                // Try to resolve to preload
-                if let factory = factories[key] {
-                    _ = try await factory(self)
-                    print("📦 GoDareDI: Preloaded \(key)")
-                }
-            }
-        }
-        print("✅ GoDareDI: All generic types preloaded")
-    }
-    
-    // MARK: - Dependency Graph Data
-    public func getDependencyGraphData() throws -> [String: Any] {
-        var graphData: [String: Any] = [:]
-        
-        // Get thread-safe copies of the data
-        lock.lock()
-        let scopes = self.scopes
-        let factories = self.factories
-        let services = self.services
-        let applicationInstances = self.applicationInstances
-        lock.unlock()
-        
-        // Build dependency graph from registered services
-        for (key, scope) in scopes {
-            var serviceInfo: [String: Any] = [:]
-            
-            // Add service type/scope
-            serviceInfo["type"] = scopeString(scope)
-            
-            // Add dependencies (this would need to be tracked during registration)
-            // For now, return empty dependencies array
-            serviceInfo["dependencies"] = []
-            
-            // Add registration info
-            serviceInfo["registered"] = true
-            serviceInfo["hasFactory"] = factories[key] != nil
-            
-            // Add instance info if available
-            if scope == .singleton || scope == .application {
-                if scope == .singleton {
-                    serviceInfo["hasInstance"] = services[key] != nil
-                } else {
-                    serviceInfo["hasInstance"] = applicationInstances[key] != nil
-                }
-            } else {
-                serviceInfo["hasInstance"] = false
-            }
-            
-            graphData[key] = serviceInfo
-        }
-        
-        return graphData
-    }
-    
-    // MARK: - Visualization Methods
-    public func getDependencyGraph() async -> DependencyGraph {
-        lock.lock()
-        let scopes = self.scopes
-        let services = self.services
-        let applicationInstances = self.applicationInstances
-        lock.unlock()
-        
-        var nodes: [String: DependencyNode] = [:]
-        var edges: [DependencyEdge] = []
-        
-        // Create nodes for all registered services
-        for (key, scope) in scopes {
-            let hasInstance: Bool
-            if scope == .singleton {
-                hasInstance = services[key] != nil
-            } else if scope == .application {
-                hasInstance = applicationInstances[key] != nil
-            } else {
-                hasInstance = false
-            }
-            
-            let node = DependencyNode(
-                id: key,
-                type: key,
-                scope: scopeString(scope),
-                hasInstance: hasInstance
-            )
-            nodes[key] = node
-        }
-        
-        // For now, we don't track actual dependencies, so edges are empty
-        // In a real implementation, you would track dependencies during registration
-        
-        return DependencyGraph(nodes: nodes, edges: edges)
-    }
-    
-    public func analyzeDependencyGraph() async -> DependencyAnalysis {
-        let graph = await getDependencyGraph()
-        
-        let totalNodes = graph.nodes.count
-        let totalEdges = graph.edges.count
-        
-        // Simple circular dependency detection (placeholder)
-        let circularDependencies: [String] = []
-        
-        // Calculate depth (placeholder - would need actual graph traversal)
-        let depth = calculateGraphDepth(graph)
-        
-        return DependencyAnalysis(
-            totalNodes: totalNodes,
-            totalEdges: totalEdges,
-            circularDependencies: circularDependencies,
-            depth: depth
-        )
-    }
-    
-    private func calculateGraphDepth(_ graph: DependencyGraph) -> Int {
-        // Simple depth calculation - in a real implementation, this would do actual graph traversal
-        return min(graph.nodes.count, 10) // Cap at 10 for now
-    }
-    
-    // MARK: - Token Access
-    public func getAnalyticsToken() -> String? {
-        lock.lock()
-        let token = analyticsToken
-        lock.unlock()
-        return token
-    }
-    
-    private func scopeString(_ scope: ServiceScope) -> String {
-        switch scope {
-        case .singleton:
-            return "Singleton"
-        case .transient:
-            return "Transient"
-        case .scoped:
-            return "Scoped"
-        case .application:
-            return "Application"
-        }
-    }
-}
-
-// MARK: - Errors
-public enum GoDareDIError: Error, LocalizedError {
-    case serviceNotRegistered(Any.Type)
-    case serviceResolutionFailed(Any.Type)
-    case circularDependency
-    case invalidScope
-    
-    public var errorDescription: String? {
-        switch self {
-        case .serviceNotRegistered(let type):
-            return "Service \(type) is not registered"
-        case .serviceResolutionFailed(let type):
-            return "Failed to resolve service \(type)"
-        case .circularDependency:
-            return "Circular dependency detected"
-        case .invalidScope:
-            return "Invalid service scope"
-        }
-    }
-}
-
 // MARK: - Framework Version
-public let GoDareDIVersion = "1.0.6"
-public let GoDareDIBuildNumber = "6"
+public let GoDareDIVersion = "1.0.7"
+public let GoDareDIBuildNumber = "7"
 
-// MARK: - Dependency Graph Visualization
+// MARK: - Dependency Graph Visualization (Public SwiftUI Component)
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct DependencyGraphView: View {
     private let container: AdvancedDIContainer
@@ -512,79 +323,60 @@ public struct DependencyGraphView: View {
         NavigationView {
             VStack {
                 if isLoading {
-                    loadingView
-                } else if let errorMessage = errorMessage {
-                    errorView(message: errorMessage)
+                    ProgressView("Loading dependency graph...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                } else if let error = errorMessage {
+                    VStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                            .foregroundColor(.orange)
+                        Text("Error loading graph")
+                            .font(.headline)
+                        Text(error)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding()
                 } else {
-                    contentView
+                    DependencyGraphContentView(data: dependencyData)
                 }
             }
-            .modifier(NavigationTitleModifier())
+            .navigationTitle("Dependency Graph")
             .onAppear {
                 loadDependencyData()
             }
         }
     }
     
-    @ViewBuilder
-    private var loadingView: some View {
-        if #available(macOS 11.0, *) {
-            ProgressView("Loading dependency graph...")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else {
-            VStack {
-                Text("Loading dependency graph...")
-                    .font(.headline)
-                Text("⏳")
-                    .font(.system(size: 30))
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    private func loadDependencyData() {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            self.dependencyData = try container.getDependencyGraphData()
+            self.isLoading = false
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.isLoading = false
         }
     }
+}
+
+// MARK: - Private Implementation (Hidden from Public API)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+private struct DependencyGraphContentView: View {
+    let data: [String: Any]
     
-    @ViewBuilder
-    private func errorView(message: String) -> some View {
-        VStack {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 50))
-                .foregroundColor(.orange)
-            Text("Error")
-                .font(.title)
-                .fontWeight(.bold)
-            Text(message)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-        }
-        .padding()
-    }
-    
-    @ViewBuilder
-    private var contentView: some View {
+    var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Dependency Graph")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                ForEach(Array(dependencyData.keys.sorted()), id: \.self) { key in
-                    DependencyNodeView(key: key, data: dependencyData[key])
+            LazyVStack(alignment: .leading, spacing: 12) {
+                ForEach(Array(data.keys.sorted()), id: \.self) { key in
+                    if let serviceInfo = data[key] as? [String: Any] {
+                        DependencyNodeView(key: key, info: serviceInfo)
+                    }
                 }
             }
             .padding()
-        }
-    }
-    
-    private func loadDependencyData() {
-        // Load actual dependency graph data from the container
-        DispatchQueue.main.async {
-            do {
-                // Get dependency information from the container
-                self.dependencyData = try self.container.getDependencyGraphData()
-                self.isLoading = false
-            } catch {
-                self.errorMessage = "Failed to load dependency data: \(error.localizedDescription)"
-                self.isLoading = false
-            }
         }
     }
 }
@@ -592,90 +384,118 @@ public struct DependencyGraphView: View {
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private struct DependencyNodeView: View {
     let key: String
-    let data: Any?
+    let info: [String: Any]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Circle()
-                    .fill(colorForType)
-                    .frame(width: 12, height: 12)
+                Image(systemName: "circle.fill")
+                    .foregroundColor(nodeColor)
+                    .font(.caption)
+                
                 Text(key)
                     .font(.headline)
                     .fontWeight(.semibold)
+                
                 Spacer()
-                Text(typeString)
-                    .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
+                
+                if let hasInstance = info["hasInstance"] as? Bool, hasInstance {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                        .font(.caption)
+                }
             }
             
-            if let dependencies = dependencies, !dependencies.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Dependencies:")
+            if let type = info["type"] as? String {
+                Text(type)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            HStack {
+                if let registered = info["registered"] as? Bool, registered {
+                    Label("Registered", systemImage: "checkmark.circle")
                         .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    ForEach(dependencies, id: \.self) { dependency in
-                        HStack {
-                            Text("•")
-                                .foregroundColor(.blue)
-                            Text(dependency)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.leading, 16)
-                    }
+                        .foregroundColor(.green)
                 }
+                
+                if let hasFactory = info["hasFactory"] as? Bool, hasFactory {
+                    Label("Factory", systemImage: "wrench")
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                }
+                
+                Spacer()
             }
         }
         .padding()
-        .background(Color.gray.opacity(0.05))
+        .background(Color.gray.opacity(0.1))
         .cornerRadius(12)
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-        )
     }
     
-    private var colorForType: Color {
-        switch typeString {
-        case "Singleton":
+    private var nodeColor: Color {
+        if let hasInstance = info["hasInstance"] as? Bool, hasInstance {
             return .green
-        case "Transient":
+        } else if let registered = info["registered"] as? Bool, registered {
             return .blue
-        case "Scoped":
-            return .orange
-        case "Application":
-            return .purple
-        default:
+        } else {
             return .gray
         }
     }
+}
+
+// MARK: - Errors (Public)
+public enum GoDareDIError: Error, LocalizedError {
+    case serviceNotRegistered(Any.Type)
+    case serviceResolutionFailed(Any.Type)
+    case circularDependencyDetected
+    case configurationError(String)
+    case tokenValidationFailed
     
-    private var typeString: String {
-        if let dict = data as? [String: Any],
-           let type = dict["type"] as? String {
-            return type
+    public var errorDescription: String? {
+        switch self {
+        case .serviceNotRegistered(let type):
+            return "Service \(type) is not registered"
+        case .serviceResolutionFailed(let type):
+            return "Failed to resolve service \(type)"
+        case .circularDependencyDetected:
+            return "Circular dependency detected"
+        case .configurationError(let message):
+            return "Configuration error: \(message)"
+        case .tokenValidationFailed:
+            return "Token validation failed"
         }
-        return "Unknown"
-    }
-    
-    private var dependencies: [String]? {
-        if let dict = data as? [String: Any],
-           let deps = dict["dependencies"] as? [String] {
-            return deps
-        }
-        return nil
     }
 }
 
-// MARK: - Navigation Title Modifier for macOS Compatibility
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-private struct NavigationTitleModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content.navigationTitle("GoDareDI Graph")
-    }
-}
+// MARK: - Usage Example
+/*
+ 
+ // 1. Create a container (Protocol-Only - Implementation Hidden)
+ let container: AdvancedDIContainer = AdvancedDIContainerImpl(
+     config: DIContainerConfig(
+         maxCircularDependencyDepth: 3,
+         enableCircularDependencyDetection: true,
+         enableDependencyTracking: true,
+         enablePerformanceMetrics: true,
+         enableCaching: true
+     ),
+     token: "your-secure-token-here"
+ )
+ 
+ // 2. Register services using the protocol
+ await container.register(MyService.self, scope: .singleton) { container in
+     return MyService()
+ }
+ 
+ // 3. Resolve services
+ let service = try await container.resolve(MyService.self)
+ 
+ // 4. Use the DependencyGraphView (Public SwiftUI Component)
+ DependencyGraphView(container: container)
+ 
+ // 5. Get dependency graph data
+ let graph = await container.getDependencyGraph()
+ let analysis = await container.analyzeDependencyGraph()
+ 
+ */
