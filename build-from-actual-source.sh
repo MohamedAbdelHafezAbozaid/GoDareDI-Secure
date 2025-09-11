@@ -12,13 +12,29 @@ echo "🧹 Cleaning previous builds..."
 rm -rf .build
 rm -rf GoDareDI.xcframework
 rm -rf Frameworks
+rm -rf "$SOURCE_DIR_NAME"
 
-# Source directory
-SOURCE_DIR="/Users/mohamedahmed/Desktop/GoDareDI/Sources/GoDareDI"
+# Source repository
+SOURCE_REPO="https://github.com/MohamedAbdelHafezAbozaid/GoDareDI.git"
+SOURCE_DIR_NAME="GoDareDI-Source"
+
+# Clone or update the source repository
+echo "📥 Fetching source code from GitHub..."
+if [ -d "$SOURCE_DIR_NAME" ]; then
+    echo "🔄 Updating existing repository..."
+    cd "$SOURCE_DIR_NAME"
+    git pull origin main
+    cd ..
+else
+    echo "📥 Cloning repository..."
+    git clone "$SOURCE_REPO" "$SOURCE_DIR_NAME"
+fi
 
 # Verify source directory exists
+SOURCE_DIR="$SOURCE_DIR_NAME/Sources/GoDareDI"
 if [ ! -d "$SOURCE_DIR" ]; then
     echo "❌ Source directory not found: $SOURCE_DIR"
+    echo "❌ Make sure the repository was cloned successfully"
     exit 1
 fi
 
@@ -216,6 +232,7 @@ codesign --display --verbose GoDareDI.xcframework
 # Step 6: Clean up
 echo "🧹 Step 6: Cleaning up..."
 rm -rf Frameworks
+rm -rf "$SOURCE_DIR_NAME"
 
 echo "✅ XCFramework Built from Actual Source Successfully!"
 echo "🔐 The XCFramework now includes ALL logic from:"
