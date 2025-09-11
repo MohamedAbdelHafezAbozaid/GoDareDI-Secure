@@ -5,13 +5,14 @@
 	<key>AvailableLibraries</key>
 	<array>
 		<dict>
+			<key>BinaryPath</key>
+			<string>GoDareDI.framework/GoDareDI</string>
 			<key>LibraryIdentifier</key>
-			<string>macos-arm64_x86_64</string>
+			<string>macos-x86_64</string>
 			<key>LibraryPath</key>
 			<string>GoDareDI.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
-				<string>arm64</string>
 				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>

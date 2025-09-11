@@ -4,127 +4,77 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI</key>
-		<data>
-		zdCWQm0+U+ohjCCV71kRz/07BSg=
-		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.abi.json</key>
+		<key>GoDareDI.abi.json</key>
 		<data>
 		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<key>GoDareDI.swiftdoc</key>
 		<data>
 		FMEzPg85ejM33tppFOtPu7UJTm4=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<key>GoDareDI.swiftmodule</key>
+		<data>
+		pRxAOxhS3JT84SBRL4FDGX0VbTs=
+		</data>
+		<key>GoDareDI.swiftsourceinfo</key>
 		<data>
 		17NXKz5eH7RHtIKBOwZLl+0YoWo=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>Headers/GoDareDI.h</key>
 		<data>
 		Smodja+FbPxuPgNdHQhW5v2KHXY=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Info.plist</key>
+		<key>Info.plist</key>
 		<data>
 		M+VbkRwwbMmTxGUK9U10SeBjDRU=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Modules/module.modulemap</key>
+		<key>Modules/module.modulemap</key>
 		<data>
 		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
-		</data>
-		<key>macos-x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
-		<data>
-		dAuRFrvB5gxWkdwOKPvKFj1MJ+0=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI</key>
+		<key>GoDareDI.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			zdCWQm0+U+ohjCCV71kRz/07BSg=
-			</data>
-			<key>hash2</key>
-			<data>
-			Udowso0jStIr4V9/YMoKVK/01+4ILjng/VHHsEw5sOg=
-			</data>
-		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.abi.json</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
-			</data>
 			<key>hash2</key>
 			<data>
 			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<key>GoDareDI.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			FMEzPg85ejM33tppFOtPu7UJTm4=
-			</data>
 			<key>hash2</key>
 			<data>
 			P9nns13j9oKcNtRwsF9R29KZ6yNsBdvrtee9T6jK2pk=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<key>GoDareDI.swiftmodule</key>
 		<dict>
-			<key>hash</key>
+			<key>hash2</key>
 			<data>
-			17NXKz5eH7RHtIKBOwZLl+0YoWo=
+			k1VPcAOB1qiemDurzv5u+oaTQwtb+R2uCiBnheydhAg=
 			</data>
+		</dict>
+		<key>GoDareDI.swiftsourceinfo</key>
+		<dict>
 			<key>hash2</key>
 			<data>
 			d4tBGjAogtFqgnIQv3murTbbIe4Nf5w0zQcV+QaoKHA=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>Headers/GoDareDI.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Smodja+FbPxuPgNdHQhW5v2KHXY=
-			</data>
 			<key>hash2</key>
 			<data>
 			ISLQ0tEzwSaeh4ID+OouhDFlQfEzWvwFdxhNAvmoSHM=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Info.plist</key>
+		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			M+VbkRwwbMmTxGUK9U10SeBjDRU=
-			</data>
-			<key>hash2</key>
-			<data>
-			wmj90IRF7yRKJypnTw3Onteo2XyJeZU/9Q+cChMycjk=
-			</data>
-		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Modules/module.modulemap</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
-			</data>
 			<key>hash2</key>
 			<data>
 			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
-			</data>
-		</dict>
-		<key>macos-x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			dAuRFrvB5gxWkdwOKPvKFj1MJ+0=
-			</data>
-			<key>hash2</key>
-			<data>
-			iUameI67Pa2TWoM7IG2uj7kMDN9g6QIBeH6rD6N4Qu8=
 			</data>
 		</dict>
 	</dict>
