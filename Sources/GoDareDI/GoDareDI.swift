@@ -312,7 +312,7 @@ public let GoDareDIVersion = "1.0.3"
 public let GoDareDIBuildNumber = "3"
 
 // MARK: - Dependency Graph Visualization
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct DependencyGraphView: View {
     private let container: AdvancedDIContainer
     @State private var dependencyData: [String: Any] = [:]
@@ -360,14 +360,9 @@ public struct DependencyGraphView: View {
     @ViewBuilder
     private func errorView(message: String) -> some View {
         VStack {
-            if #available(macOS 11.0, *) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 50))
-                    .foregroundColor(.orange)
-            } else {
-                Text("⚠️")
-                    .font(.system(size: 50))
-            }
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundColor(.orange)
             Text("Error")
                 .font(.title)
                 .fontWeight(.bold)
@@ -409,7 +404,7 @@ public struct DependencyGraphView: View {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private struct DependencyNodeView: View {
     let key: String
     let data: Any?
@@ -493,13 +488,9 @@ private struct DependencyNodeView: View {
 }
 
 // MARK: - Navigation Title Modifier for macOS Compatibility
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private struct NavigationTitleModifier: ViewModifier {
     func body(content: Content) -> some View {
-        if #available(macOS 11.0, *) {
-            content.navigationTitle("GoDareDI Graph")
-        } else {
-            content
-        }
+        content.navigationTitle("GoDareDI Graph")
     }
 }

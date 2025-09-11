@@ -43,7 +43,7 @@
       ],
       "otherArguments" : [
         "-target",
-        "arm64-apple-macosx10.15",
+        "arm64-apple-macosx11.0",
         "-enable-batch-mode",
         "-index-store-path",
         "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/index/store",
@@ -127,7 +127,7 @@
       "-I",
       "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/Modules",
       "-target",
-      "arm64-apple-macosx10.15",
+      "arm64-apple-macosx11.0",
       "-enable-batch-mode",
       "-index-store-path",
       "/Users/mohamedahmed/Desktop/GoDareDI/GoDareDI-Secure-Distribution/.build/arm64-apple-macosx/debug/index/store",
