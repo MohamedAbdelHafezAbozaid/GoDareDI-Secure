@@ -141,14 +141,17 @@ EOF
     cd "$TEMP_PROJECT_DIR"
     if [ "$platform" = "ios-arm64" ]; then
         DESTINATION="generic/platform=iOS"
-    elif [ "$platform" = "ios-arm64-simulator" ]; then
+        SDK="iphoneos"
+    elif [ "$platform" = "ios-arm64_x86_64-simulator" ]; then
         DESTINATION="generic/platform=iOS Simulator"
+        SDK="iphonesimulator"
     fi
     
     xcodebuild -scheme GoDareDI \
         -destination "$DESTINATION" \
         -configuration Release \
         -derivedDataPath ../DerivedData \
+        -sdk $SDK \
         build
     
     # Extract the built library and Swift module files
@@ -162,7 +165,7 @@ EOF
         if [ -d "DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework" ]; then
             cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
         fi
-    elif [ "$platform" = "ios-arm64-simulator" ]; then
+    elif [ "$platform" = "ios-arm64_x86_64-simulator" ]; then
         # Copy the built library to the framework
         cp DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
         # Copy Swift module files
@@ -176,8 +179,8 @@ EOF
     # Clean up
     rm -rf "$TEMP_PROJECT_DIR" DerivedData GoDareDI.xcarchive
     
-    # Code sign framework
-    codesign --force --sign "Apple Development: Mohamed Ahmed (YR5S9UTVK6)" Frameworks/$platform/GoDareDI.framework
+    # Code sign framework (use ad-hoc signing for distribution)
+    codesign --force --sign "-" Frameworks/$platform/GoDareDI.framework
 }
 
 # Step 1: Build for iOS platforms only
@@ -186,8 +189,8 @@ echo "🔨 Step 1: Building for iOS platforms..."
 # iOS (iPhone/iPad) - arm64
 build_framework "ios-arm64" "arm64-apple-ios17.0" "iphoneos" "17.0" "iPhoneOS"
 
-# iOS Simulator - arm64 (Apple Silicon Macs)
-build_framework "ios-arm64-simulator" "arm64-apple-ios17.0-simulator" "iphonesimulator" "17.0" "iPhoneSimulator"
+# iOS Simulator - Universal (arm64 + x86_64)
+build_framework "ios-arm64_x86_64-simulator" "arm64-apple-ios17.0-simulator" "iphonesimulator" "17.0" "iPhoneSimulator"
 
 
 
@@ -195,12 +198,12 @@ build_framework "ios-arm64-simulator" "arm64-apple-ios17.0-simulator" "iphonesim
 echo "🎯 Step 2: Creating XCFramework from actual source..."
 xcodebuild -create-xcframework \
     -framework Frameworks/ios-arm64/GoDareDI.framework \
-    -framework Frameworks/ios-arm64-simulator/GoDareDI.framework \
+    -framework Frameworks/ios-arm64_x86_64-simulator/GoDareDI.framework \
     -output GoDareDI.xcframework
 
-# Step 3: Code sign the XCFramework
+# Step 3: Code sign the XCFramework (use ad-hoc signing for distribution)
 echo "🔐 Step 3: Code signing the XCFramework..."
-codesign --force --sign "Apple Development: Mohamed Ahmed (YR5S9UTVK6)" GoDareDI.xcframework
+codesign --force --sign "-" GoDareDI.xcframework
 
 # Step 4: Verify the XCFramework
 echo "✅ Step 4: Verifying XCFramework..."
