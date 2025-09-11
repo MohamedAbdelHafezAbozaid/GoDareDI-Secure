@@ -1,14 +1,11 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 // 🔒 BINARY FRAMEWORK PACKAGE - NO SOURCE CODE ACCESS
 let package = Package(
     name: "GoDareDI",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
-        .tvOS(.v13),
-        .watchOS(.v6)
+        .iOS(.v17)
     ],
     products: [
         .library(
