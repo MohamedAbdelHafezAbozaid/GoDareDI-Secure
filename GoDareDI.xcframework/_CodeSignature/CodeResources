@@ -6,7 +6,7 @@
 	<dict>
 		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI</key>
 		<data>
-		bHnaTdX+R9mdk0agW4mSgvI7TVI=
+		qL2U+HGafzteoKfkrmiPWE0qnh0=
 		</data>
 		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
 		<data>
@@ -28,17 +28,25 @@
 		<data>
 		TjA/YURpgUTKe8lfoDHZ6qWobzc=
 		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/GoDareDI.private.swiftinterface</key>
+		<data>
+		YQl/4Fa7TZjz/9XWIyGUfZaERZU=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftinterface</key>
+		<data>
+		YQl/4Fa7TZjz/9XWIyGUfZaERZU=
+		</data>
 		<key>ios-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
 		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
 		</data>
 		<key>ios-arm64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		B7JIFSzGM1RJrvWSZWoNIBokPCk=
+		+i1FiE0l/0/l3fbNKNEaWVDN4B0=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI</key>
 		<data>
-		ZK5kAe/lmWzJw1XxxZ6+Jzo9YZk=
+		FM8FrJLiqMmkjeXx45mHf+OFTjM=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
 		<data>
@@ -60,13 +68,21 @@
 		<data>
 		+MJ7Cz4pszvYCP+uMSdN8FEGlx4=
 		</data>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.private.swiftinterface</key>
+		<data>
+		onk+rQRqQCuvK2613y1fpe7nCkg=
+		</data>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftinterface</key>
+		<data>
+		onk+rQRqQCuvK2613y1fpe7nCkg=
+		</data>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
 		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		pFKNZ+hRDdFE80QqOQY54DfyoGA=
+		ZjU3O1TsbKhG4nDKW2iokgVhFeU=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -75,11 +91,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			bHnaTdX+R9mdk0agW4mSgvI7TVI=
+			qL2U+HGafzteoKfkrmiPWE0qnh0=
 			</data>
 			<key>hash2</key>
 			<data>
-			lIn5oUSvPocIs4iORaOH0YL1x3LA+sAuTgBv6hLsfkg=
+			cOyXmw4JWyzzAV4E0LOPmFTX0XHu5kDMNJpHvhk+74s=
 			</data>
 		</dict>
 		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
@@ -137,6 +153,28 @@
 			VrOwS/iywAodsul/nNmLziEO+6m3OB5U00xRY8iqoeQ=
 			</data>
 		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/GoDareDI.private.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			YQl/4Fa7TZjz/9XWIyGUfZaERZU=
+			</data>
+			<key>hash2</key>
+			<data>
+			5Q1M3uR+B9tij/ZahZl5UnliOBjculqUaoVibgMJl68=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			YQl/4Fa7TZjz/9XWIyGUfZaERZU=
+			</data>
+			<key>hash2</key>
+			<data>
+			5Q1M3uR+B9tij/ZahZl5UnliOBjculqUaoVibgMJl68=
+			</data>
+		</dict>
 		<key>ios-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
@@ -152,22 +190,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			B7JIFSzGM1RJrvWSZWoNIBokPCk=
+			+i1FiE0l/0/l3fbNKNEaWVDN4B0=
 			</data>
 			<key>hash2</key>
 			<data>
-			UR6ysefwiPDFjp4HOlvEWUwG9GLn9L1cg+ldY5jaKaA=
+			FB4/Ugnr1A5X3A364ijc39LY6APZYRbmKJsZdhIlczU=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ZK5kAe/lmWzJw1XxxZ6+Jzo9YZk=
+			FM8FrJLiqMmkjeXx45mHf+OFTjM=
 			</data>
 			<key>hash2</key>
 			<data>
-			0FPuIrK3GhQ7r3RTl8oKWa9EINNBPuskS5luzkR11/A=
+			l4/qSWXoTZEeC1M1RS7oZ/6WRMbSryeqx/I19bdQOxg=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
@@ -225,6 +263,28 @@
 			jFMoXdlYaj40IsfECkfF9si3apUWyuGWqRkD54gsAKk=
 			</data>
 		</dict>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.private.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			onk+rQRqQCuvK2613y1fpe7nCkg=
+			</data>
+			<key>hash2</key>
+			<data>
+			UjIHgomeejgen/3tBZ3SbApU9fAjoUOK7KCZGndCock=
+			</data>
+		</dict>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			onk+rQRqQCuvK2613y1fpe7nCkg=
+			</data>
+			<key>hash2</key>
+			<data>
+			UjIHgomeejgen/3tBZ3SbApU9fAjoUOK7KCZGndCock=
+			</data>
+		</dict>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
@@ -240,11 +300,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			pFKNZ+hRDdFE80QqOQY54DfyoGA=
+			ZjU3O1TsbKhG4nDKW2iokgVhFeU=
 			</data>
 			<key>hash2</key>
 			<data>
-			uot/2cXWqym3VrzrpYTf+7DVoAs8Wjzk2MjZJG07shE=
+			YPrttyssHBNiNvVoMtTYLKEOrQtY99yJJtUFl5jl14Y=
 			</data>
 		</dict>
 	</dict>

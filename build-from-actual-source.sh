@@ -113,9 +113,13 @@ EOF
     swiftc -emit-library -emit-module \
         -module-name GoDareDI \
         -o Frameworks/$platform/GoDareDI.framework/GoDareDI \
+        -emit-module-interface \
+        -emit-module-interface-path Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftinterface \
+        -enable-library-evolution \
         -sdk $(xcrun --show-sdk-path --sdk $sdk) \
         -target $target \
         -swift-version 6 \
+        -module-link-name GoDareDI \
         $SWIFT_FILES
     
     # Code sign framework

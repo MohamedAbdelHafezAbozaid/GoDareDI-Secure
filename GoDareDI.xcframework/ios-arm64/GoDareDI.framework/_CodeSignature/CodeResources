@@ -14,7 +14,7 @@
 		</data>
 		<key>GoDareDI.swiftmodule</key>
 		<data>
-		8SPSMGnrfE/DUznFtpNaT4eJ+7c=
+		3SQnOLfuGB7z3S/ZXslFKhG7tgI=
 		</data>
 		<key>GoDareDI.swiftsourceinfo</key>
 		<data>
@@ -27,6 +27,14 @@
 		<key>Info.plist</key>
 		<data>
 		+MJ7Cz4pszvYCP+uMSdN8FEGlx4=
+		</data>
+		<key>Modules/GoDareDI.private.swiftinterface</key>
+		<data>
+		onk+rQRqQCuvK2613y1fpe7nCkg=
+		</data>
+		<key>Modules/GoDareDI.swiftinterface</key>
+		<data>
+		onk+rQRqQCuvK2613y1fpe7nCkg=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -53,7 +61,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			YL60e2QvQDxDUcv8xbNWfWp0Zdgu4y467hsn6TCK5G8=
+			0QL41o/OGoiG2Fc+4hpW1qxCHstI7LzNDxf2hF+1QXk=
 			</data>
 		</dict>
 		<key>GoDareDI.swiftsourceinfo</key>
@@ -68,6 +76,20 @@
 			<key>hash2</key>
 			<data>
 			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
+			</data>
+		</dict>
+		<key>Modules/GoDareDI.private.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UjIHgomeejgen/3tBZ3SbApU9fAjoUOK7KCZGndCock=
+			</data>
+		</dict>
+		<key>Modules/GoDareDI.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UjIHgomeejgen/3tBZ3SbApU9fAjoUOK7KCZGndCock=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
