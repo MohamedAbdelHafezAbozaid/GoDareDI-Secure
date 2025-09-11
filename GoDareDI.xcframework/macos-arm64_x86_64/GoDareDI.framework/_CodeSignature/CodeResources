@@ -4,29 +4,13 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>GoDareDI.abi.json</key>
-		<data>
-		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
-		</data>
-		<key>GoDareDI.swiftdoc</key>
-		<data>
-		J/k70Wmgf3UjrcZ9c10GTwAG5sw=
-		</data>
-		<key>GoDareDI.swiftmodule</key>
-		<data>
-		mXLnZmpOLo0KOhazp91jujEbqfc=
-		</data>
-		<key>GoDareDI.swiftsourceinfo</key>
-		<data>
-		2+E4E0iWSh6bxeih4doqzzrI9SU=
-		</data>
 		<key>Headers/GoDareDI.h</key>
 		<data>
 		rwShYKgOlmdVQksFi9ON3DCbjCs=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Ip6INlszZlrPoon1soqVu38yDU8=
+		6kzBPlFRC82vhv1YgVugnrL5NIY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -35,34 +19,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>GoDareDI.abi.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
-			</data>
-		</dict>
-		<key>GoDareDI.swiftdoc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			wnaUCgn4t7gXFvkHAVTPA2Y/0ObsbuNMVM5hFR3aLZw=
-			</data>
-		</dict>
-		<key>GoDareDI.swiftmodule</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ib1pWQfOIrJMgYTXtDTPbroqwWUX0k+HeLtVgOtEB7I=
-			</data>
-		</dict>
-		<key>GoDareDI.swiftsourceinfo</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			EJCua8xS/KcHpC9HGuPmbgYsW/XppHLNzbR4Q2/sEJQ=
-			</data>
-		</dict>
 		<key>Headers/GoDareDI.h</key>
 		<dict>
 			<key>hash2</key>

@@ -4,9 +4,41 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI</key>
+		<data>
+		wlDZ297B+gWX8hQcRs7hNxTlYzY=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<data>
+		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<data>
+		TCEMlfBV3kk4/9O86gldLjRPZr8=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<data>
+		xVJglfWXBjlEYxUlx94PYwHKwU8=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<data>
+		rwShYKgOlmdVQksFi9ON3DCbjCs=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/Info.plist</key>
+		<data>
+		s888k4NMlX3o+B9CLWkJOGxVbwg=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<data>
+		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+		</data>
+		<key>ios-arm64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<data>
+		zxA1LO7Ba3u2s+9mMcp9Bn+BMCE=
+		</data>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI</key>
 		<data>
-		4LZTcz3y85nb8AHXpQq6TzPqNos=
+		wL7vY2i49kEzMIvmD00Ais0HiY8=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
 		<data>
@@ -18,7 +50,7 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
 		<data>
-		8wmsF1RYOddxoYw1evuavEz2aKk=
+		2+E4E0iWSh6bxeih4doqzzrI9SU=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<data>
@@ -26,7 +58,7 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Info.plist</key>
 		<data>
-		q13lpSpOqH9qYamq5RtX9WzDmRo=
+		Ip6INlszZlrPoon1soqVu38yDU8=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
@@ -34,84 +66,256 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		XY/uF5DDE2mf1kh0l30Ak72Lw10=
+		OlacUJNSx0vIq+T7JDmbWs8DKI8=
 		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/GoDareDI</key>
 		<data>
-		OA/FDn5yqu07oUAzAP7k7s/5PCo=
+		tjPyqpZMdIyDhzRtQCbAod4Ka3o=
 		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
-		<data>
-		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
-		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
-		<data>
-		c4F2DymrqU2rG6eT9mNc4H5Ik2g=
-		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
-		<data>
-		t2c+okn6zzMIDX3v5Mn6wVmst7c=
-		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<data>
 		rwShYKgOlmdVQksFi9ON3DCbjCs=
 		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Info.plist</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Info.plist</key>
 		<data>
-		NnumH4R5+34l+e4viW8B4aVrgmM=
+		6kzBPlFRC82vhv1YgVugnrL5NIY=
 		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
 		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
 		</data>
-		<key>ios-x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		nbG7CdTABBcqobfXumVsUf7lN24=
+		uwGHVURODeZcxtCE7E8diN3WNTQ=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI</key>
 		<data>
-		T7A1v3WStIiB2XTEf+4N7Ar8AQc=
+		d0+1dXfRAhkk6SU4ON8H7Mr7THs=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.abi.json</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
 		<data>
 		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.swiftdoc</key>
 		<data>
-		FMEzPg85ejM33tppFOtPu7UJTm4=
+		3dCCEFNv1KAUgTrO+S+uKYN/a/4=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
 		<data>
-		6kv6h9heTu1VwTrjZ7jzXchnugU=
+		V2tGUWxeC+01PTybp/J78kfZcKk=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>tvos-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<data>
 		rwShYKgOlmdVQksFi9ON3DCbjCs=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Info.plist</key>
+		<key>tvos-arm64/GoDareDI.framework/Info.plist</key>
 		<data>
-		arl3qahIKkA8USnXg7srR6uFVLM=
+		EHWeSyEjGYHjJBGzFBQWYRV3FgU=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/Modules/module.modulemap</key>
+		<key>tvos-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
 		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
 		</data>
-		<key>macos-x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<key>tvos-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		B+Y/caA4YGEFkaP8j8wG2fuLbFU=
+		xaZDtnAhS+xoCSIRknS5ZbO3EJM=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI</key>
+		<data>
+		FKWZLG5/uMvdcuipB84NIRPHUSU=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<data>
+		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<data>
+		I+HvxwDJX4Q9gbCjdZapK8uYfJ0=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<data>
+		e8vxdghLdZtQek1k+YXmQFrSJ0Y=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<data>
+		rwShYKgOlmdVQksFi9ON3DCbjCs=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Info.plist</key>
+		<data>
+		L5Pk+Vo/xlHH777LiKwwAZKEn1w=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<data>
+		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+		</data>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<data>
+		reBuI0E7dkksS8/Tu70sfw0xuEU=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI</key>
+		<data>
+		K1Qt21voWsrdxGRr8fbb1FSqz94=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<data>
+		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<data>
+		7w5acDBXNONZFck0gr2nh1CbYaM=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<data>
+		WvhsTQfLyUxItoDHLA2+UuSIqUo=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<data>
+		rwShYKgOlmdVQksFi9ON3DCbjCs=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Info.plist</key>
+		<data>
+		Q0B7xoxyPz1tSNo0xjFoPV2iK7k=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<data>
+		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+		</data>
+		<key>watchos-arm64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<data>
+		1Q09Do08OmOJVYrPPvYhGI6CAQE=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI</key>
+		<data>
+		jWihULDkn1DEIHLu0apl1itAhNg=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.abi.json</key>
+		<data>
+		gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<data>
+		1VsE97wYdNJhQZwgM0qVkQ8Mspg=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<data>
+		NW4dL3qy789LYGS+rejN1UE3Chs=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<data>
+		rwShYKgOlmdVQksFi9ON3DCbjCs=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/Info.plist</key>
+		<data>
+		S8XVD4aRXK1QUqDYbdZaoRfIJnY=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/Modules/module.modulemap</key>
+		<data>
+		QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+		</data>
+		<key>watchos-arm64_32/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<data>
+		oKsYsPI3KokW4GbnI1hEl0aaUVA=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wlDZ297B+gWX8hQcRs7hNxTlYzY=
+			</data>
+			<key>hash2</key>
+			<data>
+			mNfQJhqa22b3ZmPypdZ3uo8ntnKZyO0fN0DuVvLBI5w=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+			</data>
+			<key>hash2</key>
+			<data>
+			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			TCEMlfBV3kk4/9O86gldLjRPZr8=
+			</data>
+			<key>hash2</key>
+			<data>
+			XthqO1OgassTLxCY9fX2FStVDwvp79o2MQroguriA4E=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			xVJglfWXBjlEYxUlx94PYwHKwU8=
+			</data>
+			<key>hash2</key>
+			<data>
+			gJSnDr5d1u3mJe0vHMZerAyUWfqds37H1ZOwopwH6B8=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rwShYKgOlmdVQksFi9ON3DCbjCs=
+			</data>
+			<key>hash2</key>
+			<data>
+			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			s888k4NMlX3o+B9CLWkJOGxVbwg=
+			</data>
+			<key>hash2</key>
+			<data>
+			lEpsGhcZK8xyMh1wVMCO2YmEeih3hjkG5kKvId0iEwk=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+			</data>
+			<key>hash2</key>
+			<data>
+			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
+			</data>
+		</dict>
+		<key>ios-arm64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			zxA1LO7Ba3u2s+9mMcp9Bn+BMCE=
+			</data>
+			<key>hash2</key>
+			<data>
+			i33ZJsKGzDZwN0beFwGor7gSRRLNz0HBPtmStt9uh5o=
+			</data>
+		</dict>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			4LZTcz3y85nb8AHXpQq6TzPqNos=
+			wL7vY2i49kEzMIvmD00Ais0HiY8=
 			</data>
 			<key>hash2</key>
 			<data>
-			2k+RaCglkuK95IsB9jYiOxmw+sM2u/TDgiIMdqUJXI4=
+			gvVa1VM/QS7c2H0saGbMel/CfADrX9BHg55DhC/WS+4=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
@@ -140,11 +344,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8wmsF1RYOddxoYw1evuavEz2aKk=
+			2+E4E0iWSh6bxeih4doqzzrI9SU=
 			</data>
 			<key>hash2</key>
 			<data>
-			LcYznNUYaxNy01RTIhfnmL2nRXfVzjwam94VyfZ1TL4=
+			EJCua8xS/KcHpC9HGuPmbgYsW/XppHLNzbR4Q2/sEJQ=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
@@ -162,11 +366,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			q13lpSpOqH9qYamq5RtX9WzDmRo=
+			Ip6INlszZlrPoon1soqVu38yDU8=
 			</data>
 			<key>hash2</key>
 			<data>
-			QeIbzAKHlauGe2Rxo3RD5RGmm++jB4CnF+JHZz/6wNw=
+			lXoltgKukIbe6C7McFDA5KUQZrXFVabtZPrjnsqoQuM=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
@@ -184,58 +388,25 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XY/uF5DDE2mf1kh0l30Ak72Lw10=
+			OlacUJNSx0vIq+T7JDmbWs8DKI8=
 			</data>
 			<key>hash2</key>
 			<data>
-			p1n73w1c3ISgvP2EW5IGb1Wq9TVD/6CHsnVS99Q2Es8=
+			WyNzqOSdDoMPOxRyW2i3gXsztCfsJRi90z+689Dtgy8=
 			</data>
 		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/GoDareDI</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			OA/FDn5yqu07oUAzAP7k7s/5PCo=
+			tjPyqpZMdIyDhzRtQCbAod4Ka3o=
 			</data>
 			<key>hash2</key>
 			<data>
-			pOGANFHtfrjU42VMTiGFVcHYJ7lnIcglTLrL3lV+Ffo=
+			Jc/BvsVJlaxCn9qALwcdvLx/7NnG6biLe9KRQZrHOXQ=
 			</data>
 		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
-			</data>
-			<key>hash2</key>
-			<data>
-			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
-			</data>
-		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			c4F2DymrqU2rG6eT9mNc4H5Ik2g=
-			</data>
-			<key>hash2</key>
-			<data>
-			JR0OT9D9cyrLYgFg/+0TKoWuK2XyXZFxQy/2f5ggCJo=
-			</data>
-		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			t2c+okn6zzMIDX3v5Mn6wVmst7c=
-			</data>
-			<key>hash2</key>
-			<data>
-			RaV1hJJo24i1eXXkq6yDysV5h4tRTEqtaz83SPQWKcQ=
-			</data>
-		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -246,18 +417,18 @@
 			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
 			</data>
 		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Info.plist</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			NnumH4R5+34l+e4viW8B4aVrgmM=
+			6kzBPlFRC82vhv1YgVugnrL5NIY=
 			</data>
 			<key>hash2</key>
 			<data>
-			W1GSW1uEyptWHMfRP8fvvXfPGRR5jvBwKFb7JVmtmSM=
+			V0zenpOKCZGrwfXffesUqu85FU014DWkYArzfmUZEfI=
 			</data>
 		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -268,29 +439,29 @@
 			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
 			</data>
 		</dict>
-		<key>ios-x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<key>macos-arm64_x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			nbG7CdTABBcqobfXumVsUf7lN24=
+			uwGHVURODeZcxtCE7E8diN3WNTQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			2mNZqOjo0RUMm3nwjlRuLQSQ7+CSsVjeQQNRhBRtA2o=
+			R2ueQBS2Tbb8nBvdGUUKopsB/UxVXoGOt0qsUhOB9Nk=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			T7A1v3WStIiB2XTEf+4N7Ar8AQc=
+			d0+1dXfRAhkk6SU4ON8H7Mr7THs=
 			</data>
 			<key>hash2</key>
 			<data>
-			IkbgGO5CvXN8bE98GEN9SyR/QHwzijhA2EWFb6NNQe8=
+			k5D0qTs4jwGXeP5BQwPXp126aPRxmGmWu9ZnGozsBp4=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.abi.json</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.abi.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -301,29 +472,29 @@
 			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			FMEzPg85ejM33tppFOtPu7UJTm4=
+			3dCCEFNv1KAUgTrO+S+uKYN/a/4=
 			</data>
 			<key>hash2</key>
 			<data>
-			P9nns13j9oKcNtRwsF9R29KZ6yNsBdvrtee9T6jK2pk=
+			kONXzsP5pPyiAqAsnoeyPrrvPxgR9dRKfFwmKSDyRuE=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<key>tvos-arm64/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			6kv6h9heTu1VwTrjZ7jzXchnugU=
+			V2tGUWxeC+01PTybp/J78kfZcKk=
 			</data>
 			<key>hash2</key>
 			<data>
-			yFxC2wapVcuSIF3e1wkl0s+afaZYeABLKuSAbq708QM=
+			IbZW8kydEmcXYM6AErmUpUBRS6LESQwsGKfdFWu/xBs=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<key>tvos-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -334,18 +505,18 @@
 			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Info.plist</key>
+		<key>tvos-arm64/GoDareDI.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			arl3qahIKkA8USnXg7srR6uFVLM=
+			EHWeSyEjGYHjJBGzFBQWYRV3FgU=
 			</data>
 			<key>hash2</key>
 			<data>
-			wcmOMcL45PgmjdgkAQc7IXKhpwZLYbAR8gFwY4FPyns=
+			lxMIEwZY2ee/pTTnlIi6rl3dRWp98d4swqvfRSSai4I=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/Modules/module.modulemap</key>
+		<key>tvos-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -356,15 +527,279 @@
 			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
 			</data>
 		</dict>
-		<key>macos-x86_64/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<key>tvos-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			B+Y/caA4YGEFkaP8j8wG2fuLbFU=
+			xaZDtnAhS+xoCSIRknS5ZbO3EJM=
 			</data>
 			<key>hash2</key>
 			<data>
-			Zpg3Q7A4We5Ebg6dBc0C5e5EdcdG+y7e23Tc1MWRyl0=
+			2QDNgHYT3o40/YrQ/DSNMttf0XbvXgIosIQNfgERzvU=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FKWZLG5/uMvdcuipB84NIRPHUSU=
+			</data>
+			<key>hash2</key>
+			<data>
+			KrpCDPXq97dUPBA8Q9lcU1XtIFDcgbtPkkIubf94uIM=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+			</data>
+			<key>hash2</key>
+			<data>
+			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			I+HvxwDJX4Q9gbCjdZapK8uYfJ0=
+			</data>
+			<key>hash2</key>
+			<data>
+			azBMA599x+wCJP0Ij/OM+sa5L86Xq2VGtQFr9TKz42E=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			e8vxdghLdZtQek1k+YXmQFrSJ0Y=
+			</data>
+			<key>hash2</key>
+			<data>
+			uDATcm7N2praHUMPUWfIKNsDN7iYkKsB3NLV7wx5u1Q=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rwShYKgOlmdVQksFi9ON3DCbjCs=
+			</data>
+			<key>hash2</key>
+			<data>
+			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			L5Pk+Vo/xlHH777LiKwwAZKEn1w=
+			</data>
+			<key>hash2</key>
+			<data>
+			1QVow1nm+ncwdnF6+67LZemGQ8xytk6cy9U/zZewAho=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+			</data>
+			<key>hash2</key>
+			<data>
+			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
+			</data>
+		</dict>
+		<key>tvos-x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			reBuI0E7dkksS8/Tu70sfw0xuEU=
+			</data>
+			<key>hash2</key>
+			<data>
+			y/57rGkyxIQxDGLV0An51/vdE07qMhoCaaL4TxAX2mQ=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			K1Qt21voWsrdxGRr8fbb1FSqz94=
+			</data>
+			<key>hash2</key>
+			<data>
+			mtkAnMSETAoPuSOmBuS01LIHx1Ne7pESNqnrtPuDX3M=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.abi.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+			</data>
+			<key>hash2</key>
+			<data>
+			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			7w5acDBXNONZFck0gr2nh1CbYaM=
+			</data>
+			<key>hash2</key>
+			<data>
+			UMf6Xwps036l/ckArHs0ylQcFQK0mjOg9jSHpSUfBAw=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			WvhsTQfLyUxItoDHLA2+UuSIqUo=
+			</data>
+			<key>hash2</key>
+			<data>
+			1fOPnyowugH8fkl6O5bjm1O0pxC18MxcOOU6L5kiYWA=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rwShYKgOlmdVQksFi9ON3DCbjCs=
+			</data>
+			<key>hash2</key>
+			<data>
+			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Q0B7xoxyPz1tSNo0xjFoPV2iK7k=
+			</data>
+			<key>hash2</key>
+			<data>
+			hkYta1rz5s35KyNkwrr+E8AhukKNl2A7tRlXiMHbF78=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+			</data>
+			<key>hash2</key>
+			<data>
+			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
+			</data>
+		</dict>
+		<key>watchos-arm64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			1Q09Do08OmOJVYrPPvYhGI6CAQE=
+			</data>
+			<key>hash2</key>
+			<data>
+			CtW2FVDpXKUnc1RHTX9ilFelkElrMTFxz3I1zS4BLfc=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			jWihULDkn1DEIHLu0apl1itAhNg=
+			</data>
+			<key>hash2</key>
+			<data>
+			huFK79zwhG/WcWT5IVIOFsrttOTDfLS8qxXiJiz1VvI=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.abi.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+			</data>
+			<key>hash2</key>
+			<data>
+			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			1VsE97wYdNJhQZwgM0qVkQ8Mspg=
+			</data>
+			<key>hash2</key>
+			<data>
+			URw15fNxC+23L1FDJtjF4rMh5JxGnIofwSI3bzC+Muk=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/GoDareDI.swiftsourceinfo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			NW4dL3qy789LYGS+rejN1UE3Chs=
+			</data>
+			<key>hash2</key>
+			<data>
+			pg6hhdd7NSQfmoWXtEc1aTCvnlvIPRWkTK2EEV2ovyY=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/Headers/GoDareDI.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rwShYKgOlmdVQksFi9ON3DCbjCs=
+			</data>
+			<key>hash2</key>
+			<data>
+			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			S8XVD4aRXK1QUqDYbdZaoRfIJnY=
+			</data>
+			<key>hash2</key>
+			<data>
+			OyAcq8l3UIId4Eh4SVBwZSPE2NWDObrbfbCapl38Q4c=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/Modules/module.modulemap</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+			</data>
+			<key>hash2</key>
+			<data>
+			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
+			</data>
+		</dict>
+		<key>watchos-arm64_32/GoDareDI.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			oKsYsPI3KokW4GbnI1hEl0aaUVA=
+			</data>
+			<key>hash2</key>
+			<data>
+			HuUMMgVMIBLW5z/uzHn2phmJMO8DHc+l5yVHuBAihGc=
 			</data>
 		</dict>
 	</dict>

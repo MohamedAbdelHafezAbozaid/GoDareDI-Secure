@@ -22,7 +22,7 @@
     <string>13.0</string>
     <key>CFBundleSupportedPlatforms</key>
     <array>
-        <string>iPhoneOS</string>
+        <string>AppleTVOS</string>
     </array>
 </dict>
 </plist>

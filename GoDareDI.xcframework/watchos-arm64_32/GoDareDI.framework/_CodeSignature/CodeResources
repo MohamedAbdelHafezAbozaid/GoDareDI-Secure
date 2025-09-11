@@ -10,15 +10,15 @@
 		</data>
 		<key>GoDareDI.swiftdoc</key>
 		<data>
-		J/k70Wmgf3UjrcZ9c10GTwAG5sw=
+		1VsE97wYdNJhQZwgM0qVkQ8Mspg=
 		</data>
 		<key>GoDareDI.swiftmodule</key>
 		<data>
-		mXLnZmpOLo0KOhazp91jujEbqfc=
+		P3buTTA8H2Wy+JAdD3XFX9KWoSs=
 		</data>
 		<key>GoDareDI.swiftsourceinfo</key>
 		<data>
-		2+E4E0iWSh6bxeih4doqzzrI9SU=
+		NW4dL3qy789LYGS+rejN1UE3Chs=
 		</data>
 		<key>Headers/GoDareDI.h</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Ip6INlszZlrPoon1soqVu38yDU8=
+		S8XVD4aRXK1QUqDYbdZaoRfIJnY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -37,6 +37,10 @@
 	<dict>
 		<key>GoDareDI.abi.json</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			gcwBsH4BgyFY4sVtNt+/xOKS3vY=
+			</data>
 			<key>hash2</key>
 			<data>
 			Qnesa0n4URGWAopawg9bGx36dUwkYV00BoCJ8LFzlyg=
@@ -44,27 +48,43 @@
 		</dict>
 		<key>GoDareDI.swiftdoc</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			1VsE97wYdNJhQZwgM0qVkQ8Mspg=
+			</data>
 			<key>hash2</key>
 			<data>
-			wnaUCgn4t7gXFvkHAVTPA2Y/0ObsbuNMVM5hFR3aLZw=
+			URw15fNxC+23L1FDJtjF4rMh5JxGnIofwSI3bzC+Muk=
 			</data>
 		</dict>
 		<key>GoDareDI.swiftmodule</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			P3buTTA8H2Wy+JAdD3XFX9KWoSs=
+			</data>
 			<key>hash2</key>
 			<data>
-			ib1pWQfOIrJMgYTXtDTPbroqwWUX0k+HeLtVgOtEB7I=
+			74/8C+XBv8pX5oBnWnCYs+U1t++YMMePaj4WXVS/Jtg=
 			</data>
 		</dict>
 		<key>GoDareDI.swiftsourceinfo</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			NW4dL3qy789LYGS+rejN1UE3Chs=
+			</data>
 			<key>hash2</key>
 			<data>
-			EJCua8xS/KcHpC9HGuPmbgYsW/XppHLNzbR4Q2/sEJQ=
+			pg6hhdd7NSQfmoWXtEc1aTCvnlvIPRWkTK2EEV2ovyY=
 			</data>
 		</dict>
 		<key>Headers/GoDareDI.h</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			rwShYKgOlmdVQksFi9ON3DCbjCs=
+			</data>
 			<key>hash2</key>
 			<data>
 			KmhX9LyGZ6jjloFugMT7qPNP8r+n46J8HwPol3qp4/A=
@@ -72,6 +92,10 @@
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			QVdDmTx+Hvqcgmp5ypD2bs8tcBw=
+			</data>
 			<key>hash2</key>
 			<data>
 			Iuo8AVSBBcO21ZzziPkMZLpEPOLjiORR1jPETtubjJQ=
