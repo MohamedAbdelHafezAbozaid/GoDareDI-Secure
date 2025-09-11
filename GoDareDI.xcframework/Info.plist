@@ -8,6 +8,22 @@
 			<key>BinaryPath</key>
 			<string>GoDareDI.framework/GoDareDI</string>
 			<key>LibraryIdentifier</key>
+			<string>watchos-arm64-simulator</string>
+			<key>LibraryPath</key>
+			<string>GoDareDI.framework</string>
+			<key>SupportedArchitectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>SupportedPlatform</key>
+			<string>watchos</string>
+			<key>SupportedPlatformVariant</key>
+			<string>simulator</string>
+		</dict>
+		<dict>
+			<key>BinaryPath</key>
+			<string>GoDareDI.framework/GoDareDI</string>
+			<key>LibraryIdentifier</key>
 			<string>macos-arm64_x86_64</string>
 			<key>LibraryPath</key>
 			<string>GoDareDI.framework</string>
@@ -39,17 +55,15 @@
 			<key>BinaryPath</key>
 			<string>GoDareDI.framework/GoDareDI</string>
 			<key>LibraryIdentifier</key>
-			<string>tvos-x86_64-simulator</string>
+			<string>watchos-arm64_32</string>
 			<key>LibraryPath</key>
 			<string>GoDareDI.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
-				<string>x86_64</string>
+				<string>arm64_32</string>
 			</array>
 			<key>SupportedPlatform</key>
-			<string>tvos</string>
-			<key>SupportedPlatformVariant</key>
-			<string>simulator</string>
+			<string>watchos</string>
 		</dict>
 		<dict>
 			<key>BinaryPath</key>
@@ -69,29 +83,15 @@
 			<key>BinaryPath</key>
 			<string>GoDareDI.framework/GoDareDI</string>
 			<key>LibraryIdentifier</key>
-			<string>watchos-arm64_32</string>
+			<string>tvos-x86_64-simulator</string>
 			<key>LibraryPath</key>
 			<string>GoDareDI.framework</string>
 			<key>SupportedArchitectures</key>
 			<array>
-				<string>arm64_32</string>
+				<string>x86_64</string>
 			</array>
 			<key>SupportedPlatform</key>
-			<string>watchos</string>
-		</dict>
-		<dict>
-			<key>BinaryPath</key>
-			<string>GoDareDI.framework/GoDareDI</string>
-			<key>LibraryIdentifier</key>
-			<string>watchos-arm64-simulator</string>
-			<key>LibraryPath</key>
-			<string>GoDareDI.framework</string>
-			<key>SupportedArchitectures</key>
-			<array>
-				<string>arm64</string>
-			</array>
-			<key>SupportedPlatform</key>
-			<string>watchos</string>
+			<string>tvos</string>
 			<key>SupportedPlatformVariant</key>
 			<string>simulator</string>
 		</dict>
