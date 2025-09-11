@@ -105,22 +105,76 @@ EOF
     
     # Find all Swift files except problematic SwiftUI views
     SWIFT_FILES=$(find "$SOURCE_DIR" -name "*.swift" ! -path "*/Visualizer/Views/*" ! -path "*/Visualizer/Debug/*" ! -name "*SupportingViews*" ! -name "*DashboardUpdateView*" ! -name "*DependencyGraphView*" | tr '\n' ' ')
-    # Add placeholder DependencyGraphView
-    SWIFT_FILES="$SWIFT_FILES DependencyGraphViewPlaceholder.swift"
     echo "📄 Found Swift files: $(echo $SWIFT_FILES | wc -w) files"
     
-    # Compile for platform using all source files
-    swiftc -emit-library -emit-module \
-        -module-name GoDareDI \
-        -o Frameworks/$platform/GoDareDI.framework/GoDareDI \
-        -emit-module-interface \
-        -emit-module-interface-path Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftinterface \
-        -enable-library-evolution \
-        -sdk $(xcrun --show-sdk-path --sdk $sdk) \
-        -target $target \
-        -swift-version 6 \
-        -module-link-name GoDareDI \
-        $SWIFT_FILES
+    # Create a temporary Xcode project for building the framework
+    TEMP_PROJECT_DIR="temp_build_$platform"
+    mkdir -p "$TEMP_PROJECT_DIR"
+    
+    # Create Package.swift for the temporary project
+    cat > "$TEMP_PROJECT_DIR/Package.swift" << EOF
+// swift-tools-version: 6.0
+import PackageDescription
+
+let package = Package(
+    name: "GoDareDI",
+    platforms: [
+        .iOS(.v17)
+    ],
+    products: [
+        .library(name: "GoDareDI", targets: ["GoDareDI"])
+    ],
+    targets: [
+        .target(
+            name: "GoDareDI",
+            path: "Sources"
+        )
+    ]
+)
+EOF
+    
+    # Create Sources directory and copy Swift files
+    mkdir -p "$TEMP_PROJECT_DIR/Sources/GoDareDI"
+    cp -r "$SOURCE_DIR"/* "$TEMP_PROJECT_DIR/Sources/GoDareDI/"
+    
+    # Build using xcodebuild
+    cd "$TEMP_PROJECT_DIR"
+    if [ "$platform" = "ios-arm64" ]; then
+        DESTINATION="generic/platform=iOS"
+    elif [ "$platform" = "ios-arm64-simulator" ]; then
+        DESTINATION="generic/platform=iOS Simulator"
+    fi
+    
+    xcodebuild -scheme GoDareDI \
+        -destination "$DESTINATION" \
+        -configuration Release \
+        -derivedDataPath ../DerivedData \
+        build
+    
+    # Extract the built library and Swift module files
+    cd ..
+    if [ "$platform" = "ios-arm64" ]; then
+        # Copy the built library to the framework
+        cp DerivedData/Build/Products/Release-iphoneos/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
+        # Copy Swift module files
+        cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
+        # Copy any other generated files
+        if [ -d "DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework" ]; then
+            cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
+        fi
+    elif [ "$platform" = "ios-arm64-simulator" ]; then
+        # Copy the built library to the framework
+        cp DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
+        # Copy Swift module files
+        cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
+        # Copy any other generated files
+        if [ -d "DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework" ]; then
+            cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
+        fi
+    fi
+    
+    # Clean up
+    rm -rf "$TEMP_PROJECT_DIR" DerivedData GoDareDI.xcarchive
     
     # Code sign framework
     codesign --force --sign "Apple Development: Mohamed Ahmed (YR5S9UTVK6)" Frameworks/$platform/GoDareDI.framework
