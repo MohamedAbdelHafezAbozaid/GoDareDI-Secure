@@ -493,8 +493,8 @@ public enum GoDareDIError: Error, LocalizedError {
 }
 
 // MARK: - Framework Version
-public let GoDareDIVersion = "1.0.5"
-public let GoDareDIBuildNumber = "5"
+public let GoDareDIVersion = "1.0.6"
+public let GoDareDIBuildNumber = "6"
 
 // MARK: - Dependency Graph Visualization
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
