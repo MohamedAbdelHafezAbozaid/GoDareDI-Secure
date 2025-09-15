@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "GoDareDI",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v13),
         .macOS(.v10_15),
