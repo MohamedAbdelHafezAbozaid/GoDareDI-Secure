@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Graph Analysis Extensions
+@available(iOS 13.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Validation and Analysis
@@ -36,6 +37,7 @@ extension AdvancedDIContainerImpl {
                 dependencies: dependencies,
                 layer: calculateLayer(for: key),
                 isCircular: isPartOfCircularDependency(key),
+                position: CGPoint(x: Double.random(in: 0...800), y: Double.random(in: 0...600)),
                 type: inferNodeType(from: key),
                 category: inferNodeCategory(from: key),
                 complexity: inferComplexityLevel(from: key, dependencies: dependencies),
@@ -110,6 +112,7 @@ extension AdvancedDIContainerImpl {
                 dependencies: dependencies,
                 layer: calculateLayer(for: key),
                 isCircular: isPartOfCircularDependency(key),
+                position: CGPoint(x: Double.random(in: 0...800), y: Double.random(in: 0...600)),
                 type: inferNodeType(from: key),
                 category: inferNodeCategory(from: key),
                 complexity: inferComplexityLevel(from: key, dependencies: dependencies),
@@ -178,6 +181,7 @@ extension AdvancedDIContainerImpl {
             analysisTime: analysisTime,
             memoryUsage: memoryUsage,
             cacheEfficiency: cacheEfficiency,
+            isComplete: true,
             complexityMetrics: createComplexityMetrics(nodes: nodes, edges: uniqueEdges),
             performanceMetrics: createGraphPerformanceMetrics(nodes: nodes),
             architectureMetrics: createArchitectureMetrics(nodes: nodes, edges: uniqueEdges),
@@ -305,6 +309,7 @@ extension AdvancedDIContainerImpl {
             analysisTime: 0,
             memoryUsage: 0,
             cacheEfficiency: 0,
+            isComplete: false,
             complexityMetrics: createDefaultComplexityMetrics(),
             performanceMetrics: createDefaultGraphPerformanceMetrics(),
             architectureMetrics: createDefaultArchitectureMetrics(),

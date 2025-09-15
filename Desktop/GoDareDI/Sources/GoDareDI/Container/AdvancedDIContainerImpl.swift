@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(iOS 13.0, macOS 10.15, *)
 @MainActor
 public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     
@@ -26,9 +27,9 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     // 🚀 UNIFIED: Single metadata storage for both resolution and preloading
     internal var typeRegistry: [String: DependencyMetadata] = [:]
     
-    // 🔥 CRASHLYTICS: Analytics and crashlytics integration
-    internal var analyticsProvider: DIAnalyticsProvider?
-    internal var crashlyticsConfig: DICrashlyticsConfig?
+    // Analytics & Monitoring
+    public var analyticsProvider: DIAnalyticsProvider?
+    public var crashlyticsConfig: DICrashlyticsConfig?
     
     // MARK: - Factory Union Type
     public enum FactoryType: Sendable {
@@ -43,42 +44,20 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     }
     
     // MARK: - Analytics Initialization
-    public init(config: DIContainerConfig = DIContainerConfig(), crashlyticsConfig: DICrashlyticsConfig) async throws {
-        self.config = config
-        self.crashlyticsConfig = crashlyticsConfig
-        
-        // 🔥 ANALYTICS: Validate token before initialization
-        try await validateToken(crashlyticsConfig.token)
-        
-        self.analyticsProvider = DICrashlyticsIntegration(token: crashlyticsConfig.token)
+    public func configureAnalytics(provider: DIAnalyticsProvider? = nil, crashlytics: DICrashlyticsConfig? = nil) {
+        self.analyticsProvider = provider ?? DefaultDIAnalyticsProvider.shared
+        self.crashlyticsConfig = crashlytics ?? DICrashlyticsConfig()
     }
     
-    // MARK: - Direct Token Initialization (Deprecated - Use GoDareDISecureInit.initialize())
-    @available(*, deprecated, message: "Use GoDareDISecureInit.initialize() instead. Set token with GoDareDILicense.setToken() first.")
-    public init(config: DIContainerConfig = DIContainerConfig(), token: String) async throws {
-        self.config = config
-        
-        // Set token for validation
-        GoDareDILicense.setToken(token)
-        
-        // Validate token using the secure initialization
-        let _ = try await GoDareDILicense.validateToken()
-        
-        // 🔥 ANALYTICS: Create analytics config from token
-        let crashlyticsConfig = DICrashlyticsConfig(token: token)
-        self.crashlyticsConfig = crashlyticsConfig
-        
-        // 🔥 ANALYTICS: Initialize analytics provider
-        self.analyticsProvider = DICrashlyticsIntegration(token: token)
-    }
+    // Deprecated token initialization removed for XCFramework compatibility
     
     // MARK: - Token Access
     public var token: String? {
-        return crashlyticsConfig?.token
+        return crashlyticsConfig?.customKeys["token"] as? String
     }
     
     public var hasValidToken: Bool {
-        return crashlyticsConfig?.token != nil
+        return token != nil
     }
     
     // MARK: - Freemium Support
@@ -94,11 +73,13 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
         try await validateToken(token)
         
         // Create analytics config with the new token
-        let newCrashlyticsConfig = DICrashlyticsConfig(token: token)
+        var customKeys = crashlyticsConfig?.customKeys ?? [:]
+        customKeys["token"] = token
+        let newCrashlyticsConfig = DICrashlyticsConfig(customKeys: customKeys)
         self.crashlyticsConfig = newCrashlyticsConfig
         
         // Initialize analytics provider
-        self.analyticsProvider = DICrashlyticsIntegration(token: token)
+        self.analyticsProvider = DefaultDIAnalyticsProvider.shared
         
         print("🎉 Successfully upgraded to Premium!")
         print("✨ All advanced features are now unlocked")
@@ -149,11 +130,21 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
         
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<(Data, URLResponse), Error>) in
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else if let data = data, let response = response {
+                        continuation.resume(returning: (data, response))
+                    } else {
+                        continuation.resume(throwing: NSError(domain: "GoDareDI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+                    }
+                }.resume()
+            }
         
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("❌ Network error: Invalid response")
-                throw DITokenValidationError.networkError
+                throw DITokenValidationError.networkError(NSError(domain: "GoDareDI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
             }
             
             print("📡 Server response status: \(httpResponse.statusCode)")

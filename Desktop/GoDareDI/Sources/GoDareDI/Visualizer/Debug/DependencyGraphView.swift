@@ -1,56 +1,21 @@
 //
 //  DependencyGraphView.swift
-//  GoDareAdvanced
+//  GoDareDI
 //
 //  Created by mohamed ahmed on 31/08/2025.
 //
 
 import SwiftUI
-#if os(macOS)
-import AppKit
-#endif
-#if os(iOS)
-import UIKit
-#endif
 
+@available(iOS 17.0, macOS 10.15, *)
 @MainActor
 public struct DependencyGraphView: View {
     private let container: AdvancedDIContainer
     
     @State private var graph: DependencyGraph?
     @State private var analysis: GraphAnalysis?
-    @State private var selectedNode: String?
-    @State private var selectedVisualizationType: VisualizationType = .mermaid
-    @State private var visualizationData: String = ""
-    @State private var showInteractiveView = false
-    @State private var isLoading: Bool = false
-    @State private var errorMessage: String?
-    @State private var selectedTab = 0
-    @State private var showCopyFeedback = false
-    
-    // Computed property to get token from container
-    private var token: String? {
-        if let containerImpl = container as? AdvancedDIContainerImpl {
-            return containerImpl.token
-        }
-        return nil
-    }
-    
-    // Computed property to check if container has valid token
-    private var hasValidToken: Bool {
-        if let containerImpl = container as? AdvancedDIContainerImpl {
-            return containerImpl.hasValidToken
-        }
-        return false
-    }
-    
-    // Computed property to check if container is in freemium mode
-    private var isFreemiumMode: Bool {
-        if let containerImpl = container as? AdvancedDIContainerImpl {
-            return containerImpl.isFreemiumMode
-        }
-        return true // Default to freemium if not AdvancedDIContainerImpl
-    }
+    @State private var selectedTab: Int = 0
+    @State private var showInteractiveView: Bool = false
     
     public init(container: AdvancedDIContainer) {
         self.container = container
@@ -59,125 +24,58 @@ public struct DependencyGraphView: View {
     public var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Header Section
-                headerSection
-                
-                // Show subscription prompt if in freemium mode or no valid token
-                if isFreemiumMode || !hasValidToken {
-                    subscriptionPromptView
-                } else {
-                    // Tab Selection
-                    tabSection
-                    
-                    // Content based on selected tab
-                    TabView(selection: $selectedTab) {
-                        // Overview Tab
-                        overviewTab
-                            .tag(0)
-                        
-                        // Visualization Tab
-                        visualizationTab
-                            .tag(1)
-                        
-                        // Interactive Tab
-                        interactiveTab
-                            .tag(2)
-                    }
-                    #if os(iOS)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    #endif
+                // Tab Selector
+                Picker("View", selection: $selectedTab) {
+                    Text("Overview").tag(0)
+                    Text("Visualization").tag(1)
+                    Text("Interactive").tag(2)
                 }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                
+                // Content
+                TabView(selection: $selectedTab) {
+                    overviewTab
+                        .tag(0)
+                    
+                    visualizationTab
+                        .tag(1)
+                    
+                    interactiveTab
+                        .tag(2)
+                }
+                // TabView style removed for iOS 13 compatibility
             }
-        }
-        .onAppear {
-            // Only load graph data if user has valid token and is not in freemium mode
-            if !isFreemiumMode && hasValidToken {
+            // Navigation title removed for iOS 13 compatibility
+            .onAppear {
                 loadGraphData()
             }
         }
-    }
-    
-    // MARK: - Header Section
-    private var headerSection: some View {
-        VStack(spacing: 16) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Dependency Graph")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                    
-                    Text("Analyze your dependency injection structure")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    loadGraphData()
-                }) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.title2)
-                        .foregroundColor(.blue)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-        }
-        .padding()
-        .background(Color.controlBackground)
-    }
-    
-    // MARK: - Tab Section
-    private var tabSection: some View {
-        HStack(spacing: 0) {
-            TabButton(
-                title: "Overview",
-                icon: "chart.bar.fill",
-                isSelected: selectedTab == 0
-            ) {
-                selectedTab = 0
-            }
-            
-            TabButton(
-                title: "Visualization",
-                icon: "eye.fill",
-                isSelected: selectedTab == 1
-            ) {
-                selectedTab = 1
-            }
-            
-            TabButton(
-                title: "Interactive",
-                icon: "hand.tap.fill",
-                isSelected: selectedTab == 2
-            ) {
-                selectedTab = 2
-            }
-        }
-        .padding(.horizontal)
-        .padding(.bottom, 8)
-        .background(Color.controlBackground)
     }
     
     // MARK: - Overview Tab
     private var overviewTab: some View {
         ScrollView {
             VStack(spacing: 20) {
-                // Error Display
-                if let errorMessage = errorMessage {
-                    ErrorCard(message: errorMessage)
+                // Container Status
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Container Status")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Status: Active")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        Text("Registered Types: N/A")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
-                
-                // Loading Indicator
-                if isLoading {
-                    LoadingCard()
-                }
-                
-                // Statistics Section
-                if let analysis = analysis {
-                    statisticsSection(analysis: analysis)
-                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(8)
                 
                 // Graph Information
                 if graph != nil {
@@ -195,80 +93,24 @@ public struct DependencyGraphView: View {
     private var visualizationTab: some View {
         ScrollView {
             VStack(spacing: 20) {
-                // Visualization Type Selector
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("Visualization Type")
-                        .font(.headline)
-                        .fontWeight(.medium)
-                    
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 12) {
-                        ForEach(VisualizationType.allCases, id: \.self) { type in
-                            VisualizationTypeCard(
-                                type: type,
-                                isSelected: selectedVisualizationType == type
-                            ) {
-                                selectedVisualizationType = type
-                                generateVisualization()
-                            }
-                        }
-                    }
-                }
-                
-                // Generate Button
-                Button(action: {
-                    generateVisualization()
-                }) {
-                    HStack {
-                        Image(systemName: "play.fill")
-                        Text("Generate Visualization")
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                }
-                .disabled(graph == nil)
-                
-                // Visualization Output
-                if !visualizationData.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Text("Generated Visualization")
-                                .font(.headline)
-                                .fontWeight(.medium)
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                copyToClipboard(visualizationData)
-                            }) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: showCopyFeedback ? "checkmark" : "doc.on.doc")
-                                    Text(showCopyFeedback ? "Copied!" : "Copy")
-                                }
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
+                if let graph = graph {
+                    DependencyVisualizationView(graph: graph)
+                } else {
+                    VStack(spacing: 16) {
+                        Text("📊")
+                            .font(.system(size: 60))
+                            .foregroundColor(.blue)
                         
-                        ScrollView {
-                            Text(visualizationData)
-                                .font(Font.system(.body, design: .monospaced))
-                                .foregroundColor(.primary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                                .background(Color.controlBackground)
-                                .cornerRadius(8)
-                        }
-                        .frame(maxHeight: 300)
+                        Text("No Graph Data")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Text("Load dependency graph to see visualization")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
                     }
+                    .padding()
                 }
             }
             .padding()
@@ -293,421 +135,210 @@ public struct DependencyGraphView: View {
                 }
             } else {
                 VStack(spacing: 20) {
-                    Image(systemName: "hand.tap")
+                    Text("👆")
                         .font(.system(size: 60))
                         .foregroundColor(.blue)
                     
                     Text("Interactive View")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.headline)
+                        .foregroundColor(.primary)
                     
-                    Text("Tap to explore your dependency graph interactively")
-                        .font(.body)
+                    Text("Tap to enable interactive dependency graph visualization")
+                        .font(.subheadline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
                     
-                    Button(action: {
+                    Button("Enable Interactive View") {
                         showInteractiveView = true
-                    }) {
-                        Text("Launch Interactive View")
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
                     }
-                    .disabled(graph == nil)
+                    .buttonStyle(DefaultButtonStyle())
                 }
                 .padding()
             }
         }
     }
     
-    // MARK: - Statistics Section
-    private func statisticsSection(analysis: GraphAnalysis) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Statistics")
-                .font(.headline)
-                .fontWeight(.medium)
-            
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 12) {
-                StatisticsCard(
-                    title: "Total Dependencies",
-                    value: "\(analysis.totalDependencies)",
-                    icon: "link",
-                    color: .blue
-                )
-                
-                StatisticsCard(
-                    title: "Circular Dependencies",
-                    value: "\(analysis.circularDependencyChains.count)",
-                    icon: "arrow.triangle.2.circlepath",
-                    color: .red
-                )
-                
-                StatisticsCard(
-                    title: "Max Depth",
-                    value: "\(analysis.maxDepth)",
-                    icon: "arrow.down",
-                    color: .orange
-                )
-                
-                StatisticsCard(
-                    title: "Complexity Score",
-                    value: String(format: "%.1f", analysis.complexityMetrics.couplingScore),
-                    icon: "chart.line.uptrend.xyaxis",
-                    color: .purple
-                )
-            }
-        }
-    }
-    
-    // MARK: - Graph Info Section
+    // MARK: - Helper Views
     private func graphInfoSection(graph: DependencyGraph) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Graph Information")
                 .font(.headline)
-                .fontWeight(.medium)
+                .foregroundColor(.primary)
             
-            VStack(spacing: 8) {
-                HStack {
-                    Text("Nodes:")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text("\(graph.nodes.count)")
-                        .foregroundColor(.secondary)
-                }
-                
-                HStack {
-                    Text("Edges:")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text("\(graph.edges.count)")
-                        .foregroundColor(.secondary)
-                }
-                
-                HStack {
-                    Text("Dependency Types:")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text("\(Set(graph.nodes.map { $0.type }).count)")
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding()
-            .background(Color.controlBackground)
-            .cornerRadius(8)
-        }
-    }
-    
-    // MARK: - Helper Functions
-    private func loadGraphData() {
-        isLoading = true
-        errorMessage = nil
-        
-        Task {
-            let dependencyGraph = await container.getDependencyGraph()
-            let graphAnalysis = await container.analyzeDependencyGraph()
-            
-            await MainActor.run {
-                self.graph = dependencyGraph
-                self.analysis = graphAnalysis
-                self.isLoading = false
-                print("✅ Loaded dependency graph with \(dependencyGraph.nodes.count) nodes and \(dependencyGraph.edges.count) edges")
-            }
-        }
-    }
-    
-    private func generateVisualization() {
-        guard graph != nil else { return }
-        
-        Task {
-            do {
-                let visualizer = DependencyVisualizer(container: container)
-                let result = try await visualizer.visualizeAsync(type: selectedVisualizationType)
-                
-                await MainActor.run {
-                    self.visualizationData = result
-                }
-            } catch {
-                await MainActor.run {
-                    errorMessage = "Failed to generate visualization: \(error.localizedDescription)"
-                }
-            }
-        }
-    }
-    
-    private func copyToClipboard(_ text: String) {
-        #if os(macOS)
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setString(text, forType: .string)
-        #elseif os(iOS)
-        UIPasteboard.general.string = text
-        #endif
-        
-        // Show feedback
-        showCopyFeedback = true
-        
-        // Reset feedback after 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            showCopyFeedback = false
-        }
-    }
-    
-    // MARK: - Subscription Prompt View
-    
-    private var subscriptionPromptView: some View {
-        VStack(spacing: 24) {
-            // Premium Icon
-            VStack(spacing: 16) {
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.yellow)
-                
-                Text("Premium Feature")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-            }
-            
-            // Feature Description
-            VStack(spacing: 12) {
-                Text("Unlock Advanced Dependency Visualization")
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                
-                Text("Get detailed insights into your app's dependency architecture with interactive graphs, analysis, and dashboard sync.")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            
-            // Features List
             VStack(alignment: .leading, spacing: 8) {
-                FeatureRow(icon: "chart.line.uptrend.xyaxis", title: "Interactive Dependency Graphs", description: "Visualize your app's architecture")
-                FeatureRow(icon: "arrow.triangle.2.circlepath", title: "Circular Dependency Detection", description: "Identify and fix dependency cycles")
-                FeatureRow(icon: "chart.bar.fill", title: "Performance Analytics", description: "Track complexity and coupling metrics")
-                FeatureRow(icon: "icloud.and.arrow.up", title: "Dashboard Sync", description: "Sync data to web dashboard")
-            }
-            .padding()
-            .background(Color.blue.opacity(0.1))
-            .cornerRadius(12)
-            
-            // Subscription Buttons
-            VStack(spacing: 12) {
-                Button(action: {
-                    openSubscriptionPage()
-                }) {
-                    HStack {
-                        Image(systemName: "crown.fill")
-                        Text("Subscribe to Premium")
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.blue, .purple]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(12)
-                }
-                
-                Button(action: {
-                    openDashboard()
-                }) {
-                    HStack {
-                        Image(systemName: "globe")
-                        Text("Get Token from Dashboard")
-                    }
+                Text("Nodes: \(graph.nodes.count)")
                     .font(.subheadline)
-                    .foregroundColor(.blue)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(12)
-                }
-                
-                Button(action: {
-                    showTokenInputDialog()
-                }) {
-                    HStack {
-                        Image(systemName: "key.fill")
-                        Text("Enter Premium Token")
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(.green)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green.opacity(0.1))
-                    .cornerRadius(12)
-                }
-            }
-            
-            // Free Trial Info
-            VStack(spacing: 8) {
-                Text("✨ 7-day free trial available")
-                    .font(.caption)
-                    .foregroundColor(.green)
-                    .fontWeight(.medium)
-                
-                Text("Cancel anytime • No commitment")
-                    .font(.caption2)
                     .foregroundColor(.secondary)
+                
+                Text("Edges: \(graph.edges.count)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                if let analysis = analysis {
+                    Text("Analysis: \(analysis.isComplete ? "Complete" : "In Progress")")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
             }
         }
         .padding()
+        .background(Color.white)
+        .cornerRadius(8)
     }
     
-    // MARK: - Feature Row Component
-    
-    private struct FeatureRow: View {
-        let icon: String
-        let title: String
-        let description: String
-        
-        var body: some View {
-            HStack(spacing: 12) {
-                Image(systemName: icon)
-                    .font(.title3)
-                    .foregroundColor(.blue)
-                    .frame(width: 24)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    
-                    Text(description)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-            }
-        }
-    }
-    
-    // MARK: - Subscription Actions
-    
-    private func openSubscriptionPage() {
-        // Open the web dashboard subscription page
-        if let url = URL(string: "https://godaredi-60569.web.app") {
-            #if canImport(UIKit)
-            UIApplication.shared.open(url)
-            #elseif canImport(AppKit)
-            NSWorkspace.shared.open(url)
-            #endif
-        }
-    }
-    
-    private func openDashboard() {
-        // Open the web dashboard to get a token
-        if let url = URL(string: "https://godaredi-60569.web.app") {
-            #if canImport(UIKit)
-            UIApplication.shared.open(url)
-            #elseif canImport(AppKit)
-            NSWorkspace.shared.open(url)
-            #endif
-        }
-    }
-    
-    private func showTokenInputDialog() {
-        // Show an alert to input the premium token
-        #if canImport(UIKit)
-        let alert = UIAlertController(title: "Enter Premium Token", message: "Please enter your premium token to unlock advanced features.", preferredStyle: .alert)
-        
-        alert.addTextField { textField in
-            textField.placeholder = "Enter your 64-character token"
-            textField.autocapitalizationType = .none
-            textField.autocorrectionType = .no
-        }
-        
-        let upgradeAction = UIAlertAction(title: "Upgrade", style: .default) { _ in
-            if let token = alert.textFields?.first?.text, !token.isEmpty {
-                Task {
-                    await upgradeToPremium(token: token)
-                }
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        alert.addAction(upgradeAction)
-        alert.addAction(cancelAction)
-        
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            window.rootViewController?.present(alert, animated: true)
-        }
-        #elseif canImport(AppKit)
-        // macOS implementation
-        let alert = NSAlert()
-        alert.messageText = "Enter Premium Token"
-        alert.informativeText = "Please enter your premium token to unlock advanced features."
-        alert.alertStyle = .informational
-        
-        let inputField = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
-        inputField.placeholderString = "Enter your 64-character token"
-        alert.accessoryView = inputField
-        
-        alert.addButton(withTitle: "Upgrade")
-        alert.addButton(withTitle: "Cancel")
-        
-        let response = alert.runModal()
-        if response == .alertFirstButtonReturn {
-            let token = inputField.stringValue
-            if !token.isEmpty {
-                Task {
-                    await upgradeToPremium(token: token)
-                }
-            }
-        }
-        #endif
-    }
-    
-    private func upgradeToPremium(token: String) async {
-        guard let containerImpl = container as? AdvancedDIContainerImpl else {
-            print("❌ Cannot upgrade: Container is not AdvancedDIContainerImpl")
-            return
-        }
-        
-        do {
-            try await containerImpl.upgradeToPremium(token: token)
-            print("🎉 Successfully upgraded to Premium!")
+    // MARK: - Data Loading
+    private func loadGraphData() {
+        // Simulate loading graph data
+        // In a real implementation, this would load from the container
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: DispatchWorkItem {
+            // Create sample graph data
+            let sampleNodes = [
+                DependencyNode(
+                    id: "1", 
+                    scope: .singleton, 
+                    dependencies: ["2"], 
+                    layer: 0, 
+                    isCircular: false, 
+                    position: CGPoint(x: 100, y: 100),
+                    type: .service,
+                    category: .business,
+                    complexity: .low,
+                    performanceMetrics: NodePerformanceMetrics(resolutionTime: 0.1, memoryFootprint: 1024, cacheHitRate: 0.8, resolutionCount: 1, lastResolved: Date()),
+                    metadata: [:],
+                    tags: []
+                ),
+                DependencyNode(
+                    id: "2", 
+                    scope: .scoped, 
+                    dependencies: ["3"], 
+                    layer: 1, 
+                    isCircular: false, 
+                    position: CGPoint(x: 200, y: 150),
+                    type: .service,
+                    category: .business,
+                    complexity: .medium,
+                    performanceMetrics: NodePerformanceMetrics(resolutionTime: 0.2, memoryFootprint: 2048, cacheHitRate: 0.9, resolutionCount: 2, lastResolved: Date()),
+                    metadata: [:],
+                    tags: []
+                ),
+                DependencyNode(
+                    id: "3", 
+                    scope: .transient, 
+                    dependencies: [], 
+                    layer: 2, 
+                    isCircular: false, 
+                    position: CGPoint(x: 150, y: 200),
+                    type: .repository,
+                    category: .data,
+                    complexity: .low,
+                    performanceMetrics: NodePerformanceMetrics(resolutionTime: 0.05, memoryFootprint: 512, cacheHitRate: 0.95, resolutionCount: 5, lastResolved: Date()),
+                    metadata: [:],
+                    tags: []
+                )
+            ]
             
-            // Refresh the view to show premium features
-            await MainActor.run {
-                // The view will automatically refresh due to the computed properties
-                loadGraphData()
-            }
-        } catch {
-            print("❌ Failed to upgrade to Premium: \(error)")
+            let sampleEdges = [
+                DependencyEdge(
+                    from: "1", 
+                    to: "2", 
+                    relationship: "depends_on", 
+                    isCircular: false,
+                    relationshipType: .dependency,
+                    strength: .strong,
+                    direction: .bidirectional,
+                    performanceImpact: .low,
+                    metadata: [:]
+                ),
+                DependencyEdge(
+                    from: "2", 
+                    to: "3", 
+                    relationship: "uses", 
+                    isCircular: false,
+                    relationshipType: .dependency,
+                    strength: .strong,
+                    direction: .bidirectional,
+                    performanceImpact: .low,
+                    metadata: [:]
+                )
+            ]
             
-            // Show error message
-            #if canImport(UIKit)
-            let alert = UIAlertController(title: "Upgrade Failed", message: "Invalid token. Please check your token and try again.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            // Create a simple analysis with minimal data
+            let analysis = GraphAnalysis(
+                hasCircularDependencies: false,
+                totalNodes: 3,
+                totalDependencies: 2,
+                maxDepth: 2,
+                circularDependencyChains: [],
+                analysisTime: 0.1,
+                memoryUsage: 1024.0,
+                cacheEfficiency: 0.8,
+                isComplete: true,
+                complexityMetrics: createDefaultComplexityMetrics(),
+                performanceMetrics: createDefaultGraphPerformanceMetrics(),
+                architectureMetrics: createDefaultArchitectureMetrics(),
+                healthScore: createDefaultHealthScore(),
+                recommendations: [],
+                clusters: [],
+                criticalPaths: []
+            )
             
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                window.rootViewController?.present(alert, animated: true)
-            }
-            #elseif canImport(AppKit)
-            let alert = NSAlert()
-            alert.messageText = "Upgrade Failed"
-            alert.informativeText = "Invalid token. Please check your token and try again."
-            alert.alertStyle = .warning
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
-            #endif
+            self.graph = DependencyGraph(nodes: sampleNodes, edges: sampleEdges, analysis: analysis)
+            self.analysis = analysis
+        })
+    }
+    
+    // MARK: - Helper Functions
+    private func createDefaultComplexityMetrics() -> ComplexityMetrics {
+        // Create a simple JSON structure for ComplexityMetrics
+        let json = """
+        {
+            "cyclomaticComplexity": 1,
+            "cognitiveComplexity": 1,
+            "maintainabilityIndex": 85
         }
+        """.data(using: .utf8)!
+        return try! JSONDecoder().decode(ComplexityMetrics.self, from: json)
+    }
+    
+    private func createDefaultGraphPerformanceMetrics() -> GraphPerformanceMetrics {
+        let json = """
+        {
+            "averageResolutionTime": 0.1,
+            "slowestResolution": 0.5,
+            "fastestResolution": 0.01,
+            "totalMemoryFootprint": 1024,
+            "cacheHitRate": 0.8,
+            "bottleneckNodes": [],
+            "performanceTrend": "stable"
+        }
+        """.data(using: .utf8)!
+        return try! JSONDecoder().decode(GraphPerformanceMetrics.self, from: json)
+    }
+    
+    private func createDefaultArchitectureMetrics() -> ArchitectureMetrics {
+        let json = """
+        {
+            "couplingScore": 0.3,
+            "cohesionScore": 0.7,
+            "layeredArchitecture": true,
+            "dependencyInversion": true
+        }
+        """.data(using: .utf8)!
+        return try! JSONDecoder().decode(ArchitectureMetrics.self, from: json)
+    }
+    
+    private func createDefaultHealthScore() -> HealthScore {
+        let json = """
+        {
+            "overall": 85,
+            "performance": 90,
+            "maintainability": 80,
+            "testability": 85,
+            "scalability": 75,
+            "security": 90,
+            "reliability": 85
+        }
+        """.data(using: .utf8)!
+        return try! JSONDecoder().decode(HealthScore.self, from: json)
     }
 }

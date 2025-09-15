@@ -7,138 +7,153 @@
 
 import Foundation
 
-// MARK: - Token Validation Error
-public enum DITokenValidationError: Error, Sendable, LocalizedError {
-    case invalidTokenFormat
-    case invalidToken
-    case validationFailed(Error)
-    case networkError
-    case serverError(Int)
-    case tokenExpired
-    case tokenInactive
+@available(iOS 13.0, macOS 10.15, *)
+public protocol DITokenValidationProvider: Sendable {
+    func validateToken(_ token: String) async throws -> TokenValidationResult
+    func refreshToken(_ token: String) async throws -> String
+    func revokeToken(_ token: String) async throws
+}
+
+@available(iOS 13.0, macOS 10.15, *)
+public struct TokenValidationResult: Sendable, Codable {
+    public let isValid: Bool
+    public let expiresAt: Date?
+    public let permissions: [String]
+    public let userId: String?
+    public let plan: String?
     
-    public var errorDescription: String? {
-        switch self {
-        case .invalidTokenFormat:
-            return "Invalid token format. Token must be a 64-character hexadecimal string."
-        case .invalidToken:
-            return "Invalid token. Please check your token and try again."
-        case .validationFailed(let error):
-            return "Token validation failed: \(error.localizedDescription)"
-        case .networkError:
-            return "Network error during token validation. Please check your internet connection."
-        case .serverError(let code):
-            return "Server error during token validation (HTTP \(code)). Please try again later."
-        case .tokenExpired:
-            return "Token has expired. Please generate a new token from your dashboard."
-        case .tokenInactive:
-            return "Token is inactive. Please activate your token from your dashboard."
-        }
-    }
-    
-    public var recoverySuggestion: String? {
-        switch self {
-        case .invalidTokenFormat:
-            return "Please ensure your token is exactly 64 characters long and contains only hexadecimal characters (0-9, a-f)."
-        case .invalidToken:
-            return "Please visit the GoDareDI dashboard to generate a new token or verify your existing token."
-        case .validationFailed:
-            return "Please check your internet connection and try again. If the problem persists, contact support."
-        case .networkError:
-            return "Please check your internet connection and try again."
-        case .serverError:
-            return "The server is temporarily unavailable. Please try again later."
-        case .tokenExpired:
-            return "Please visit the GoDareDI dashboard to generate a new token."
-        case .tokenInactive:
-            return "Please visit the GoDareDI dashboard to activate your token."
-        }
+    public init(
+        isValid: Bool,
+        expiresAt: Date? = nil,
+        permissions: [String] = [],
+        userId: String? = nil,
+        plan: String? = nil
+    ) {
+        self.isValid = isValid
+        self.expiresAt = expiresAt
+        self.permissions = permissions
+        self.userId = userId
+        self.plan = plan
     }
 }
 
-// MARK: - Token Validation Helper
-public struct DITokenValidator: Sendable {
+@available(iOS 13.0, macOS 10.15, *)
+public final class DefaultDITokenValidationProvider: DITokenValidationProvider, Sendable {
+    public static let shared = DefaultDITokenValidationProvider()
     
-    // MARK: - Public Methods
-    public static func validateTokenFormat(_ token: String) -> Bool {
-        return token.count == 64 && token.allSatisfy { $0.isHexDigit }
-    }
+    private let baseURL = "https://api.godare.app"
+    private let session = URLSession.shared
     
-    public static func validateTokenWithFirebase(_ token: String) async throws -> Bool {
-        let url = URL(string: "https://us-central1-godaredi-60569.cloudfunctions.net/validateToken")!
+    private init() {}
+    
+    public func validateToken(_ token: String) async throws -> TokenValidationResult {
+        guard let url = URL(string: "\(baseURL)/validate-token") else {
+            throw DITokenValidationError.invalidURL
+        }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        let payload: [String: Any] = ["data": ["token": token]]
-        request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw DITokenValidationError.networkError
-        }
-        
-        switch httpResponse.statusCode {
-        case 200:
-            let result = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-            if let result = result, let resultData = result["result"] as? [String: Any] {
-                return resultData["valid"] as? Bool ?? false
+        do {
+            let (data, response) = try await session.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw DITokenValidationError.invalidResponse
             }
-            return false
-        case 404:
-            return false // Token not found
-        case 410:
-            throw DITokenValidationError.tokenExpired
-        case 403:
-            throw DITokenValidationError.tokenInactive
-        default:
-            throw DITokenValidationError.serverError(httpResponse.statusCode)
+            
+            switch httpResponse.statusCode {
+            case 200:
+                return try JSONDecoder().decode(TokenValidationResult.self, from: data)
+            case 401:
+                throw DITokenValidationError.invalidToken
+            case 403:
+                throw DITokenValidationError.tokenExpired
+            default:
+                throw DITokenValidationError.serverError(httpResponse.statusCode)
+            }
+        } catch {
+            if error is DITokenValidationError {
+                throw error
+            } else {
+                throw DITokenValidationError.networkError(error)
+            }
         }
     }
     
-    public static func validateToken(_ token: String) async throws {
-        // Validate format
-        guard validateTokenFormat(token) else {
-            throw DITokenValidationError.invalidTokenFormat
+    public func refreshToken(_ token: String) async throws -> String {
+        guard let url = URL(string: "\(baseURL)/refresh-token") else {
+            throw DITokenValidationError.invalidURL
         }
         
-        // Validate with Firebase
-        let isValid = try await validateTokenWithFirebase(token)
-        if !isValid {
-            throw DITokenValidationError.invalidToken
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        do {
+            let (data, response) = try await session.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                throw DITokenValidationError.refreshFailed
+            }
+            
+            let result = try JSONDecoder().decode(TokenRefreshResult.self, from: data)
+            return result.newToken
+        } catch {
+            if error is DITokenValidationError {
+                throw error
+            } else {
+                throw DITokenValidationError.networkError(error)
+            }
+        }
+    }
+    
+    public func revokeToken(_ token: String) async throws {
+        guard let url = URL(string: "\(baseURL)/revoke-token") else {
+            throw DITokenValidationError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        do {
+            let (_, response) = try await session.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                throw DITokenValidationError.revokeFailed
+            }
+        } catch {
+            if error is DITokenValidationError {
+                throw error
+            } else {
+                throw DITokenValidationError.networkError(error)
+            }
         }
     }
 }
 
-// MARK: - Token Info
-public struct DITokenInfo: Sendable {
-    public let token: String
-    public let appName: String
-    public let platform: String
-    public let bundleId: String
-    public let isActive: Bool
-    public let createdAt: Date
-    public let lastUsed: Date?
-    public let usageCount: Int
-    
-    public init(token: String, appName: String, platform: String, bundleId: String, isActive: Bool, createdAt: Date, lastUsed: Date? = nil, usageCount: Int = 0) {
-        self.token = token
-        self.appName = appName
-        self.platform = platform
-        self.bundleId = bundleId
-        self.isActive = isActive
-        self.createdAt = createdAt
-        self.lastUsed = lastUsed
-        self.usageCount = usageCount
-    }
+@available(iOS 13.0, macOS 10.15, *)
+private struct TokenRefreshResult: Codable {
+    let newToken: String
+    let expiresAt: Date
 }
 
-// MARK: - Token Validation Result
-public enum DITokenValidationResult: Sendable {
-    case valid(DITokenInfo)
-    case invalid(DITokenValidationError)
-    case expired
-    case inactive
+@available(iOS 13.0, macOS 10.15, *)
+public enum DITokenValidationError: Error, Sendable {
+    case invalidURL
+    case invalidResponse
+    case invalidToken
+    case tokenExpired
+    case refreshFailed
+    case revokeFailed
+    case serverError(Int)
     case networkError(Error)
+    case invalidTokenFormat
+    case validationFailed(Error)
 }

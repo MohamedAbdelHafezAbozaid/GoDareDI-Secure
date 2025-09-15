@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Secure Initialization System
+@available(iOS 13.0, macOS 10.15, *)
 @MainActor
 public class GoDareDISecureInit: Sendable {
     
@@ -114,6 +115,7 @@ public class GoDareDISecureInit: Sendable {
 // Note: alreadyInitialized case is now defined in GoDareDILicenseError enum
 
 // MARK: - Secure Container Extension
+@available(iOS 13.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Secure Registration
@@ -147,6 +149,7 @@ extension AdvancedDIContainerImpl {
 }
 
 // MARK: - Usage Tracking
+@available(iOS 13.0, macOS 10.15, *)
 extension GoDareDISecureInit {
     
     // MARK: - Track Usage

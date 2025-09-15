@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Registration Extensions
+@available(iOS 13.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Registration Methods
@@ -34,7 +35,11 @@ extension AdvancedDIContainerImpl {
         // 🔥 ANALYTICS: Track dependency registration
         Task {
             if let analyticsProvider = analyticsProvider {
-                await analyticsProvider.trackDependencyRegistration(key, scope: scope)
+                analyticsProvider.trackEvent("dependency_registered", parameters: [
+                    "type": key,
+                    "scope": scope.rawValue,
+                    "lifetime": lifetime.rawValue
+                ])
             }
         }
         
@@ -56,7 +61,11 @@ extension AdvancedDIContainerImpl {
         // 🔥 ANALYTICS: Track dependency registration
         Task {
             if let analyticsProvider = analyticsProvider {
-                await analyticsProvider.trackDependencyRegistration(key, scope: scope)
+                analyticsProvider.trackEvent("dependency_registered", parameters: [
+                    "type": key,
+                    "scope": scope.rawValue,
+                    "lifetime": lifetime.rawValue
+                ])
             }
         }
         

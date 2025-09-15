@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Scope Resolution Extensions
+@available(iOS 13.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Scope-Specific Resolution

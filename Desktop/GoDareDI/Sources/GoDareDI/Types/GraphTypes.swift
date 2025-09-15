@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 // MARK: - Graph Node and Edge Types
 public struct GraphNode: Hashable, Codable, Sendable {
@@ -65,6 +66,7 @@ public struct DependencyNode: Hashable, Codable, Sendable {
     let dependencies: [String]
     let layer: Int
     let isCircular: Bool
+    let position: CGPoint
     
     // Enhanced metadata
     public let type: NodeType
@@ -105,6 +107,7 @@ public enum NodeCategory: String, Codable, Sendable, CaseIterable {
     case presentation = "Presentation"
     case crossCutting = "Cross-Cutting"
     case external = "External"
+    case business = "Business"
     case unknown = "Unknown"
 }
 
@@ -205,6 +208,7 @@ public struct GraphAnalysis: Codable, Sendable {
     let analysisTime: TimeInterval
     let memoryUsage: Double
     let cacheEfficiency: Double
+    let isComplete: Bool
     
     // Enhanced analysis features
     public let complexityMetrics: ComplexityMetrics
@@ -215,7 +219,7 @@ public struct GraphAnalysis: Codable, Sendable {
     public let clusters: [NodeCluster]
     public let criticalPaths: [CriticalPath]
     
-    public init(hasCircularDependencies: Bool, totalNodes: Int, totalDependencies: Int, maxDepth: Int, circularDependencyChains: [[String]], analysisTime: TimeInterval, memoryUsage: Double, cacheEfficiency: Double, complexityMetrics: ComplexityMetrics, performanceMetrics: GraphPerformanceMetrics, architectureMetrics: ArchitectureMetrics, healthScore: HealthScore, recommendations: [Recommendation], clusters: [NodeCluster], criticalPaths: [CriticalPath]) {
+    public init(hasCircularDependencies: Bool, totalNodes: Int, totalDependencies: Int, maxDepth: Int, circularDependencyChains: [[String]], analysisTime: TimeInterval, memoryUsage: Double, cacheEfficiency: Double, isComplete: Bool, complexityMetrics: ComplexityMetrics, performanceMetrics: GraphPerformanceMetrics, architectureMetrics: ArchitectureMetrics, healthScore: HealthScore, recommendations: [Recommendation], clusters: [NodeCluster], criticalPaths: [CriticalPath]) {
         self.hasCircularDependencies = hasCircularDependencies
         self.totalNodes = totalNodes
         self.totalDependencies = totalDependencies
@@ -224,6 +228,7 @@ public struct GraphAnalysis: Codable, Sendable {
         self.analysisTime = analysisTime
         self.memoryUsage = memoryUsage
         self.cacheEfficiency = cacheEfficiency
+        self.isComplete = isComplete
         self.complexityMetrics = complexityMetrics
         self.performanceMetrics = performanceMetrics
         self.architectureMetrics = architectureMetrics

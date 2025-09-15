@@ -9,6 +9,7 @@ import Foundation
 import CryptoKit
 
 // MARK: - License Validation System
+@available(iOS 13.0, macOS 10.15, *)
 @MainActor
 public class GoDareDILicense: Sendable {
     
@@ -69,7 +70,17 @@ public class GoDareDILicense: Sendable {
         
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<(Data, URLResponse), Error>) in
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let data = data, let response = response {
+                    continuation.resume(returning: (data, response))
+                } else {
+                    continuation.resume(throwing: NSError(domain: "GoDareDI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+                }
+            }.resume()
+        }
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw GoDareDILicenseError.networkError
@@ -191,6 +202,7 @@ public enum GoDareDILicenseError: Error, LocalizedError {
 }
 
 // MARK: - Token Validation Extensions
+@available(iOS 13.0, macOS 10.15, *)
 extension GoDareDILicense {
     
     // MARK: - Token Status

@@ -26,13 +26,13 @@ import Foundation
 // DependencyGraph+Extensions, GraphAnalysis+Extensions
 
 // MARK: - Visualizer
-// DependencyVisualizer, VisualizationTypes, DiagramGenerators, SimpleDependencyGraphView
+// DependencyVisualizer, VisualizationTypes, DiagramGenerators, DependencyGraphView
 
 // MARK: - Configuration
 // DIContainerConfig
 
 // MARK: - Analytics & Monitoring
-// DIAnalyticsProvider, DICrashlyticsIntegration, DICrashlyticsConfig
+// DIAnalyticsProvider, DIDashboardSync, DICrashlyticsIntegration, DITokenValidation
 
 // MARK: - Dashboard Sync
 // DIDashboardSyncProvider, DependencyInfo, DashboardData, DefaultDashboardSyncProvider
@@ -63,14 +63,16 @@ import Foundation
      // 5. Use in your app
      let result = await repository.fetchData()
      
-     // 6. Visualize dependencies (SwiftUI) - requires valid token
-     SimpleDependencyGraphView(container: container)
+    // 6. Visualize dependencies (SwiftUI) - requires valid token
+    DependencyGraphView(container: container)
+    
+    // 7. Generate Mermaid diagram - requires valid token
+    // let visualizer = DependencyVisualizer(container: container)
+    // let mermaidDiagram = try await visualizer.visualizeAsync(type: .mermaid)
      
-     // 7. Generate Mermaid diagram - requires valid token
-     let visualizer = DependencyVisualizer(container: container)
-     let mermaidDiagram = try await visualizer.visualizeAsync(type: .mermaid)
-     
-     // 8. All analytics and monitoring data is automatically sent to your dashboard!
+     // 8. Analytics and monitoring (requires valid token)
+    // container.configureAnalytics()
+    // let dashboardData = try await DefaultDashboardSyncProvider.shared.getDashboardData()
      
  } catch GoDareDILicenseError.noLicenseKey {
      print("❌ No token found. Please set your GoDareDI token. Get your token from https://godare.app/")

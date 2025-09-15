@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Resolution Extensions
+@available(iOS 13.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Resolution
@@ -44,7 +45,10 @@ extension AdvancedDIContainerImpl {
                 
                 // 🔥 CRASHLYTICS: Track circular dependency
                 if let analyticsProvider = analyticsProvider {
-                    await analyticsProvider.trackCircularDependency(cycle)
+                    analyticsProvider.trackError(CircularDependencyException("Circular dependency detected", cycle: cycle), context: [
+                        "cycle": cycle,
+                        "component": "GoDareDI"
+                    ])
                 }
                 
                 throw CircularDependencyException("Circular dependency detected: \(cycle.joined(separator: " -> "))", cycle: cycle)
@@ -93,14 +97,13 @@ extension AdvancedDIContainerImpl {
             
             // 🔥 CRASHLYTICS: Track resolution error
             if let analyticsProvider = analyticsProvider {
-                let context = DependencyContext(
-                    dependencyType: key,
-                    scope: metadata.scope,
-                    lifetime: metadata.lifetime,
-                    resolutionStack: resolutionStack,
-                    containerState: getCurrentContainerState()
-                )
-                await analyticsProvider.trackError(error, context: context)
+                analyticsProvider.trackError(error, context: [
+                    "dependency_type": key,
+                    "scope": metadata.scope.rawValue,
+                    "lifetime": metadata.lifetime.rawValue,
+                    "resolution_stack": resolutionStack,
+                    "component": "GoDareDI"
+                ])
             }
             
             throw error
@@ -115,7 +118,13 @@ extension AdvancedDIContainerImpl {
         
         // 🔥 CRASHLYTICS: Track successful resolution
         if let analyticsProvider = analyticsProvider {
-            await analyticsProvider.trackDependencyResolution(key, duration: resolutionTime, success: true)
+            analyticsProvider.trackPerformance("dependency_resolution", value: resolutionTime * 1000, unit: "ms")
+            analyticsProvider.trackEvent("dependency_resolved", parameters: [
+                "type": key,
+                "scope": metadata.scope.rawValue,
+                "duration_ms": resolutionTime * 1000,
+                "success": true
+            ])
         }
         
         print("✅ Resolved: \(key) (took \(String(format: "%.3f", resolutionTime))s)")
@@ -123,14 +132,13 @@ extension AdvancedDIContainerImpl {
     }
     
     // MARK: - Helper Methods
-    private func getCurrentContainerState() -> ContainerState {
-        return ContainerState(
-            registeredServicesCount: factories.count,
-            activeScopes: Array(scopedInstances.keys),
-            memoryUsage: getMemoryUsage(),
-            currentScope: scopeId,
-            isPreloading: false // This would be tracked if we had preloading state
-        )
+    private func getCurrentContainerState() -> [String: Any] {
+        return [
+            "registeredServicesCount": factories.count,
+            "activeScopes": Array(scopedInstances.keys),
+            "currentScope": scopeId,
+            "isPreloading": false // This would be tracked if we had preloading state
+        ]
     }
     
     private func resolveInternalSync<T: Sendable>(key: String) throws -> T {
