@@ -166,6 +166,8 @@ EOF
         -configuration Release \
         -derivedDataPath DerivedData \
         -sdk $SDK \
+        SWIFT_COMPILATION_MODE=wholemodule \
+        SWIFT_OPTIMIZATION_LEVEL=-O \
         build
     
            # Extract the built library and Swift module files
