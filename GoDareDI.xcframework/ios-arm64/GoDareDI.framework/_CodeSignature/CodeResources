@@ -14,7 +14,7 @@
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		kOH6+V6mr783qxt3w18BFia4hJA=
+		ujVyGxgUr0mdJpPwFSm49bENBAk=
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		jac5pAEq804QtZHolS6ku6OwEGI=
+		0vbSHVt8XDyZhPlwYnZ9q5zhEzw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -50,11 +50,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kOH6+V6mr783qxt3w18BFia4hJA=
+			ujVyGxgUr0mdJpPwFSm49bENBAk=
 			</data>
 			<key>hash2</key>
 			<data>
-			YTuAl3n2SV7w5sWGLdhwrj9vlk05rHIvxTXZCu0/Lfo=
+			uSFD8KmiG8DhlKIUF0gW7DOX98QKFn0KLLZw6TN6EcQ=
 			</data>
 		</dict>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios.abi.json</key>
@@ -83,11 +83,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			jac5pAEq804QtZHolS6ku6OwEGI=
+			0vbSHVt8XDyZhPlwYnZ9q5zhEzw=
 			</data>
 			<key>hash2</key>
 			<data>
-			/7Z9RyIU8js+ES8xz6Y+QCO9tK25As+0VIxzJJwiE+U=
+			+DbZZM254spQygA66ozcQjk8CmejQDE6dJeDrPAaC4k=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

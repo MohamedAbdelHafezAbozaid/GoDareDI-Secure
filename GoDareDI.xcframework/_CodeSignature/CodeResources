@@ -6,7 +6,7 @@
 	<dict>
 		<key>ios-arm64/GoDareDI.framework/GoDareDI</key>
 		<data>
-		aZWuFiQG1/PyJxH2687KvbI0E/w=
+		PgqtY7jIKy3oTYyPSkCW0Fn/CDA=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		kOH6+V6mr783qxt3w18BFia4hJA=
+		ujVyGxgUr0mdJpPwFSm49bENBAk=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
@@ -28,9 +28,9 @@
 		<data>
 		c1TZ8Q0KMisx273wFc7+io+fS4w=
 		</data>
-		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		jac5pAEq804QtZHolS6ku6OwEGI=
+		0vbSHVt8XDyZhPlwYnZ9q5zhEzw=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeDirectory</key>
 		<data>
-		XjdU7g7mnMxO3qsQU6JgKH0pPME=
+		jX8WABiHP68KOsiHHq76F/2z+Rk=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -46,11 +46,11 @@
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		R8u787IsrLfbFWLTGppJHbS4Uws=
+		X4GMZi2b9IX74LJ4OeAKrwSTHiE=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		1qa4DG95bEoPwgeamfuu9eMJI10=
+		PRrugko5Av5MoQXZlyaWDnabZWA=
 		</data>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeSignature</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/GoDareDI</key>
 		<data>
-		rj0Zru8Tf63YnGSDvDgJf/cOnaU=
+		J5RV/CYn+luYGVBg93lBenLIgx8=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
 		<data>
@@ -70,11 +70,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		BY8LRauPEXrekli0JT4BQ8RhY/4=
+		CT5v8gb5HpIXtMpOX9gywdPYTNQ=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		C1qGqL/sWveLJkmG2Fnr5RZ7xTg=
+		f1EASZVu9uyCaajgMRFMhsG9jzQ=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -84,9 +84,9 @@
 		<data>
 		WxuBozKaHGwC1d+aJOzm1EY4Xy8=
 		</data>
-		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
+		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		tlBt0Cbo82c76jIcVfEcAdIkARU=
+		SlthS7NNyddUE3izILgQg8AgDCM=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -96,9 +96,9 @@
 		<data>
 		05mhrBGtXN1SE84vMGojPf27Wis=
 		</data>
-		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
+		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		VbvofUj1d+C9wMIy5EEOfmbG8uE=
+		AAXVcvC+08/hhB+ePSpwPPPnHT4=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
 		<data>
@@ -106,7 +106,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeDirectory</key>
 		<data>
-		KZwGgGH6bcG0R1qrJMbggl0bQPk=
+		4ME00eRsCqzPX3+z4E0qfJAyU5I=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -114,11 +114,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		Z6fUWAK/xltceuDJNYamZGnHAdg=
+		14sygUIKf3/AyrKgUWzL4HbyhxM=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<data>
-		tLazHLcl+nFnNnW6+wf1cBB8CVI=
+		MEyN2LrZt5SLiMoSE9jdF+Aw27g=
 		</data>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeSignature</key>
 		<data>
@@ -131,11 +131,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			aZWuFiQG1/PyJxH2687KvbI0E/w=
+			PgqtY7jIKy3oTYyPSkCW0Fn/CDA=
 			</data>
 			<key>hash2</key>
 			<data>
-			rjNTbv/1U/2huMbJLDyNhIs3gnlbhU8QQK1Vy+Rq398=
+			kwxiE/aVnMJEbYJI54wEMQI/W5YIcwdCvr+NaUwFw7c=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/Headers/GoDareDI.h</key>
@@ -164,11 +164,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kOH6+V6mr783qxt3w18BFia4hJA=
+			ujVyGxgUr0mdJpPwFSm49bENBAk=
 			</data>
 			<key>hash2</key>
 			<data>
-			YTuAl3n2SV7w5sWGLdhwrj9vlk05rHIvxTXZCu0/Lfo=
+			uSFD8KmiG8DhlKIUF0gW7DOX98QKFn0KLLZw6TN6EcQ=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.abi.json</key>
@@ -193,15 +193,15 @@
 			m7z+/agHN7pi0AA24WjlnWOr6tMn2d9LMdQO69mBSvo=
 			</data>
 		</dict>
-		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<key>ios-arm64/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jac5pAEq804QtZHolS6ku6OwEGI=
+			0vbSHVt8XDyZhPlwYnZ9q5zhEzw=
 			</data>
 			<key>hash2</key>
 			<data>
-			/7Z9RyIU8js+ES8xz6Y+QCO9tK25As+0VIxzJJwiE+U=
+			+DbZZM254spQygA66ozcQjk8CmejQDE6dJeDrPAaC4k=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/Modules/module.modulemap</key>
@@ -219,11 +219,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XjdU7g7mnMxO3qsQU6JgKH0pPME=
+			jX8WABiHP68KOsiHHq76F/2z+Rk=
 			</data>
 			<key>hash2</key>
 			<data>
-			46zR57oJlfHyO7bkXRVO+aWS3Co57s/tP8RZg3jQ1d4=
+			hnokL7sutOsX1k6SdYKxVX+OjnfQyTUsRQe4Lvmv0WI=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeRequirements</key>
@@ -241,22 +241,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			R8u787IsrLfbFWLTGppJHbS4Uws=
+			X4GMZi2b9IX74LJ4OeAKrwSTHiE=
 			</data>
 			<key>hash2</key>
 			<data>
-			gjUEVMJ5vwtZsi04ef4CUBHLRAyxwo4FEISswkKYHeY=
+			lbsuERqTe0DzIeB+1x5K5dxXGstopMhduaVgTJ4iwvw=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			1qa4DG95bEoPwgeamfuu9eMJI10=
+			PRrugko5Av5MoQXZlyaWDnabZWA=
 			</data>
 			<key>hash2</key>
 			<data>
-			h0+4dv9NhviGdeqUT6fXB0138gp61dcFLVfprrBK6Ns=
+			7W3pwMcRqr2qAAUglOZy3ng9gNqz4alb8LLb93l0sBY=
 			</data>
 		</dict>
 		<key>ios-arm64/GoDareDI.framework/_CodeSignature/CodeSignature</key>
@@ -274,11 +274,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rj0Zru8Tf63YnGSDvDgJf/cOnaU=
+			J5RV/CYn+luYGVBg93lBenLIgx8=
 			</data>
 			<key>hash2</key>
 			<data>
-			RKMmgraBNUEGNSAV+UexDC/60KACOa38ZcSQQ0re2xE=
+			mGT0Qpbkn6SwzBJBwUcmMDIdmucLMWFQreVWXLSNgJ4=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Headers/GoDareDI.h</key>
@@ -307,22 +307,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BY8LRauPEXrekli0JT4BQ8RhY/4=
+			CT5v8gb5HpIXtMpOX9gywdPYTNQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			kXiGK9vTEsjXjZ3xiKFAHjBz3DKb5B1luUFY0T/6zPk=
+			pBLbwtMH4VRF40Y2rFLvoqONucAviWeYIrtenvqYCsk=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			C1qGqL/sWveLJkmG2Fnr5RZ7xTg=
+			f1EASZVu9uyCaajgMRFMhsG9jzQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			HdX+HpDvzdOca3oalW6R9oYtU9R9Tg03gfElDLW6iVk=
+			lRTxs59UHjuVpucUV6VaGvoTXWl/Fs8hdCjNV5xxBqM=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -347,15 +347,15 @@
 			9GE6hg10bLy0UnIEWUmXal9QR0cYB/aINly7drgKyYE=
 			</data>
 		</dict>
-		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
+		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tlBt0Cbo82c76jIcVfEcAdIkARU=
+			SlthS7NNyddUE3izILgQg8AgDCM=
 			</data>
 			<key>hash2</key>
 			<data>
-			IuuRrsXK/PnTxUnc2x/4h1XWpUFkFh7Kq90Xa9JvaX4=
+			UrxzFpXYAWSCHUMdkbsF8wIj7v0LmHRHTpTainlqAvQ=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -380,15 +380,15 @@
 			n0zfG8Mddtmje/VWhp7zLuqIl3nYyIGchensgB22+78=
 			</data>
 		</dict>
-		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
+		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VbvofUj1d+C9wMIy5EEOfmbG8uE=
+			AAXVcvC+08/hhB+ePSpwPPPnHT4=
 			</data>
 			<key>hash2</key>
 			<data>
-			N3h0r6vAbXmclH+Ixr/SKbGV7HvNKfx0D4uVF2NNOko=
+			w1VQ5k1S/xoZZgTaDhusntMNppLgY16Vr0k/eLuwmNc=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/Modules/module.modulemap</key>
@@ -406,11 +406,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KZwGgGH6bcG0R1qrJMbggl0bQPk=
+			4ME00eRsCqzPX3+z4E0qfJAyU5I=
 			</data>
 			<key>hash2</key>
 			<data>
-			gij9OWuiv3gnTilLC7BbELM+BSi9pKkxPfMBIMzPMeM=
+			ukJSCL+W7yJHgLvlYfYJp2F/qP7q8dAc1sIDtLwCEeI=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeRequirements</key>
@@ -428,22 +428,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Z6fUWAK/xltceuDJNYamZGnHAdg=
+			14sygUIKf3/AyrKgUWzL4HbyhxM=
 			</data>
 			<key>hash2</key>
 			<data>
-			j2duy/1BbskvKtMYmO15kttrHfJp2ySTftfUKy1PBzk=
+			O7DdKytm2DRsvHFwQ0kbeaUbvG+2bVuXmwgbanf8RJc=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tLazHLcl+nFnNnW6+wf1cBB8CVI=
+			MEyN2LrZt5SLiMoSE9jdF+Aw27g=
 			</data>
 			<key>hash2</key>
 			<data>
-			jIB3HmJgCZ9ADy/If5KmMygxZTZG8NSST/HOEP9DJO0=
+			zBhhrdjrKa/xfabsHRw7VdkmiYDcY6u+6n0EhRahUwc=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/GoDareDI.framework/_CodeSignature/CodeSignature</key>

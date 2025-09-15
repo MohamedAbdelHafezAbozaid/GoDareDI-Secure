@@ -14,27 +14,13 @@ rm -rf GoDareDI.xcframework
 rm -rf Frameworks
 rm -rf "$SOURCE_DIR_NAME"
 
-# Source repository
-SOURCE_REPO="https://github.com/MohamedAbdelHafezAbozaid/GoDareDI.git"
-SOURCE_DIR_NAME="GoDareDI-Source"
-
-# Clone or update the source repository
-echo "📥 Fetching source code from GitHub..."
-if [ -d "$SOURCE_DIR_NAME" ]; then
-    echo "🔄 Updating existing repository..."
-    cd "$SOURCE_DIR_NAME"
-    git pull origin main
-    cd ..
-else
-    echo "📥 Cloning repository..."
-    git clone "$SOURCE_REPO" "$SOURCE_DIR_NAME"
-fi
+# Use local source directory
+SOURCE_DIR="../Sources/GoDareDI"
 
 # Verify source directory exists
-SOURCE_DIR="$SOURCE_DIR_NAME/Sources/GoDareDI"
 if [ ! -d "$SOURCE_DIR" ]; then
     echo "❌ Source directory not found: $SOURCE_DIR"
-    echo "❌ Make sure the repository was cloned successfully"
+    echo "❌ Make sure you're running this script from the GoDareDI-Secure-Distribution directory"
     exit 1
 fi
 
@@ -170,27 +156,31 @@ EOF
         -sdk $SDK \
         build
     
-    # Extract the built library and Swift module files
-    cd ..
-    if [ "$platform" = "ios-arm64" ]; then
-        # Copy the built library to the framework
-        cp DerivedData/Build/Products/Release-iphoneos/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
-        # Copy Swift module files
-        cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
-        # Copy any other generated files
-        if [ -d "DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework" ]; then
-            cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
-        fi
-    elif [ "$platform" = "ios-arm64_x86_64-simulator" ]; then
-        # Copy the built library to the framework
-        cp DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
-        # Copy Swift module files
-        cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
-        # Copy any other generated files
-        if [ -d "DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework" ]; then
-            cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
-        fi
-    fi
+           # Extract the built library and Swift module files
+           cd ..
+           if [ "$platform" = "ios-arm64" ]; then
+               # Copy the built library to the framework
+               cp DerivedData/Build/Products/Release-iphoneos/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
+               # Copy Swift module files
+               if [ -d "DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule" ]; then
+                   cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
+               fi
+               # Copy any other generated files
+               if [ -d "DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework" ]; then
+                   cp -r DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
+               fi
+           elif [ "$platform" = "ios-arm64_x86_64-simulator" ]; then
+               # Copy the built library to the framework
+               cp DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.o Frameworks/$platform/GoDareDI.framework/GoDareDI
+               # Copy Swift module files
+               if [ -d "DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule" ]; then
+                   cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
+               fi
+               # Copy any other generated files
+               if [ -d "DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework" ]; then
+                   cp -r DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework/* Frameworks/$platform/GoDareDI.framework/
+               fi
+           fi
     
     # Clean up
     rm -rf "$TEMP_PROJECT_DIR" DerivedData GoDareDI.xcarchive
@@ -232,7 +222,6 @@ codesign --display --verbose GoDareDI.xcframework
 # Step 6: Clean up
 echo "🧹 Step 6: Cleaning up..."
 rm -rf Frameworks
-rm -rf "$SOURCE_DIR_NAME"
 
 echo "✅ XCFramework Built from Actual Source Successfully!"
 echo "🔐 The XCFramework now includes ALL logic from:"

@@ -61,21 +61,29 @@ dependencies: [
 
 ## 🚀 Quick Start
 
-### Basic Usage
+### Basic Usage (Token Required)
 
 ```swift
 import GoDareDI
 
-// Create a container
-let container = AdvancedDIContainerImpl()
+// 1. Set your GoDareDI token (REQUIRED)
+GoDareDILicense.setToken("your-64-character-hex-token-here")
 
-// Register services
-try await container.register(NetworkService.self, scope: .singleton) { container in
-    return NetworkService()
+// 2. Initialize GoDareDI with secure token validation
+do {
+    let container = try await GoDareDISecureInit.initialize()
+    
+    // 3. Register services (automatically tracked)
+    try await container.register(NetworkService.self, scope: .singleton) { container in
+        return NetworkService()
+    }
+    
+    // 4. Resolve services (automatically tracked)
+    let networkService = try await container.resolve(NetworkService.self)
+    
+} catch {
+    print("❌ Error initializing GoDareDI: \(error)")
 }
-
-// Resolve services
-let networkService = try await container.resolve(NetworkService.self)
 ```
 
 ### Advanced Configuration with Dashboard Integration
@@ -83,74 +91,64 @@ let networkService = try await container.resolve(NetworkService.self)
 ```swift
 import GoDareDI
 
-// Create container with custom configuration
-let container = try await AdvancedDIContainerImpl(
-    config: DIContainerConfig(
-        maxCircularDependencyDepth: 3,
-        enableCircularDependencyDetection: true,
-        enableDependencyTracking: true,
-        enablePerformanceMetrics: true,
-        enableCaching: true
-    )
-)
+// 1. Set your GoDareDI token (REQUIRED)
+GoDareDILicense.setToken("your-64-character-hex-token-here")
 
-// Enable Dashboard Analytics (Premium Feature)
-// Get your token from: https://godare.app/
-container.enableAnalytics(token: "your-dashboard-token-here")
-container.enableDashboardSync(token: "your-dashboard-token-here")
-
-// Register with different scopes
-try await container.register(UserService.self, scope: .singleton) { container in
-    return UserService()
-}
-
-try await container.register(APIClient.self, scope: .transient) { container in
-    return APIClient()
+// 2. Initialize GoDareDI with custom configuration
+do {
+    let container = try await GoDareDISecureInit.initialize()
+    
+    // 3. Register with different scopes (automatically tracked)
+    try await container.register(UserService.self, scope: .singleton) { container in
+        return UserService()
+    }
+    
+    try await container.register(APIClient.self, scope: .transient) { container in
+        return APIClient()
+    }
+    
+    // 4. All analytics and dashboard sync happens automatically!
+    
+} catch {
+    print("❌ Error initializing GoDareDI: \(error)")
 }
 ```
 
 ### Dashboard Integration Examples
 
-#### Freemium Usage (No Token Required)
+#### Token-Based Usage (Token Required)
 ```swift
 import GoDareDI
 
-// Basic usage without dashboard
-let container = AdvancedDIContainerImpl()
+// 1. Set your GoDareDI token (REQUIRED)
+GoDareDILicense.setToken("your-64-character-hex-token-here")
 
-// Register services
-try await container.register(NetworkService.self, scope: .singleton) { container in
-    return NetworkService()
+// 2. Initialize GoDareDI with secure token validation
+do {
+    let container = try await GoDareDISecureInit.initialize()
+    
+    // 3. Register services (automatically tracked)
+    try await container.register(NetworkService.self, scope: .singleton) { container in
+        return NetworkService()
+    }
+    
+    try await container.register(DatabaseService.self, scope: .singleton) { container in
+        let networkService = try await container.resolve(NetworkService.self)
+        return DatabaseService(networkService: networkService)
+    }
+    
+    // 4. Resolve services (automatically tracked)
+    let databaseService = try await container.resolve(DatabaseService.self)
+    
+    // 5. All dependencies are automatically tracked and visualized in your dashboard!
+    
+} catch GoDareDILicenseError.noLicenseKey {
+    print("❌ No token found. Please set your GoDareDI token. Get your token from https://godare.app/")
+} catch GoDareDILicenseError.invalidLicense {
+    print("❌ Invalid token. Please check your token or generate a new one from https://godare.app/")
+} catch {
+    print("❌ Error initializing GoDareDI: \(error)")
 }
-
-// Resolve services
-let networkService = try await container.resolve(NetworkService.self)
-```
-
-#### Premium Usage (With Dashboard Token)
-```swift
-import GoDareDI
-
-// Premium usage with dashboard analytics
-let container = AdvancedDIContainerImpl()
-
-// Enable premium features with your dashboard token
-container.enableAnalytics(token: "your-premium-token-here")
-container.enableCrashlytics()
-container.enableDashboardSync(token: "your-premium-token-here")
-
-// Register complex service hierarchy
-try await container.register(NetworkService.self, scope: .singleton) { container in
-    return NetworkService()
-}
-
-try await container.register(DatabaseService.self, scope: .singleton) { container in
-    let networkService = try await container.resolve(NetworkService.self)
-    return DatabaseService(networkService: networkService)
-}
-
-// All dependencies will be tracked and visualized in your dashboard
-let databaseService = try await container.resolve(DatabaseService.self)
 ```
 
 ## 🎯 Usage Examples
@@ -225,21 +223,20 @@ struct ContentView: View {
 
 ## 🎨 Dashboard Features
 
-### Freemium vs Premium
+### Token-Based Access
 
-| Feature | Freemium | Premium |
-|---------|----------|---------|
-| Basic Dependency Injection | ✅ | ✅ |
-| Type-safe Service Resolution | ✅ | ✅ |
-| Multiple Scopes | ✅ | ✅ |
-| Circular Dependency Detection | ✅ | ✅ |
-| Up to 10 Services | ✅ | ❌ |
-| Analytics & Usage Tracking | ❌ | ✅ |
-| Performance Monitoring | ❌ | ✅ |
-| Dashboard Visualization | ❌ | ✅ |
-| Dependency Graph Export | ❌ | ✅ |
-| Unlimited Services | ❌ | ✅ |
-| Priority Support | ❌ | ✅ |
+| Feature | With Valid Token |
+|---------|------------------|
+| Basic Dependency Injection | ✅ |
+| Type-safe Service Resolution | ✅ |
+| Multiple Scopes | ✅ |
+| Circular Dependency Detection | ✅ |
+| Analytics & Usage Tracking | ✅ |
+| Performance Monitoring | ✅ |
+| Dashboard Visualization | ✅ |
+| Dependency Graph Export | ✅ |
+| Unlimited Services | ✅ |
+| Priority Support | ✅ |
 
 ### Dashboard Capabilities
 

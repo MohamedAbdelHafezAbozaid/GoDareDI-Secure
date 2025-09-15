@@ -14,11 +14,11 @@
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		BY8LRauPEXrekli0JT4BQ8RhY/4=
+		CT5v8gb5HpIXtMpOX9gywdPYTNQ=
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		C1qGqL/sWveLJkmG2Fnr5RZ7xTg=
+		f1EASZVu9uyCaajgMRFMhsG9jzQ=
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		tlBt0Cbo82c76jIcVfEcAdIkARU=
+		SlthS7NNyddUE3izILgQg8AgDCM=
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		VbvofUj1d+C9wMIy5EEOfmbG8uE=
+		AAXVcvC+08/hhB+ePSpwPPPnHT4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -66,22 +66,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BY8LRauPEXrekli0JT4BQ8RhY/4=
+			CT5v8gb5HpIXtMpOX9gywdPYTNQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			kXiGK9vTEsjXjZ3xiKFAHjBz3DKb5B1luUFY0T/6zPk=
+			pBLbwtMH4VRF40Y2rFLvoqONucAviWeYIrtenvqYCsk=
 			</data>
 		</dict>
 		<key>Modules/GoDareDI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			C1qGqL/sWveLJkmG2Fnr5RZ7xTg=
+			f1EASZVu9uyCaajgMRFMhsG9jzQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			HdX+HpDvzdOca3oalW6R9oYtU9R9Tg03gfElDLW6iVk=
+			lRTxs59UHjuVpucUV6VaGvoTXWl/Fs8hdCjNV5xxBqM=
 			</data>
 		</dict>
 		<key>Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -110,11 +110,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			tlBt0Cbo82c76jIcVfEcAdIkARU=
+			SlthS7NNyddUE3izILgQg8AgDCM=
 			</data>
 			<key>hash2</key>
 			<data>
-			IuuRrsXK/PnTxUnc2x/4h1XWpUFkFh7Kq90Xa9JvaX4=
+			UrxzFpXYAWSCHUMdkbsF8wIj7v0LmHRHTpTainlqAvQ=
 			</data>
 		</dict>
 		<key>Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -143,11 +143,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VbvofUj1d+C9wMIy5EEOfmbG8uE=
+			AAXVcvC+08/hhB+ePSpwPPPnHT4=
 			</data>
 			<key>hash2</key>
 			<data>
-			N3h0r6vAbXmclH+Ixr/SKbGV7HvNKfx0D4uVF2NNOko=
+			w1VQ5k1S/xoZZgTaDhusntMNppLgY16Vr0k/eLuwmNc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
