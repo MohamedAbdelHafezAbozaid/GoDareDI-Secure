@@ -95,9 +95,9 @@ EOF
     <key>CFBundlePackageType</key>
     <string>FMWK</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.35</string>
+    <string>1.0.36</string>
     <key>CFBundleVersion</key>
-    <string>35</string>
+    <string>36</string>
     <key>MinimumOSVersion</key>
     <string>$version</string>
     <key>CFBundleSupportedPlatforms</key>
@@ -159,6 +159,7 @@ EOF
         -sdk $SDK \
         SWIFT_COMPILATION_MODE=wholemodule \
         SWIFT_OPTIMIZATION_LEVEL=-O \
+        SWIFT_EMIT_MODULE_INTERFACE=YES \
         build
     
            # Extract the built library and Swift module files
@@ -169,10 +170,6 @@ EOF
            # Copy Swift module files
            if [ -d "temp_build_$platform/DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule" ]; then
                cp -r temp_build_$platform/DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
-               # Copy .swiftmodule files to .swiftinterface files for XCFramework compatibility
-               if [ -f "temp_build_$platform/DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule/arm64-apple-ios.swiftmodule" ]; then
-                   cp temp_build_$platform/DerivedData/Build/Products/Release-iphoneos/GoDareDI.swiftmodule/arm64-apple-ios.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios.swiftinterface
-               fi
            fi
            # Copy any other generated files
            if [ -d "temp_build_$platform/DerivedData/Build/Products/Release-iphoneos/GoDareDI.framework" ]; then
@@ -184,13 +181,6 @@ EOF
                # Copy Swift module files
                if [ -d "temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule" ]; then
                    cp -r temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/
-                   # Copy .swiftmodule files to .swiftinterface files for XCFramework compatibility
-                   if [ -f "temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftmodule" ]; then
-                       cp temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/arm64-apple-ios-simulator.swiftinterface
-                   fi
-                   if [ -f "temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule" ]; then
-                       cp temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftmodule Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/x86_64-apple-ios-simulator.swiftinterface
-                   fi
                fi
                # Copy any other generated files
                if [ -d "temp_build_$platform/DerivedData/Build/Products/Release-iphonesimulator/GoDareDI.framework" ]; then
