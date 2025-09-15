@@ -31,21 +31,15 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     internal var crashlyticsConfig: DICrashlyticsConfig?
     
     // MARK: - Factory Union Type
-    public enum FactoryType {
+    public enum FactoryType: Sendable {
         case sync(@Sendable (AdvancedDIContainer) throws -> Sendable)
         case async(@Sendable (AdvancedDIContainer) async throws -> Sendable)
     }
     
-    // MARK: - Initialization
+    // MARK: - Initialization (Token Required)
     public init(config: DIContainerConfig = DIContainerConfig()) {
         self.config = config
-    }
-    
-    // MARK: - Freemium Initialization (No Token Required)
-    public init(config: DIContainerConfig = DIContainerConfig(), enableFreemium: Bool = true) {
-        self.config = config
-        // No token validation for freemium mode
-        // Advanced features will be gated in the UI
+        // Token validation is handled by GoDareDISecureInit.initialize()
     }
     
     // MARK: - Analytics Initialization
@@ -59,16 +53,20 @@ public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
         self.analyticsProvider = DICrashlyticsIntegration(token: crashlyticsConfig.token)
     }
     
-    // MARK: - Direct Token Initialization
+    // MARK: - Direct Token Initialization (Deprecated - Use GoDareDISecureInit.initialize())
+    @available(*, deprecated, message: "Use GoDareDISecureInit.initialize() instead. Set token with GoDareDILicense.setToken() first.")
     public init(config: DIContainerConfig = DIContainerConfig(), token: String) async throws {
         self.config = config
+        
+        // Set token for validation
+        GoDareDILicense.setToken(token)
+        
+        // Validate token using the secure initialization
+        let _ = try await GoDareDILicense.validateToken()
         
         // 🔥 ANALYTICS: Create analytics config from token
         let crashlyticsConfig = DICrashlyticsConfig(token: token)
         self.crashlyticsConfig = crashlyticsConfig
-        
-        // 🔥 ANALYTICS: Validate token before initialization
-        try await validateToken(token)
         
         // 🔥 ANALYTICS: Initialize analytics provider
         self.analyticsProvider = DICrashlyticsIntegration(token: token)

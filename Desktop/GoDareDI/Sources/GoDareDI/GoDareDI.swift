@@ -40,70 +40,52 @@ import Foundation
 // MARK: - Usage Example
 /*
  
- // 1. Create a container (Freemium Mode - No Token Required)
- let container = AdvancedDIContainerImpl(
-     config: DIContainerConfig(
-         maxCircularDependencyDepth: 3,
-         enableCircularDependencyDetection: true,
-         enableDependencyTracking: true,
-         enablePerformanceMetrics: true,
-         enableCaching: true
-     ),
-     enableFreemium: true // This allows the SDK to work without a token
- )
-
- // OR create a container with token for Premium features
+ // 1. Set your GoDareDI token (REQUIRED)
+ GoDareDILicense.setToken("your-64-character-hex-token-here")
+ 
+ // 2. Initialize GoDareDI with secure token validation
  do {
-     let premiumContainer = try await AdvancedDIContainerImpl(
-         config: DIContainerConfig(
-             maxCircularDependencyDepth: 3,
-             enableCircularDependencyDetection: true,
-             enableDependencyTracking: true,
-             enablePerformanceMetrics: true,
-             enableCaching: true
-         ),
-         token: "your-sdk-token-here"
-     )
+     let container = try await GoDareDISecureInit.initialize()
      
-     // 2. Register your dependencies (automatically tracked)
-     await container.register(MyService.self, scope: .singleton) { container in
+     // 3. Register your dependencies (automatically tracked)
+     try await container.register(MyService.self, scope: .singleton) { container in
          return MyService()
      }
      
-     await container.register(MyRepository.self, scope: .transient) { container in
+     try await container.register(MyRepository.self, scope: .transient) { container in
          let service = try await container.resolve(MyService.self)
          return MyRepository(service: service)
      }
      
-     // 3. Resolve dependencies (automatically tracked)
+     // 4. Resolve dependencies (automatically tracked)
      let repository = try await container.resolve(MyRepository.self)
      
-     // 4. Use in your app
+     // 5. Use in your app
      let result = await repository.fetchData()
      
- // 5. Visualize dependencies (SwiftUI) - automatically detects token from container
- SimpleDependencyGraphView(container: container)
- 
- // 6. Generate Mermaid diagram - automatically detects token from container
- let visualizer = DependencyVisualizer(container: container)
- let mermaidDiagram = try await visualizer.visualizeAsync(type: .mermaid)
+     // 6. Visualize dependencies (SwiftUI) - requires valid token
+     SimpleDependencyGraphView(container: container)
      
-     // 7. All analytics and monitoring data is automatically sent to your dashboard!
+     // 7. Generate Mermaid diagram - requires valid token
+     let visualizer = DependencyVisualizer(container: container)
+     let mermaidDiagram = try await visualizer.visualizeAsync(type: .mermaid)
      
- } catch DITokenValidationError.invalidToken {
-     print("❌ Invalid token. Please check your token and try again.")
- } catch DITokenValidationError.invalidTokenFormat {
-     print("❌ Invalid token format. Token must be 64 characters long.")
- } catch DITokenValidationError.tokenExpired {
-     print("❌ Token has expired. Please generate a new token.")
+     // 8. All analytics and monitoring data is automatically sent to your dashboard!
+     
+ } catch GoDareDILicenseError.noLicenseKey {
+     print("❌ No token found. Please set your GoDareDI token. Get your token from https://godare.app/")
+ } catch GoDareDILicenseError.invalidLicense {
+     print("❌ Invalid token. Please check your token or generate a new one from https://godare.app/")
+ } catch GoDareDILicenseError.licenseExpired {
+     print("❌ Token has expired. Please generate a new token from https://godare.app/")
  } catch {
-     print("❌ Error initializing container: \(error)")
+     print("❌ Error initializing GoDareDI: \(error)")
  }
 
- // FREEMIUM MODEL:
- // - Basic DI functionality works without a token
- // - Advanced features (visualization, dashboard sync) require a token
- // - Users can upgrade to premium by entering a token
- // - The DependencyGraphView shows a subscription prompt when no token is present
- // - All backend services are abstracted and hidden from users
+ // TOKEN-REQUIRED MODEL:
+ // - Token is MANDATORY for all functionality
+ // - Get your token from https://godare.app/
+ // - All features require a valid token
+ // - Token validation happens on every initialization
+ // - All analytics and monitoring data is sent to your dashboard
  */

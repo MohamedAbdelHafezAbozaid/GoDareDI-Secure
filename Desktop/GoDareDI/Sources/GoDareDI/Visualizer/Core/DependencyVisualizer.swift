@@ -21,9 +21,9 @@ public class DependencyVisualizer: Sendable {
         self.container = container
         self.config = config
         
-        // Automatically detect token from container
-        if let containerImpl = container as? AdvancedDIContainerImpl {
-            self.token = containerImpl.token
+        // Try to get token from container if it's AdvancedDIContainerImpl
+        if let impl = container as? AdvancedDIContainerImpl {
+            self.token = impl.token
         } else {
             self.token = nil
         }

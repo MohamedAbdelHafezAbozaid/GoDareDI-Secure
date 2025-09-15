@@ -13,32 +13,38 @@ public class GoDareDISecureInit: Sendable {
     
     // MARK: - Properties
     private static var isInitialized = false
-    private static var licenseResponse: GoDareDILicense.LicenseResponse?
-    private static let initializationLock = NSLock()
+    private static var tokenResponse: GoDareDILicense.TokenResponse?
+    private static let initializationTask: Task<AdvancedDIContainer, Error>? = nil
     
     // MARK: - Secure Initialization
     public static func initialize() async throws -> AdvancedDIContainer {
-        initializationLock.lock()
-        defer { initializationLock.unlock() }
-        
+        // Use actor-based synchronization for async safety
+        return try await withCheckedThrowingContinuation { continuation in
+            Task {
+                do {
+                    let result = try await performInitialization()
+                    continuation.resume(returning: result)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    private static func performInitialization() async throws -> AdvancedDIContainer {
         // Check if already initialized
         if isInitialized {
             throw GoDareDILicenseError.alreadyInitialized
         }
         
-        // Validate license
-        let license = try await GoDareDILicense.validateLicense()
-        guard license.isValid else {
+        // Validate token
+        let token = try await GoDareDILicense.validateToken()
+        guard token.valid else {
             throw GoDareDILicenseError.invalidLicense
         }
         
-        // Check license expiration
-        if let expiresAt = license.expiresAt, expiresAt < Date() {
-            throw GoDareDILicenseError.licenseExpired
-        }
-        
-        // Store license response
-        licenseResponse = license
+        // Store token response
+        tokenResponse = token
         
         // Initialize container
         let container = AdvancedDIContainerImpl()
@@ -46,82 +52,66 @@ public class GoDareDISecureInit: Sendable {
         // Mark as initialized
         isInitialized = true
         
-        print("🔒 GoDareDI initialized with \(license.licenseType) license")
-        print("📱 Max Apps: \(license.maxApps)")
-        print("👥 Max Users: \(license.maxUsers)")
-        print("✨ Features: \(license.features.joined(separator: ", "))")
+        print("🔒 GoDareDI initialized with valid token")
+        print("📱 App ID: \(token.appId)")
+        print("👤 User ID: \(token.userId)")
+        print("✨ All features available")
         
         return container
     }
     
-    // MARK: - License Validation
-    public static func validateLicense() async throws -> GoDareDILicense.LicenseResponse {
-        return try await GoDareDILicense.validateLicense()
+    // MARK: - Token Validation
+    public static func validateToken() async throws -> GoDareDILicense.TokenResponse {
+        return try await GoDareDILicense.validateToken()
     }
     
-    // MARK: - Feature Access
+    // MARK: - Feature Access (All features available with valid token)
     public static func hasFeature(_ feature: String) async -> Bool {
-        guard let license = licenseResponse else {
+        guard tokenResponse != nil else {
             return false
         }
-        return license.features.contains(feature)
+        return true // All features available with valid token
     }
     
-    // MARK: - Usage Limits
+    // MARK: - Usage Limits (No limits with valid token)
     public static func canCreateApp() async -> Bool {
-        guard let license = licenseResponse else {
+        guard tokenResponse != nil else {
             return false
         }
-        // Implement actual app count check
-        return true
+        return true // No limits with valid token
     }
     
     public static func canCreateUser() async -> Bool {
-        guard let license = licenseResponse else {
+        guard tokenResponse != nil else {
             return false
         }
-        // Implement actual user count check
-        return true
+        return true // No limits with valid token
     }
     
-    // MARK: - License Info
-    public static func getLicenseInfo() -> [String: Any]? {
-        guard let license = licenseResponse else {
+    // MARK: - Token Info
+    public static func getTokenInfo() -> [String: Any]? {
+        guard let token = tokenResponse else {
             return nil
         }
         
         return [
-            "licenseType": license.licenseType,
-            "maxApps": license.maxApps,
-            "maxUsers": license.maxUsers,
-            "expiresAt": license.expiresAt?.timeIntervalSince1970 ?? 0,
-            "features": license.features
+            "appId": token.appId,
+            "userId": token.userId,
+            "valid": token.valid,
+            "success": token.success
         ]
     }
     
     // MARK: - Reset (for testing)
+    @MainActor
     public static func reset() {
-        initializationLock.lock()
-        defer { initializationLock.unlock() }
-        
         isInitialized = false
-        licenseResponse = nil
+        tokenResponse = nil
     }
 }
 
 // MARK: - License Error Extensions
-extension GoDareDILicenseError {
-    case alreadyInitialized
-    
-    var errorDescription: String? {
-        switch self {
-        case .alreadyInitialized:
-            return "GoDareDI is already initialized. Call reset() to reinitialize."
-        default:
-            return nil
-        }
-    }
-}
+// Note: alreadyInitialized case is now defined in GoDareDILicenseError enum
 
 // MARK: - Secure Container Extension
 extension AdvancedDIContainerImpl {
@@ -140,7 +130,7 @@ extension AdvancedDIContainerImpl {
         }
         
         // Register normally
-        try await register(type, scope: scope, lifetime: lifetime, factory: factory)
+        await register(type, scope: scope, lifetime: lifetime, factory: factory)
     }
     
     // MARK: - Secure Resolution

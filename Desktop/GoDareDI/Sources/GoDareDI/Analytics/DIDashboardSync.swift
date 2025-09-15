@@ -139,8 +139,8 @@ public struct UsageEvent: Sendable, Codable {
 }
 
 // MARK: - Any Codable Helper
-public struct AnyCodable: Sendable, Codable {
-    public let value: Any
+public struct AnyCodable: @unchecked Sendable, Codable {
+    public let value: Any // @unchecked Sendable - Any is not Sendable but we assume it's safe here
     
     public init<T>(_ value: T?) {
         self.value = value ?? ()

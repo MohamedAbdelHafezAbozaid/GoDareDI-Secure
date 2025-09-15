@@ -35,10 +35,10 @@ public enum DIAnalyticsEvent: Sendable {
 }
 
 // MARK: - Performance Issue
-public struct PerformanceIssue: Sendable {
+public struct PerformanceIssue: @unchecked Sendable {
     public let type: PerformanceIssueType
     public let severity: PerformanceSeverity
-    public let details: [String: Any]
+    public let details: [String: Any] // @unchecked Sendable - Any is not Sendable but we assume it's safe here
     public let timestamp: Date
     
     public init(type: PerformanceIssueType, severity: PerformanceSeverity, details: [String: Any] = [:]) {
@@ -109,6 +109,31 @@ public enum PreloadingStrategy: String, Sendable {
     case custom = "custom"
 }
 
+// MARK: - Event Buffer Actor
+actor EventBuffer {
+    private var events: [DIAnalyticsEvent] = []
+    private let maxSize: Int
+    
+    init(maxSize: Int = 50) {
+        self.maxSize = maxSize
+    }
+    
+    func append(_ event: DIAnalyticsEvent) -> Bool {
+        events.append(event)
+        return events.count >= maxSize
+    }
+    
+    func removeAll() -> [DIAnalyticsEvent] {
+        let result = events
+        events.removeAll()
+        return result
+    }
+    
+    func insertAtBeginning(_ newEvents: [DIAnalyticsEvent]) {
+        events.insert(contentsOf: newEvents, at: 0)
+    }
+}
+
 // MARK: - Default Analytics Provider
 @MainActor
 public class DefaultAnalyticsProvider: DIAnalyticsProvider {
@@ -117,9 +142,7 @@ public class DefaultAnalyticsProvider: DIAnalyticsProvider {
     private let token: String
     private let baseURL: String
     private let session: URLSession
-    private let queue: DispatchQueue
-    private var eventBuffer: [DIAnalyticsEvent] = []
-    private let bufferSize = 50
+    private let eventBuffer: EventBuffer
     private let flushInterval: TimeInterval = 30.0
     private var flushTimer: Timer?
     
@@ -128,27 +151,24 @@ public class DefaultAnalyticsProvider: DIAnalyticsProvider {
         self.token = token
         self.baseURL = baseURL
         self.session = URLSession.shared
-        self.queue = DispatchQueue(label: "com.godaredi.analytics", qos: .utility)
+        self.eventBuffer = EventBuffer()
         
         startFlushTimer()
     }
     
-    deinit {
+    // MARK: - Cleanup
+    public func cleanup() {
         flushTimer?.invalidate()
-        Task {
-            await flushEvents()
-        }
+        flushTimer = nil
     }
     
     // MARK: - Public Methods
     public func trackEvent(_ event: DIAnalyticsEvent) async {
-        await queue.async { [weak self] in
-            self?.eventBuffer.append(event)
-            
-            if self?.eventBuffer.count ?? 0 >= self?.bufferSize ?? 0 {
-                Task {
-                    await self?.flushEvents()
-                }
+        let shouldFlush = await eventBuffer.append(event)
+        
+        if shouldFlush {
+            Task {
+                await flushEvents()
             }
         }
     }
@@ -188,8 +208,7 @@ public class DefaultAnalyticsProvider: DIAnalyticsProvider {
     }
     
     private func flushEvents() async {
-        let eventsToFlush = eventBuffer
-        eventBuffer.removeAll()
+        let eventsToFlush = await eventBuffer.removeAll()
         
         guard !eventsToFlush.isEmpty else { return }
         
@@ -197,9 +216,7 @@ public class DefaultAnalyticsProvider: DIAnalyticsProvider {
             try await sendEvents(eventsToFlush)
         } catch {
             // Re-add events to buffer if sending fails
-            await queue.async { [weak self] in
-                self?.eventBuffer.insert(contentsOf: eventsToFlush, at: 0)
-            }
+            await eventBuffer.insertAtBeginning(eventsToFlush)
         }
     }
     

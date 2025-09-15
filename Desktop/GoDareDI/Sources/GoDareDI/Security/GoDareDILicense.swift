@@ -13,11 +13,11 @@ import CryptoKit
 public class GoDareDILicense: Sendable {
     
     // MARK: - Properties
-    private static let licenseServerURL = "https://godaredi-60569.web.app/api/validate-license"
-    private static let licenseKey = "GODARE_LICENSE_KEY"
+    private static let tokenServerURL = "https://us-central1-godaredi-60569.cloudfunctions.net/validateToken"
+    private static let tokenKey = "GODARE_TOKEN_KEY"
     
     // MARK: - License Types
-    public enum LicenseType: String, CaseIterable {
+    public enum LicenseType: String, CaseIterable, Sendable {
         case trial = "trial"
         case personal = "personal"
         case commercial = "commercial"
@@ -42,34 +42,29 @@ public class GoDareDILicense: Sendable {
         }
     }
     
-    // MARK: - License Response
-    public struct LicenseResponse: Codable {
-        let isValid: Bool
-        let licenseType: String
-        let maxApps: Int
-        let maxUsers: Int
-        let expiresAt: Date?
-        let features: [String]
-        let message: String?
+    // MARK: - Token Response
+    public struct TokenResponse: Codable, Sendable {
+        let success: Bool
+        let valid: Bool
+        let appId: String
+        let userId: String
     }
     
-    // MARK: - License Validation
-    public static func validateLicense() async throws -> LicenseResponse {
-        guard let licenseKey = getLicenseKey() else {
+    // MARK: - Token Validation
+    public static func validateToken() async throws -> TokenResponse {
+        guard let token = getToken() else {
             throw GoDareDILicenseError.noLicenseKey
         }
         
-        let url = URL(string: licenseServerURL)!
+        let url = URL(string: tokenServerURL)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(licenseKey)", forHTTPHeaderField: "Authorization")
         
         let payload: [String: Any] = [
-            "licenseKey": licenseKey,
-            "bundleId": Bundle.main.bundleIdentifier ?? "",
-            "appVersion": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "",
-            "platform": "ios"
+            "data": [
+                "token": token
+            ]
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
@@ -80,71 +75,76 @@ public class GoDareDILicense: Sendable {
             throw GoDareDILicenseError.networkError
         }
         
+        print("📡 Server response status: \(httpResponse.statusCode)")
+        
         switch httpResponse.statusCode {
         case 200:
-            let licenseResponse = try JSONDecoder().decode(LicenseResponse.self, from: data)
-            return licenseResponse
+            let tokenResponse = try JSONDecoder().decode(TokenResponse.self, from: data)
+            return tokenResponse
+        case 400:
+            print("❌ Server validation failed: Server error 400")
+            throw GoDareDILicenseError.invalidLicense
         case 401:
             throw GoDareDILicenseError.invalidLicense
         case 403:
             throw GoDareDILicenseError.licenseExpired
         default:
+            print("❌ Server validation failed: Network error - Server error during token validation (HTTP \(httpResponse.statusCode)). Please try again later.")
             throw GoDareDILicenseError.serverError
         }
     }
     
-    // MARK: - Local License Validation
-    public static func validateLocalLicense() -> Bool {
-        guard let licenseKey = getLicenseKey() else { return false }
+    // MARK: - Local Token Validation
+    public static func validateLocalToken() -> Bool {
+        guard let token = getToken() else { return false }
         
-        // Basic license key format validation
-        let licensePattern = "^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$"
-        let regex = try? NSRegularExpression(pattern: licensePattern)
-        let range = NSRange(location: 0, length: licenseKey.utf16.count)
+        // Basic token format validation (64 character hex string)
+        let tokenPattern = "^[a-f0-9]{64}$"
+        let regex = try? NSRegularExpression(pattern: tokenPattern, options: .caseInsensitive)
+        let range = NSRange(location: 0, length: token.utf16.count)
         
-        return regex?.firstMatch(in: licenseKey, options: [], range: range) != nil
+        return regex?.firstMatch(in: token, options: [], range: range) != nil
     }
     
-    // MARK: - License Key Management
-    private static func getLicenseKey() -> String? {
+    // MARK: - Token Management
+    private static func getToken() -> String? {
         // Check environment variable first
-        if let envKey = ProcessInfo.processInfo.environment[licenseKey] {
-            return envKey
+        if let envToken = ProcessInfo.processInfo.environment[tokenKey] {
+            return envToken
         }
         
         // Check UserDefaults
-        if let userDefaultsKey = UserDefaults.standard.string(forKey: licenseKey) {
-            return userDefaultsKey
+        if let userDefaultsToken = UserDefaults.standard.string(forKey: tokenKey) {
+            return userDefaultsToken
         }
         
         // Check Info.plist
-        if let infoPlistKey = Bundle.main.infoDictionary?[licenseKey] as? String {
-            return infoPlistKey
+        if let infoPlistToken = Bundle.main.infoDictionary?[tokenKey] as? String {
+            return infoPlistToken
         }
         
         return nil
     }
     
-    public static func setLicenseKey(_ key: String) {
-        UserDefaults.standard.set(key, forKey: licenseKey)
+    public static func setToken(_ token: String) {
+        UserDefaults.standard.set(token, forKey: tokenKey)
     }
     
-    // MARK: - Feature Validation
+    // MARK: - Feature Validation (All features available with valid token)
     public static func hasFeature(_ feature: String) async -> Bool {
         do {
-            let response = try await validateLicense()
-            return response.features.contains(feature)
+            let _ = try await validateToken()
+            return true // All features available with valid token
         } catch {
             return false
         }
     }
     
-    // MARK: - Usage Limits
+    // MARK: - Usage Limits (No limits with valid token)
     public static func canCreateApp() async -> Bool {
         do {
-            let response = try await validateLicense()
-            // Check if user has reached app limit
-            return true // Implement actual app count check
+            let _ = try await validateToken()
+            return true // No limits with valid token
         } catch {
             return false
         }
@@ -152,16 +152,15 @@ public class GoDareDILicense: Sendable {
     
     public static func canCreateUser() async -> Bool {
         do {
-            let response = try await validateLicense()
-            // Check if user has reached user limit
-            return true // Implement actual user count check
+            let _ = try await validateToken()
+            return true // No limits with valid token
         } catch {
             return false
         }
     }
 }
 
-// MARK: - License Errors
+// MARK: - Token Errors
 public enum GoDareDILicenseError: Error, LocalizedError {
     case noLicenseKey
     case invalidLicense
@@ -169,56 +168,50 @@ public enum GoDareDILicenseError: Error, LocalizedError {
     case networkError
     case serverError
     case featureNotAvailable
+    case alreadyInitialized
     
     public var errorDescription: String? {
         switch self {
         case .noLicenseKey:
-            return "No license key found. Please set your license key."
+            return "No token found. Please set your GoDareDI token. Get your token from https://godare.app/"
         case .invalidLicense:
-            return "Invalid license key. Please check your license key."
+            return "Invalid token. Please check your token or generate a new one from https://godare.app/"
         case .licenseExpired:
-            return "License has expired. Please renew your license."
+            return "Token has expired. Please generate a new token from https://godare.app/"
         case .networkError:
             return "Network error. Please check your internet connection."
         case .serverError:
-            return "Server error. Please try again later."
+            return "Server error during token validation (HTTP 400). Please try again later."
         case .featureNotAvailable:
-            return "This feature is not available in your license."
+            return "This feature requires a valid token. Get your token from https://godare.app/"
+        case .alreadyInitialized:
+            return "GoDareDI is already initialized. Call reset() to reinitialize."
         }
     }
 }
 
-// MARK: - License Validation Extensions
+// MARK: - Token Validation Extensions
 extension GoDareDILicense {
     
-    // MARK: - Trial License
-    public static func startTrial() async throws -> LicenseResponse {
-        let trialKey = "TRIAL-\(UUID().uuidString.prefix(8).uppercased())"
-        setLicenseKey(trialKey)
-        return try await validateLicense()
-    }
-    
-    // MARK: - License Status
-    public static func getLicenseStatus() async -> String {
+    // MARK: - Token Status
+    public static func getTokenStatus() async -> String {
         do {
-            let response = try await validateLicense()
-            return "Valid \(response.licenseType) license"
+            let response = try await validateToken()
+            return "Valid token for app: \(response.appId)"
         } catch {
-            return "Invalid license: \(error.localizedDescription)"
+            return "Invalid token: \(error.localizedDescription)"
         }
     }
     
-    // MARK: - License Info
-    public static func getLicenseInfo() async -> [String: Any] {
+    // MARK: - Token Info
+    public static func getTokenInfo() async -> [String: Any] {
         do {
-            let response = try await validateLicense()
+            let response = try await validateToken()
             return [
-                "isValid": response.isValid,
-                "licenseType": response.licenseType,
-                "maxApps": response.maxApps,
-                "maxUsers": response.maxUsers,
-                "expiresAt": response.expiresAt?.timeIntervalSince1970 ?? 0,
-                "features": response.features
+                "isValid": response.valid,
+                "appId": response.appId,
+                "userId": response.userId,
+                "success": response.success
             ]
         } catch {
             return [

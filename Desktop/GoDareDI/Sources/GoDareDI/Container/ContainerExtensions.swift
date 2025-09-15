@@ -106,7 +106,7 @@ extension AdvancedDIContainer {
 }
 
 // MARK: - Container Factory
-public struct ContainerFactory {
+public struct ContainerFactory: Sendable {
     
     public static func create(
         config: DIContainerConfig = DIContainerConfig(),
