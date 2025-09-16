@@ -1,276 +1,192 @@
-# GoDareDI
+# GODareDI - Encrypted Dependency Injection Framework
 
-**Professional Dependency Injection Framework for Swift**
+🔐 **Encrypted Binary XCFramework** for iOS dependency injection with Swift Package Manager support.
 
-A powerful, type-safe dependency injection framework designed for modern Swift applications. GoDareDI provides a clean, intuitive API for managing dependencies with advanced features like circular dependency detection, performance metrics, and comprehensive analytics.
+## Features
 
-## 🎯 GoDareDI Dashboard
+- 🔒 **Encrypted Binary**: Source code is protected and encrypted
+- 📱 **iOS Support**: iOS 13.0+ (device and simulator)
+- 🏗️ **Dependency Injection**: Advanced DI container with multiple scopes
+- 📊 **Visualization**: Built-in dependency graph visualization
+- 🚀 **SPM Ready**: Swift Package Manager integration
+- 📈 **Analytics**: Built-in analytics support
+- ⚡ **Performance**: Optimized for production use
 
-**Monitor, Analyze & Optimize Your Dependencies**
-
-[![GoDareDI Dashboard](https://img.shields.io/badge/GoDareDI-Dashboard-blue?style=for-the-badge&logo=swift)](https://godare.app/)
-
-**🔗 [https://godare.app/](https://godare.app/)**
-
-### What You'll Get:
-
-- 📊 **Real-time Dependency Analysis** - Monitor your app's dependency injection patterns in real-time
-- 🎨 **12 Visualization Types** - Mermaid, Graphviz, JSON, Tree, Network, and more
-- 📈 **Performance Metrics** - Track complexity, coupling, and circular dependencies
-- 🔐 **Token Management** - Secure API tokens for each application
-- 📱 **iOS Platform Support** - Native iOS dependency injection analytics
-
-### 🚀 Get Started with Dashboard:
-
-1. **Sign up** at [https://godare.app/](https://godare.app/)
-2. **Create your first app** and generate an API token
-3. **Enable analytics** in your GoDareDI implementation
-4. **Monitor and optimize** your dependency architecture
-
-> **💡 Pro Tip**: The dashboard provides advanced analytics, dependency visualization, and performance insights that help you build better, more maintainable applications.
-
-## ✨ Features
-
-- 🔒 **Type-Safe**: Full Swift type system integration
-- 🚀 **High Performance**: Optimized dependency resolution
-- 🔄 **Circular Dependency Detection**: Automatic detection and prevention
-- 📊 **Analytics & Metrics**: Built-in performance monitoring
-- 🎯 **Multiple Scopes**: Singleton, transient, and custom scopes
-- 🔧 **Easy Integration**: Simple Swift Package Manager integration
-- 📱 **Cross-Platform**: iOS, macOS, tvOS, watchOS support
-
-## 📦 Installation
+## Installation
 
 ### Swift Package Manager
 
-Add GoDareDI to your project using Swift Package Manager:
+Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git", from: "1.0.28")
+    .package(url: "https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git", from: "2.0.0")
 ]
 ```
 
-### Xcode Integration
+Or add it directly in Xcode:
+1. File → Add Package Dependencies
+2. Enter: `https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git`
+3. Select version `2.0.0` or later
 
-1. Open your Xcode project
-2. Go to **File** → **Add Package Dependencies**
-3. Enter the repository URL: `https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure.git`
-4. Click **Add Package**
-5. Select **GoDareDI** and click **Add Package**
+## Quick Start
 
-## 🚀 Quick Start
-
-### Basic Usage (Token Required)
+### 1. Initialize the Container
 
 ```swift
-import GoDareDI
+import GODareDI
 
-// 1. Set your GoDareDI token (REQUIRED)
-GoDareDILicense.setToken("your-64-character-hex-token-here")
+// Initialize the container
+let container = SPMInitialization.initialize()
 
-// 2. Initialize GoDareDI with secure token validation
-do {
-    let container = try await GoDareDISecureInit.initialize()
-    
-    // 3. Register services (automatically tracked)
-    try await container.register(NetworkService.self, scope: .singleton) { container in
-        return NetworkService()
-    }
-    
-    // 4. Resolve services (automatically tracked)
-    let networkService = try await container.resolve(NetworkService.self)
-    
-} catch {
-    print("❌ Error initializing GoDareDI: \(error)")
+// Configure default modules
+SPMInitialization.configureDefaultModules(container: container)
+```
+
+### 2. Register Dependencies
+
+```swift
+// Register a service as singleton
+container.register(NetworkService.self, scope: .singleton) {
+    NetworkService()
+}
+
+// Register with a tag
+container.register(UserService.self, scope: .transient, tag: "api") {
+    UserService()
 }
 ```
 
-### Advanced Configuration with Dashboard Integration
+### 3. Resolve Dependencies
 
 ```swift
-import GoDareDI
+// Resolve a service
+let networkService: NetworkService = container.resolve(NetworkService.self)
 
-// 1. Set your GoDareDI token (REQUIRED)
-GoDareDILicense.setToken("your-64-character-hex-token-here")
-
-// 2. Initialize GoDareDI with custom configuration
-do {
-    let container = try await GoDareDISecureInit.initialize()
-    
-    // 3. Register with different scopes (automatically tracked)
-    try await container.register(UserService.self, scope: .singleton) { container in
-        return UserService()
-    }
-    
-    try await container.register(APIClient.self, scope: .transient) { container in
-        return APIClient()
-    }
-    
-    // 4. All analytics and dashboard sync happens automatically!
-    
-} catch {
-    print("❌ Error initializing GoDareDI: \(error)")
-}
+// Resolve with tag
+let userService: UserService = container.resolve(UserService.self, tag: "api")
 ```
 
-### Dashboard Integration Examples
-
-#### Token-Based Usage (Token Required)
-```swift
-import GoDareDI
-
-// 1. Set your GoDareDI token (REQUIRED)
-GoDareDILicense.setToken("your-64-character-hex-token-here")
-
-// 2. Initialize GoDareDI with secure token validation
-do {
-    let container = try await GoDareDISecureInit.initialize()
-    
-    // 3. Register services (automatically tracked)
-    try await container.register(NetworkService.self, scope: .singleton) { container in
-        return NetworkService()
-    }
-    
-    try await container.register(DatabaseService.self, scope: .singleton) { container in
-        let networkService = try await container.resolve(NetworkService.self)
-        return DatabaseService(networkService: networkService)
-    }
-    
-    // 4. Resolve services (automatically tracked)
-    let databaseService = try await container.resolve(DatabaseService.self)
-    
-    // 5. All dependencies are automatically tracked and visualized in your dashboard!
-    
-} catch GoDareDILicenseError.noLicenseKey {
-    print("❌ No token found. Please set your GoDareDI token. Get your token from https://godare.app/")
-} catch GoDareDILicenseError.invalidLicense {
-    print("❌ Invalid token. Please check your token or generate a new one from https://godare.app/")
-} catch {
-    print("❌ Error initializing GoDareDI: \(error)")
-}
-```
-
-## 🎯 Usage Examples
-
-### Service Registration
+### 4. Dependency Scopes
 
 ```swift
-// Singleton service
-try await container.register(DatabaseService.self, scope: .singleton) { container in
-    return DatabaseService()
-}
-
-// Transient service
-try await container.register(HTTPClient.self, scope: .transient) { container in
-    return HTTPClient()
-}
-
-// Custom scope
-try await container.register(CacheService.self, scope: .custom("session")) { container in
-    return CacheService()
-}
+// Available scopes
+.singleton    // Single instance for the entire app lifecycle
+.transient    // New instance every time
+.scoped       // Single instance per scope
+.application  // Single instance per application session
+.session      // Single instance per user session
+.request      // Single instance per request
 ```
 
-### Service Resolution
-
-```swift
-// Resolve services
-let database = try await container.resolve(DatabaseService.self)
-let httpClient = try await container.resolve(HTTPClient.self)
-
-// Resolve with custom scope
-let sessionCache = try await container.resolve(CacheService.self, scope: .custom("session"))
-```
+## Advanced Usage
 
 ### Dependency Graph Visualization
 
 ```swift
 import SwiftUI
+import GODareDI
 
 struct ContentView: View {
-    @StateObject private var container = AdvancedDareDI()
+    let container: AdvancedDIContainer
     
     var body: some View {
-        NavigationView {
-            DependencyGraphView(container: container.container)
-                .navigationTitle("Dependencies")
+        VStack {
+            // Your app content
+            Text("My App")
+            
+            // Dependency graph visualization
+            DependencyGraphView(container: container)
         }
     }
 }
 ```
 
-## 🔧 Requirements
+### Custom Modules
 
-- iOS 13.0+ / macOS 10.15+ / tvOS 13.0+ / watchOS 6.0+
-- Swift 5.9+
-- Xcode 15.0+
+```swift
+struct MyModule: DIModule {
+    func configure(container: AdvancedDIContainer) {
+        container.register(MyService.self, scope: .singleton) {
+            MyService()
+        }
+    }
+}
 
-## 📚 Documentation
+// Register the module
+container.register(MyModule.self, scope: .singleton) {
+    MyModule()
+}
+```
 
-### Core Concepts
+### Analytics Integration
 
-- **Container**: Manages all registered dependencies
-- **Scope**: Defines the lifetime of a dependency
-- **Resolution**: The process of creating and returning dependencies
-- **Registration**: The process of defining how to create dependencies
+```swift
+// Register analytics provider
+container.register(AnalyticsProvider.self, scope: .singleton) {
+    DefaultAnalyticsProvider()
+}
 
-### Scopes
+// Use analytics
+let analytics: AnalyticsProvider = container.resolve(AnalyticsProvider.self)
+analytics.track(event: "user_action", properties: ["action": "login"])
+```
 
-- **`.singleton`**: Single instance shared across the application
-- **`.transient`**: New instance created for each resolution
-- **`.custom(String)`**: Custom scope for specific use cases
+## Error Handling
 
-## 🎨 Dashboard Features
+```swift
+do {
+    let service: MyService = container.resolve(MyService.self)
+    // Use service
+} catch DIError.typeNotFound {
+    print("Service not registered")
+} catch DIError.resolutionFailed {
+    print("Failed to resolve service")
+} catch {
+    print("Unknown error: \(error)")
+}
+```
 
-### Token-Based Access
+## Requirements
 
-| Feature | With Valid Token |
-|---------|------------------|
-| Basic Dependency Injection | ✅ |
-| Type-safe Service Resolution | ✅ |
-| Multiple Scopes | ✅ |
-| Circular Dependency Detection | ✅ |
-| Analytics & Usage Tracking | ✅ |
-| Performance Monitoring | ✅ |
-| Dashboard Visualization | ✅ |
-| Dependency Graph Export | ✅ |
-| Unlimited Services | ✅ |
-| Priority Support | ✅ |
+- iOS 13.0+
+- Xcode 12.0+
+- Swift 5.3+
 
-### Dashboard Capabilities
+## Architecture
 
-- **📊 Real-time Analytics**: Monitor dependency resolution performance
-- **🎨 12 Visualization Types**: Multiple ways to view your dependency graph
-- **📈 Performance Metrics**: Track complexity, coupling, and circular dependencies
-- **🔐 Secure Token Management**: Enterprise-grade security for your applications
-- **📱 Cross-Platform Support**: iOS, Android, Web, and Desktop (coming soon)
+The framework provides:
 
-## 🆘 Support
+- **AdvancedDIContainer**: Main dependency injection container
+- **DIModule**: Protocol for modular configuration
+- **DependencyScope**: Enumeration of dependency scopes
+- **SPMInitialization**: Helper for Swift Package Manager integration
+- **DependencyGraphView**: SwiftUI view for dependency visualization
+- **AnalyticsProvider**: Protocol for analytics integration
 
-- **Dashboard**: [https://godare.app/](https://godare.app/) - Sign up for analytics and support
-- **Issues**: [GitHub Issues](https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure/issues)
-- **Email**: bota78336@gmail.com
-- **Documentation**: See inline code documentation
+## Security
 
-## 📄 License
+🔐 **This framework uses encrypted binary artifacts to protect the source code.** The implementation details are not accessible, ensuring your intellectual property remains secure while providing a robust dependency injection solution.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Migration from v1.x
 
-## 🎉 Acknowledgments
+If you're upgrading from v1.x:
 
-Built with ❤️ for the Swift community. GoDareDI is designed to make dependency injection simple, safe, and powerful for modern Swift applications.
+1. **Package Name**: Change from `GoDareDI` to `GODareDI`
+2. **Import Statement**: Update your imports
+3. **Initialization**: Use `SPMInitialization.initialize()` for new projects
+4. **iOS Version**: Minimum iOS version is now 13.0
+
+## Support
+
+For issues and feature requests, please use the GitHub Issues page.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-## 🚀 Ready to Get Started?
-
-1. **📦 Install GoDareDI** using Swift Package Manager
-2. **🎯 Sign up** at [https://godare.app/](https://godare.app/) for advanced analytics
-3. **🔧 Integrate** the framework into your project
-4. **📊 Monitor** your dependencies with the dashboard
-5. **🎨 Visualize** your architecture with 12 different visualization types
-
-**Experience the power of clean dependency management with professional analytics!** 🚀
-
-[![GoDareDI Dashboard](https://img.shields.io/badge/Get_Started-Dashboard-green?style=for-the-badge&logo=swift)](https://godare.app/)
+**Version**: 2.0.0  
+**Last Updated**: September 2024  
+**Author**: Mohamed Abdel Hafez Abozaid
