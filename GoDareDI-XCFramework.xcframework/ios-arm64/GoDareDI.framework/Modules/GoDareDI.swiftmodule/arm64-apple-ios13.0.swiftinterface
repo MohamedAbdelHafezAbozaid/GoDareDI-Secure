@@ -1,0 +1,47 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -warn-concurrency -warn-implicit-overrides -enable-actor-data-race-checks
+import Foundation
+import Swift
+@_exported import Foundation
+public protocol AdvancedDIContainer {
+  func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping () -> T)
+  func resolve<T>(_ type: T.Type) -> T
+  func resolve<T>(_ type: T.Type, tag: String) -> T
+  func unregister<T>(_ type: T.Type)
+  func unregister<T>(_ type: T.Type, tag: String)
+  func clear()
+  func has<T>(_ type: T.Type) -> Bool
+  func has<T>(_ type: T.Type, tag: String) -> Bool
+  func getRegisteredTypes() -> [String]
+  func getRegisteredTypes(for tag: String) -> [String]
+}
+public protocol DIModule {
+  func configure(container: GoDareDI.AdvancedDIContainer)
+}
+public enum DependencyScope {
+  case singleton
+  case transient
+  case scoped
+  case application
+  case session
+  case request
+}
+public enum StorageKey {
+  case token
+  case phoneNumber
+  case authorization
+}
+public class GoDareDIContainer : GoDareDI.AdvancedDIContainer {
+  public init()
+  public func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping () -> T)
+  public func resolve<T>(_ type: T.Type) -> T
+  public func resolve<T>(_ type: T.Type, tag: String) -> T
+  public func unregister<T>(_ type: T.Type)
+  public func unregister<T>(_ type: T.Type, tag: String)
+  public func clear()
+  public func has<T>(_ type: T.Type) -> Bool
+  public func has<T>(_ type: T.Type, tag: String) -> Bool
+  public func getRegisteredTypes() -> [String]
+  public func getRegisteredTypes(for tag: String) -> [String]
+}

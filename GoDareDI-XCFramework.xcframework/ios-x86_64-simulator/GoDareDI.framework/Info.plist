@@ -15,18 +15,18 @@
     <key>CFBundlePackageType</key>
     <string>FMWK</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.42</string>
+    <string>1.0.45</string>
     <key>CFBundleVersion</key>
-    <string>42</string>
+    <string>45</string>
     <key>MinimumOSVersion</key>
     <string>13.0</string>
     <key>CFBundleSupportedPlatforms</key>
     <array>
-        <string>iPhoneOS</string>
+        <string>iPhoneSimulator</string>
     </array>
     <key>DTPlatformName</key>
-    <string>iphoneos</string>
+    <string>iphonesimulator</string>
     <key>DTSDKName</key>
-    <string>iphoneos</string>
+    <string>iphonesimulator</string>
 </dict>
 </plist>
