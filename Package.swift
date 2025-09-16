@@ -17,7 +17,7 @@ let package = Package(
         // 🔒 BINARY TARGET - SOURCE CODE IS PROTECTED
         .binaryTarget(
             name: "GoDareDI",
-            path: "GoDareDI.xcframework"
+            path: "GoDareDI-XCFramework.xcframework"
         ),
     ]
 )
