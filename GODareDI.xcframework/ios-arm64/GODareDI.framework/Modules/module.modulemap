@@ -1,5 +1,0 @@
-framework module GODareDI {
-    umbrella header "GODareDI.h"
-    export *
-    module * { export * }
-}
