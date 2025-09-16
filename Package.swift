@@ -1,23 +1,23 @@
 // swift-tools-version: 6.0
 import PackageDescription
 
-// 🔒 BINARY FRAMEWORK PACKAGE - NO SOURCE CODE ACCESS
+// 🔒 ENCRYPTED BINARY FRAMEWORK PACKAGE - SOURCE CODE PROTECTED
 let package = Package(
-    name: "GoDareDI",
+    name: "GODareDI",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v13)
     ],
     products: [
         .library(
-            name: "GoDareDI",
-            targets: ["GoDareDI"]
+            name: "GODareDI",
+            targets: ["GODareDI"]
         ),
     ],
     targets: [
-        // 🔒 BINARY TARGET - SOURCE CODE IS PROTECTED
+        // 🔐 ENCRYPTED BINARY TARGET - SOURCE CODE IS ENCRYPTED AND PROTECTED
         .binaryTarget(
-            name: "GoDareDI",
-            path: "GoDareDI-XCFramework.xcframework"
+            name: "GODareDI",
+            path: "GODareDI.xcframework"
         ),
     ]
 )
