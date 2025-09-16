@@ -22,11 +22,11 @@
     <string>13.0</string>
     <key>CFBundleSupportedPlatforms</key>
     <array>
-        <string>iPhoneOS</string>
+        <string>iPhoneSimulator</string>
     </array>
     <key>DTPlatformName</key>
-    <string>iphoneos</string>
+    <string>iphonesimulator</string>
     <key>DTSDKName</key>
-    <string>iphoneos</string>
+    <string>iphonesimulator</string>
 </dict>
 </plist>

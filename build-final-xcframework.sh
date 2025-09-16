@@ -31,8 +31,9 @@ build_framework() {
     local platform=$1
     local destination=$2
     local sdk=$3
+    local arch=${4:-arm64}  # Default to arm64 if not specified
     
-    echo "🔨 Building for $platform..."
+    echo "🔨 Building for $platform (architecture: $arch)..."
     
     # Create temporary build directory
     local build_dir="temp_build_$platform"
@@ -50,7 +51,7 @@ import PackageDescription
 let package = Package(
     name: "GoDareDI",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v13)
     ],
     products: [
         .library(
@@ -64,28 +65,53 @@ let package = Package(
     ]
 )
 EOF
-    
+
     # Build with proper swiftinterface generation
     echo "📦 Building with swiftinterface generation..."
+    
+    # Set SDK and destination based on platform
+    local sdk_path=""
+    local target=""
+    
+    if [[ "$platform" == *"simulator"* ]]; then
+        sdk_path=$(xcrun --sdk iphonesimulator --show-sdk-path)
+        if [[ "$arch" == "arm64" ]]; then
+            target="arm64-apple-ios13.0-simulator"
+        else
+            target="x86_64-apple-ios13.0-simulator"
+        fi
+    else
+        sdk_path=$(xcrun --sdk iphoneos --show-sdk-path)
+        target="arm64-apple-ios13.0"
+    fi
+    
+    # Use swift build with explicit iOS targeting
     swift build \
         --configuration release \
         -Xswiftc -emit-module-interface \
-        -Xswiftc -enable-library-evolution
+        -Xswiftc -enable-library-evolution \
+        -Xswiftc -sdk \
+        -Xswiftc "$sdk_path" \
+        -Xswiftc -target \
+        -Xswiftc "$target"
     
     cd ..
     
     # Create framework structure
     mkdir -p "Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule"
     
-    # Copy built module
-    if [ -d "$build_dir/.build/arm64-apple-macosx/release/Modules/GoDareDI.swiftmodule" ]; then
-        cp -r "$build_dir/.build/arm64-apple-macosx/release/Modules/GoDareDI.swiftmodule" "Frameworks/$platform/GoDareDI.framework/Modules/"
+    # Copy built module from swift build
+    if [ -d "$build_dir/.build/$target/release/Modules/GoDareDI.swiftmodule" ]; then
+        cp -r "$build_dir/.build/$target/release/Modules/GoDareDI.swiftmodule" "Frameworks/$platform/GoDareDI.framework/Modules/"
         echo "✅ Copied GoDareDI.swiftmodule"
     fi
     
     # Copy swiftinterface files
-    if [ -f "$build_dir/.build/arm64-apple-macosx/release/GoDareDI.build/GoDareDI.swiftinterface" ]; then
-        cp "$build_dir/.build/arm64-apple-macosx/release/GoDareDI.build/GoDareDI.swiftinterface" "Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/"
+    if [ -f "$build_dir/.build/$target/release/GoDareDI.build/GoDareDI.swiftinterface" ]; then
+        cp "$build_dir/.build/$target/release/GoDareDI.build/GoDareDI.swiftinterface" "Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/"
+        echo "✅ Copied GoDareDI.swiftinterface"
+    elif [ -f "$build_dir/GoDareDI.swiftinterface" ]; then
+        cp "$build_dir/GoDareDI.swiftinterface" "Frameworks/$platform/GoDareDI.framework/Modules/GoDareDI.swiftmodule/"
         echo "✅ Copied GoDareDI.swiftinterface"
     fi
     
@@ -97,21 +123,16 @@ EOF
     else
         sdk_path=$(xcrun --sdk iphoneos --show-sdk-path)
     fi
-    
+
     # Create a minimal C file
     echo "void GoDareDI_dummy() {}" > /tmp/godare_dummy.c
-    
+
     # Compile to object file with proper SDK
-    local arch="arm64"
-    if [[ "$platform" == *"x86_64"* ]]; then
-        arch="x86_64"
-    fi
-    
     clang -c /tmp/godare_dummy.c -o /tmp/godare_dummy.o -arch $arch -isysroot "$sdk_path" 2>/dev/null || {
         echo "⚠️  Failed to create proper binary, using placeholder"
         touch "Frameworks/$platform/GoDareDI.framework/GoDareDI"
     }
-    
+
     if [ -f /tmp/godare_dummy.o ]; then
         cp /tmp/godare_dummy.o "Frameworks/$platform/GoDareDI.framework/GoDareDI"
         echo "✅ Created framework binary with proper SDK"
@@ -121,6 +142,7 @@ EOF
     fi
     
     # Create platform-specific Info.plist
+    echo "📦 Creating Info.plist..."
     local platform_name="iPhoneOS"
     local sdk_name="iphoneos"
     if [[ "$platform" == *"simulator"* ]]; then
@@ -146,9 +168,9 @@ EOF
     <key>CFBundlePackageType</key>
     <string>FMWK</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.37</string>
+    <string>1.0.42</string>
     <key>CFBundleVersion</key>
-    <string>37</string>
+    <string>42</string>
     <key>MinimumOSVersion</key>
     <string>13.0</string>
     <key>CFBundleSupportedPlatforms</key>
@@ -164,6 +186,7 @@ EOF
 EOF
     
     # Create module.modulemap
+    echo "📦 Creating module.modulemap..."
     mkdir -p "Frameworks/$platform/GoDareDI.framework/Modules"
     cat > "Frameworks/$platform/GoDareDI.framework/Modules/module.modulemap" << EOF
 framework module GoDareDI {
@@ -174,6 +197,7 @@ framework module GoDareDI {
 EOF
     
     # Create umbrella header
+    echo "📦 Creating umbrella header..."
     cat > "Frameworks/$platform/GoDareDI.framework/GoDareDI.h" << EOF
 #import <Foundation/Foundation.h>
 
@@ -190,16 +214,16 @@ EOF
 }
 
 # Build for iOS device
-build_framework "ios-arm64" "generic/platform=iOS" "iphoneos"
+build_framework "ios-arm64" "generic/platform=iOS" "iphoneos" "arm64"
 
-# Build for iOS simulator
-build_framework "ios-arm64_x86_64-simulator" "generic/platform=iOS Simulator" "iphonesimulator"
+# Build for iOS simulator (arm64 for Apple Silicon)
+build_framework "ios-arm64-simulator" "generic/platform=iOS Simulator" "iphonesimulator" "arm64"
 
 # Create XCFramework
 echo "📦 Creating XCFramework..."
 xcodebuild -create-xcframework \
     -framework "Frameworks/ios-arm64/GoDareDI.framework" \
-    -framework "Frameworks/ios-arm64_x86_64-simulator/GoDareDI.framework" \
+    -framework "Frameworks/ios-arm64-simulator/GoDareDI.framework" \
     -output "GoDareDI.xcframework"
 
 # Display XCFramework info
