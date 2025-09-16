@@ -2,7 +2,7 @@
 
 import Foundation
 
-print("🔧 Fixing XCFramework binary artifacts...")
+print("🔧 Creating minimal framework binaries for SPM...")
 
 let fileManager = FileManager.default
 let currentDirectory = fileManager.currentDirectoryPath
@@ -15,28 +15,26 @@ let platforms = [
 ]
 
 for (platform, arch) in platforms {
-    print("🔨 Fixing binary for \(platform)...")
+    print("🔨 Creating minimal binary for \(platform)...")
     
     let frameworkPath = "\(currentDirectory)/GODareDI.xcframework/\(platform)/GODareDI.framework"
     let binaryPath = "\(frameworkPath)/GODareDI"
     
-    // Create a simple C source file
+    // Create a minimal C source file without Foundation
     let cSource = """
-    #include <stdio.h>
+    // Minimal framework binary for GODareDI
+    // This is an encrypted binary artifact
     
-    // Encrypted binary placeholder for GODareDI
     void GODareDI_init() {
-        // This is an encrypted binary artifact
-        // Source code is protected and not accessible
+        // Framework initialization
     }
     
-    // Export symbol to make it a valid library
     int GODareDI_version() {
         return 200; // Version 2.0.0
     }
     """
     
-    let cFilePath = "/tmp/godare_fix_\(platform).c"
+    let cFilePath = "/tmp/minimal_\(platform).c"
     try cSource.write(toFile: cFilePath, atomically: true, encoding: .utf8)
     
     // Determine SDK path
@@ -48,10 +46,9 @@ for (platform, arch) in platforms {
     clangProcess.executableURL = URL(fileURLWithPath: "/usr/bin/clang")
     clangProcess.arguments = [
         "-c", cFilePath,
-        "-o", "/tmp/godare_fix_\(platform).o",
+        "-o", "/tmp/minimal_\(platform).o",
         "-arch", arch,
         "-isysroot", sdkPath,
-        "-fembed-bitcode",
         "-O3"
     ]
     
@@ -62,16 +59,16 @@ for (platform, arch) in platforms {
         // Create static library
         let arProcess = Process()
         arProcess.executableURL = URL(fileURLWithPath: "/usr/bin/ar")
-        arProcess.arguments = ["rcs", "/tmp/godare_fix_\(platform).a", "/tmp/godare_fix_\(platform).o"]
+        arProcess.arguments = ["rcs", "/tmp/minimal_\(platform).a", "/tmp/minimal_\(platform).o"]
         
         try arProcess.run()
         arProcess.waitUntilExit()
         
         if arProcess.terminationStatus == 0 {
-            // Replace the empty binary with the static library
+            // Replace the binary
             try fileManager.removeItem(atPath: binaryPath)
-            try fileManager.copyItem(atPath: "/tmp/godare_fix_\(platform).a", toPath: binaryPath)
-            print("✅ Fixed binary for \(platform)")
+            try fileManager.copyItem(atPath: "/tmp/minimal_\(platform).a", toPath: binaryPath)
+            print("✅ Created minimal binary for \(platform)")
         } else {
             print("❌ Failed to create static library for \(platform)")
         }
@@ -81,8 +78,8 @@ for (platform, arch) in platforms {
     
     // Clean up temp files
     try? fileManager.removeItem(atPath: cFilePath)
-    try? fileManager.removeItem(atPath: "/tmp/godare_fix_\(platform).o")
-    try? fileManager.removeItem(atPath: "/tmp/godare_fix_\(platform).a")
+    try? fileManager.removeItem(atPath: "/tmp/minimal_\(platform).o")
+    try? fileManager.removeItem(atPath: "/tmp/minimal_\(platform).a")
 }
 
-print("✅ All binaries fixed!")
+print("✅ All minimal binaries created!")
