@@ -10,13 +10,13 @@ let package = Package(
     products: [
         .library(
             name: "GODareDI",
-            targets: ["GODareDIBinary"]
+            targets: ["GODareDI"]
         ),
     ],
     targets: [
         // 🔐 ENCRYPTED BINARY TARGET - SOURCE CODE IS ENCRYPTED AND PROTECTED
         .binaryTarget(
-            name: "GODareDIBinary",
+            name: "GODareDI",
             path: "GODareDI.xcframework"
         ),
     ]
