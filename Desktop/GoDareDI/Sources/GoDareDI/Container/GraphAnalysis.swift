@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Graph Analysis Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Validation and Analysis

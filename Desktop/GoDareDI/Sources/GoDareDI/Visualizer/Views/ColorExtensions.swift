@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension Color {
     // Dependency Graph Colors
     public static let dependencyBlue = Color.blue

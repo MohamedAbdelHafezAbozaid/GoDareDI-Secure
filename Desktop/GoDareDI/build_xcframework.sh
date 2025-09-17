@@ -2,12 +2,12 @@
 set -e
 
 # =============================================================================
-# GoDareDI iOS 17.0+ XCFramework Build Script (Reliable Version)
+# GoDareDI iOS 18.0+ XCFramework Build Script (Reliable Version)
 # =============================================================================
-# This script creates a production-ready XCFramework for iOS 17.0+ with:
+# This script creates a production-ready XCFramework for iOS 18.0+ with:
 # - BUILD_LIBRARY_FOR_DISTRIBUTION=YES for ABI stability
 # - SKIP_INSTALL=NO for proper framework inclusion
-# - iOS 17.0+ targeting to include DependencyGraphView
+# - iOS 18.0+ targeting to include all modern APIs
 # - xcodebuild -create-xcframework for proper XCFramework generation
 # - Validation of Info.plist and binary integrity
 # =============================================================================
@@ -19,7 +19,7 @@ OUTPUT_DIR="GoDareDI-Secure-Distribution"
 XCFRAMEWORK_NAME="GoDareDI.xcframework"
 BUILD_DIR="build"
 TEMP_DIR="temp_frameworks"
-MIN_IOS_VERSION="17.0"
+MIN_IOS_VERSION="18.0"
 
 # Colors for output
 RED='\033[0;31m'
@@ -82,21 +82,17 @@ build_frameworks() {
     log_info "Simulator SDK: $simulator_sdk"
     log_info "Targeting iOS $MIN_IOS_VERSION+ (includes DependencyGraphView)"
     
-    # Build for iOS Device (arm64) - iOS 17.0+
+    # Build for iOS Device (arm64) - iOS 18.0+
     log_info "Building for iOS Device (arm64) - iOS $MIN_IOS_VERSION+..."
     build_framework_with_swift_package "ios" "arm64-apple-ios$MIN_IOS_VERSION" "$ios_sdk" "device"
     
-    # Build for iOS Simulator (arm64) - iOS 17.0+
+    # Build for iOS Simulator (arm64) - iOS 18.0+
     log_info "Building for iOS Simulator (arm64) - iOS $MIN_IOS_VERSION+..."
     build_framework_with_swift_package "ios-simulator" "arm64-apple-ios$MIN_IOS_VERSION-simulator" "$simulator_sdk" "simulator"
     
-    # Build for iOS Simulator (x86_64) - iOS 17.0+ (for Intel Macs)
-    if [[ $(uname -m) == "x86_64" ]]; then
-        log_info "Building for iOS Simulator (x86_64) - iOS $MIN_IOS_VERSION+..."
-        build_framework_with_swift_package "ios-simulator-x86" "x86_64-apple-ios$MIN_IOS_VERSION-simulator" "$simulator_sdk" "simulator"
-    else
-        log_info "Skipping x86_64 simulator build (Apple Silicon detected)"
-    fi
+    # Build for iOS Simulator (x86_64) - iOS 18.0+ (for Intel Macs and compatibility)
+    log_info "Building for iOS Simulator (x86_64) - iOS $MIN_IOS_VERSION+..."
+    build_framework_with_swift_package "ios-simulator-x86" "x86_64-apple-ios$MIN_IOS_VERSION-simulator" "$simulator_sdk" "simulator"
     
     log_success "Framework building completed"
 }
@@ -293,7 +289,38 @@ EOF
 }
 
 # =============================================================================
-# 3. CREATE XCFRAMEWORK
+# 3. CREATE UNIVERSAL SIMULATOR FRAMEWORK
+# =============================================================================
+create_universal_simulator_framework() {
+    log_info "Creating universal simulator framework..."
+    
+    local arm64_sim_path="$TEMP_DIR/ios-simulator/$FRAMEWORK_NAME.framework"
+    local x86_64_sim_path="$TEMP_DIR/ios-simulator-x86/$FRAMEWORK_NAME.framework"
+    local universal_sim_path="$TEMP_DIR/ios-simulator-universal/$FRAMEWORK_NAME.framework"
+    
+    # Create universal simulator directory
+    mkdir -p "$TEMP_DIR/ios-simulator-universal"
+    
+    # Copy arm64 framework as base
+    cp -R "$arm64_sim_path" "$universal_sim_path"
+    
+    # Combine the binaries using lipo
+    local arm64_binary="$arm64_sim_path/$FRAMEWORK_NAME"
+    local x86_64_binary="$x86_64_sim_path/$FRAMEWORK_NAME"
+    local universal_binary="$universal_sim_path/$FRAMEWORK_NAME"
+    
+    log_info "Combining simulator architectures with lipo..."
+    lipo -create "$arm64_binary" "$x86_64_binary" -output "$universal_binary"
+    
+    # Verify the universal binary
+    local architectures=$(lipo -info "$universal_binary")
+    log_info "Universal simulator binary architectures: $architectures"
+    
+    log_success "Universal simulator framework created"
+}
+
+# =============================================================================
+# 4. CREATE XCFRAMEWORK
 # =============================================================================
 create_xcframework() {
     log_info "Creating XCFramework from individual frameworks..."
@@ -304,28 +331,28 @@ create_xcframework() {
     # Build the xcodebuild -create-xcframework command
     local create_cmd="xcodebuild -create-xcframework"
     
-    # Add frameworks for each platform
-    for platform_dir in "$TEMP_DIR"/*; do
-        if [ -d "$platform_dir" ]; then
-            local platform=$(basename "$platform_dir")
-            local framework_path="$platform_dir/$FRAMEWORK_NAME.framework"
-            
-            if [ -d "$framework_path" ]; then
-                create_cmd="$create_cmd -framework $framework_path"
-                log_info "Added $platform framework: $framework_path"
-            else
-                log_warning "Framework not found for $platform: $framework_path"
-            fi
-        fi
-    done
-    
-    # Check if we have any frameworks to combine
-    local framework_count=$(find "$TEMP_DIR" -name "*.framework" -type d | wc -l)
-    if [ "$framework_count" -eq 0 ]; then
-        log_error "No frameworks found to combine into XCFramework"
+    # Add device framework
+    local device_framework="$TEMP_DIR/ios/$FRAMEWORK_NAME.framework"
+    if [ -d "$device_framework" ]; then
+        create_cmd="$create_cmd -framework $device_framework"
+        log_info "Added ios framework: $device_framework"
+    else
+        log_error "Device framework not found: $device_framework"
         exit 1
     fi
     
+    # Add universal simulator framework
+    local universal_sim_framework="$TEMP_DIR/ios-simulator-universal/$FRAMEWORK_NAME.framework"
+    if [ -d "$universal_sim_framework" ]; then
+        create_cmd="$create_cmd -framework $universal_sim_framework"
+        log_info "Added ios-simulator-universal framework: $universal_sim_framework"
+    else
+        log_error "Universal simulator framework not found: $universal_sim_framework"
+        exit 1
+    fi
+    
+    # We should have exactly 2 frameworks: device and universal simulator
+    local framework_count=2
     log_info "Combining $framework_count framework(s) into XCFramework"
     
     # Add output path
@@ -560,7 +587,7 @@ cleanup_temp_files() {
 # MAIN EXECUTION
 # =============================================================================
 main() {
-    log_info "🚀 Starting GoDareDI iOS 17.0+ XCFramework build process..."
+    log_info "🚀 Starting GoDareDI iOS 18.0+ XCFramework build process..."
     log_info "Version: $VERSION"
     log_info "Framework: $FRAMEWORK_NAME"
     log_info "Target: iOS $MIN_IOS_VERSION+ (includes DependencyGraphView)"
@@ -568,12 +595,13 @@ main() {
     # Execute build steps
     cleanup
     build_frameworks
+    create_universal_simulator_framework
     create_xcframework
     validate_xcframework
     package_for_distribution
     cleanup_temp_files
     
-    log_success "🎉 GoDareDI iOS 17.0+ XCFramework build completed successfully!"
+    log_success "🎉 GoDareDI iOS 18.0+ XCFramework build completed successfully!"
     log_info "📁 Output directory: $OUTPUT_DIR"
     log_info "📦 XCFramework: $OUTPUT_DIR/$XCFRAMEWORK_NAME"
     log_info "🗜️  Zip file: $OUTPUT_DIR/${FRAMEWORK_NAME}-${VERSION}.xcframework.zip"

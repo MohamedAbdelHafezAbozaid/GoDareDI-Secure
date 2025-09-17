@@ -7,14 +7,14 @@
 
 import Foundation
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public protocol DIAnalyticsProvider: Sendable {
     func trackEvent(_ event: String, parameters: [String: Any]?)
     func trackError(_ error: Error, context: [String: Any]?)
     func trackPerformance(_ metric: String, value: Double, unit: String?)
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class DefaultDIAnalyticsProvider: DIAnalyticsProvider, Sendable {
     public static let shared = DefaultDIAnalyticsProvider()
     
@@ -40,7 +40,7 @@ public final class DefaultDIAnalyticsProvider: DIAnalyticsProvider, Sendable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class ConsoleDIAnalyticsProvider: DIAnalyticsProvider, Sendable {
     public static let shared = ConsoleDIAnalyticsProvider()
     

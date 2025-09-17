@@ -9,7 +9,7 @@ import Foundation
 import CryptoKit
 
 // MARK: - License Validation System
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public class GoDareDILicense: Sendable {
     
@@ -202,7 +202,7 @@ public enum GoDareDILicenseError: Error, LocalizedError {
 }
 
 // MARK: - Token Validation Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension GoDareDILicense {
     
     // MARK: - Token Status

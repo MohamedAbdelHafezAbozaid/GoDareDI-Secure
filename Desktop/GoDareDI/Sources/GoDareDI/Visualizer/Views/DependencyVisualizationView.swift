@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct DependencyVisualizationView: View {
     private let graph: DependencyGraph
@@ -93,7 +93,7 @@ public struct DependencyVisualizationView: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct NodeView: View {
     let node: DependencyNode
@@ -120,7 +120,7 @@ private struct NodeView: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct EdgeView: View {
     let edge: DependencyEdge

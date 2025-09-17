@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
 // MARK: - GoDareDI Package
 // This is the main module file that exports all the public APIs
 
 // Re-export all public types and protocols
-@_exported import struct Foundation.UUID
+// Note: Scoped imports not supported in module interfaces
 
 // MARK: - Core DI Types
 // All dependency injection types are available through this module
@@ -37,6 +38,12 @@ import Foundation
 // MARK: - Dashboard Sync
 // DIDashboardSyncProvider, DependencyInfo, DashboardData, DefaultDashboardSyncProvider
 
+// MARK: - Security & License
+// GoDareDILicense, GoDareDILicenseError, GoDareDISecureInit
+
+// MARK: - Container Builder
+// ContainerBuilder, ContainerFactory, DIModule
+
 // MARK: - Usage Example
 /*
  
@@ -48,11 +55,11 @@ import Foundation
      let container = try await GoDareDISecureInit.initialize()
      
      // 3. Register your dependencies (automatically tracked)
-     try await container.register(MyService.self, scope: .singleton) { container in
+     await container.register(MyService.self, scope: .singleton) { container in
          return MyService()
      }
      
-     try await container.register(MyRepository.self, scope: .transient) { container in
+     await container.register(MyRepository.self, scope: .transient) { container in
          let service = try await container.resolve(MyService.self)
          return MyRepository(service: service)
      }
@@ -63,7 +70,37 @@ import Foundation
      // 5. Use in your app
      let result = await repository.fetchData()
      
-    // 6. Visualize dependencies (SwiftUI) - requires valid token
+     // 6. Alternative: Use ContainerBuilder for complex setups
+     let container2 = try await ContainerFactory.create { builder in
+         await builder
+             .registerService(MyService.self) { _ in MyService() }
+             .registerRepository(MyRepository.self) { container in
+                 let service = try await container.resolve(MyService.self)
+                 return MyRepository(service: service)
+             }
+     }
+     
+     // 7. Use DIModule for organized registration
+     struct MyAppModule: DIModule {
+         func configure(container: AdvancedDIContainer) async throws {
+             await container.register(MyService.self, scope: .singleton) { _ in
+                 return MyService()
+             }
+         }
+     }
+     
+     let container3 = try await ContainerFactory.createWithModules(
+         modules: [MyAppModule()]
+     )
+     
+     // 8. Synchronous resolution for cached instances
+     let cachedService = try container.resolveSync(MyService.self)
+     
+ } catch {
+     print("Failed to initialize GoDareDI: \(error)")
+ }
+     
+    // 6. Visualize dependencies (SwiftUI) - requires valid token and iOS 17.0+
     DependencyGraphView(container: container)
     
     // 7. Generate Mermaid diagram - requires valid token

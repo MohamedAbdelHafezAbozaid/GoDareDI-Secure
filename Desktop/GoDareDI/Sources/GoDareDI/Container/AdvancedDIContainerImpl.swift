@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public final class AdvancedDIContainerImpl: AdvancedDIContainer, Sendable {
     

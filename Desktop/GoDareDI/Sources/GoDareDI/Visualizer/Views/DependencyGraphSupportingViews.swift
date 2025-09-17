@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct DependencyGraphSupportingViews: View {
     private let container: AdvancedDIContainer
@@ -38,7 +38,7 @@ public struct DependencyGraphSupportingViews: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct GraphLegendView: View {
     public var body: some View {

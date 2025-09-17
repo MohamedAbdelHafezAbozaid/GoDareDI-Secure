@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct NodeDetailView: View {
     private let node: DependencyNode
@@ -51,7 +51,7 @@ public struct NodeDetailView: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct MetadataRow: View {
     let label: String
@@ -82,7 +82,7 @@ private struct MetadataRow: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct MetricRow: View {
     let label: String

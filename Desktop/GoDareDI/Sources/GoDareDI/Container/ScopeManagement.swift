@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Scope Management Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Scope Management

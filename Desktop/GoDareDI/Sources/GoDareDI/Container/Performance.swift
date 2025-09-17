@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Performance Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     
     // MARK: - Performance and Monitoring
@@ -176,7 +176,7 @@ extension AdvancedDIContainerImpl {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension AdvancedDIContainerImpl {
     public func getRegisteredServicesCount() -> Int {
         return factories.count

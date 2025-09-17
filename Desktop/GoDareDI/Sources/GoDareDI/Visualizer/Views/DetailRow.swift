@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct DetailRow: View {
     private let title: String
@@ -48,7 +48,7 @@ public struct DetailRow: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct InfoRow: View {
     private let title: String

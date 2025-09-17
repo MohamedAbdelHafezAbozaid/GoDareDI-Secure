@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Container Builder
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public actor ContainerBuilder: Sendable {
     private var container: AdvancedDIContainerImpl
     private var registrations: [() async throws -> Void] = []
@@ -79,7 +79,7 @@ public protocol DIModule: Sendable {
 }
 
 // MARK: - Convenience Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension ContainerBuilder {
     
     // MARK: - Common Patterns

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct DependencyGraphView: View {
     private let container: AdvancedDIContainer
@@ -44,9 +44,9 @@ public struct DependencyGraphView: View {
                         interactiveTab
                             .tag(2)
                 }
-                // TabView style removed for iOS 13 compatibility
+                // TabView style optimized for iOS 17.0+
             }
-            // Navigation title removed for iOS 13 compatibility
+            // Navigation title optimized for iOS 17.0+
         .onAppear {
                 loadGraphData()
             }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 public struct InteractiveDependencyGraphView: View {
     private let graph: DependencyGraph
@@ -131,7 +131,7 @@ public struct InteractiveDependencyGraphView: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct InteractiveNodeView: View {
     let node: DependencyNode
@@ -165,7 +165,7 @@ private struct InteractiveNodeView: View {
     }
 }
 
-@available(iOS 17.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 @MainActor
 private struct InteractiveEdgeView: View {
     let edge: DependencyEdge

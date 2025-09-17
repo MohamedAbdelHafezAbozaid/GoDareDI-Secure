@@ -7,14 +7,14 @@
 
 import Foundation
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public protocol DIDashboardSyncProvider: Sendable {
     func syncDependencyInfo(_ info: DependencyInfo) async throws
     func syncDashboardData(_ data: DashboardData) async throws
     func getDashboardData() async throws -> DashboardData
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public struct DependencyInfo: Sendable, Codable {
     public let id: String
     public let type: String
@@ -33,7 +33,7 @@ public struct DependencyInfo: Sendable, Codable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public struct DashboardData: Sendable, Codable {
     public let totalDependencies: Int
     public let scopedDependencies: Int
@@ -61,7 +61,7 @@ public struct DashboardData: Sendable, Codable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class DefaultDashboardSyncProvider: DIDashboardSyncProvider, Sendable {
     public static let shared = DefaultDashboardSyncProvider()
     
@@ -141,7 +141,7 @@ public final class DefaultDashboardSyncProvider: DIDashboardSyncProvider, Sendab
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public enum DIAnalyticsError: Error, Sendable {
     case invalidURL
     case syncFailed

@@ -7,7 +7,7 @@
 
 import Foundation
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public protocol DICrashlyticsProvider: Sendable {
     func logError(_ error: Error, context: [String: Any]?)
     func logEvent(_ event: String, parameters: [String: Any]?)
@@ -15,7 +15,7 @@ public protocol DICrashlyticsProvider: Sendable {
     func setCustomValue(_ value: Any, forKey key: String)
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class DefaultDICrashlyticsProvider: DICrashlyticsProvider, Sendable {
     public static let shared = DefaultDICrashlyticsProvider()
     
@@ -48,7 +48,7 @@ public final class DefaultDICrashlyticsProvider: DICrashlyticsProvider, Sendable
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public struct DICrashlyticsConfig: Sendable {
     public let enabled: Bool
     public let logLevel: CrashlyticsLogLevel
@@ -68,7 +68,7 @@ public struct DICrashlyticsConfig: Sendable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public enum CrashlyticsLogLevel: String, CaseIterable, Sendable {
     case debug = "debug"
     case info = "info"
@@ -77,7 +77,7 @@ public enum CrashlyticsLogLevel: String, CaseIterable, Sendable {
     case fatal = "fatal"
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class DICrashlyticsManager: Sendable {
     private let provider: DICrashlyticsProvider
     private let config: DICrashlyticsConfig

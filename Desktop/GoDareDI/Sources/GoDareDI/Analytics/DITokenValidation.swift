@@ -7,14 +7,14 @@
 
 import Foundation
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public protocol DITokenValidationProvider: Sendable {
     func validateToken(_ token: String) async throws -> TokenValidationResult
     func refreshToken(_ token: String) async throws -> String
     func revokeToken(_ token: String) async throws
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public struct TokenValidationResult: Sendable, Codable {
     public let isValid: Bool
     public let expiresAt: Date?
@@ -37,7 +37,7 @@ public struct TokenValidationResult: Sendable, Codable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public final class DefaultDITokenValidationProvider: DITokenValidationProvider, Sendable {
     public static let shared = DefaultDITokenValidationProvider()
     
@@ -138,13 +138,13 @@ public final class DefaultDITokenValidationProvider: DITokenValidationProvider, 
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 private struct TokenRefreshResult: Codable {
     let newToken: String
     let expiresAt: Date
 }
 
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public enum DITokenValidationError: Error, Sendable {
     case invalidURL
     case invalidResponse

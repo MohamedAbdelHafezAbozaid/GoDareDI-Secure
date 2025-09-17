@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Container Extensions
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 extension AdvancedDIContainer {
     
     // MARK: - Convenience Methods
@@ -107,7 +107,7 @@ extension AdvancedDIContainer {
 }
 
 // MARK: - Container Factory
-@available(iOS 13.0, macOS 10.15, *)
+@available(iOS 18.0, macOS 10.15, *)
 public struct ContainerFactory: Sendable {
     
     public static func create(
