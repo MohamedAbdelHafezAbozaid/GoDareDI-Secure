@@ -1,39 +1,22 @@
-// swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
     name: "GoDareDI",
-    defaultLocalization: "en",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
-        .watchOS(.v6),
-        .tvOS(.v13)
+        .iOS(.v13)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "GoDareDI",
-            targets: ["GoDareDI"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+            targets: ["GoDareDI"]
+        ),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
+        .binaryTarget(
             name: "GoDareDI",
-            dependencies: [],
-            path: "Sources/GoDareDI"
-        ),
-        .testTarget(
-            name: "GoDareDITests",
-            dependencies: ["GoDareDI"],
-            path: "Tests/GoDareDITests"
+            url: "https://github.com/MohamedAbdelHafezAbozaid/GoDareDI-Secure/releases/download/v2.0.11/GoDareDI-2.0.11.xcframework.zip",
+            checksum: "a9b8b65019240dd112512b7725e6c1e07dcfcc4bdf161636070854f63e88b236"
         ),
     ]
 )

@@ -30,7 +30,7 @@ public struct DependencyVisualizationView: View {
                 
                 Text("\(graph.nodes.count) nodes, \(graph.edges.count) edges")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                .foregroundColor(.secondary)
             }
             
             // Graph Visualization
@@ -74,7 +74,7 @@ public struct DependencyVisualizationView: View {
                 }
                 .buttonStyle(.bordered)
                 
-                Spacer()
+                                Spacer()
                 
                 Button("Reset") {
                     withAnimation {

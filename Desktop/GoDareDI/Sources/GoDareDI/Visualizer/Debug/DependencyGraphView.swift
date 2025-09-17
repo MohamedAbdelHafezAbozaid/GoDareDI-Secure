@@ -34,20 +34,20 @@ public struct DependencyGraphView: View {
                 .padding()
                 
                 // Content
-                TabView(selection: $selectedTab) {
-                    overviewTab
-                        .tag(0)
-                    
-                    visualizationTab
-                        .tag(1)
-                    
-                    interactiveTab
-                        .tag(2)
+                    TabView(selection: $selectedTab) {
+                        overviewTab
+                            .tag(0)
+                        
+                        visualizationTab
+                            .tag(1)
+                        
+                        interactiveTab
+                            .tag(2)
                 }
                 // TabView style removed for iOS 13 compatibility
             }
             // Navigation title removed for iOS 13 compatibility
-            .onAppear {
+        .onAppear {
                 loadGraphData()
             }
         }
@@ -102,7 +102,7 @@ public struct DependencyGraphView: View {
                             .foregroundColor(.blue)
                         
                         Text("No Graph Data")
-                            .font(.headline)
+                        .font(.headline)
                             .foregroundColor(.primary)
                         
                         Text("Load dependency graph to see visualization")
@@ -163,7 +163,7 @@ public struct DependencyGraphView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Graph Information")
                 .font(.headline)
-                .foregroundColor(.primary)
+                    .foregroundColor(.primary)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text("Nodes: \(graph.nodes.count)")
