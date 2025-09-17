@@ -1,0 +1,895 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -module-name GoDareDI
+// swift-module-flags-ignorable:  -interface-compiler-version 6.1.2
+import CoreGraphics
+import CryptoKit
+import Foundation
+@_exported import Foundation/*.UUID*/
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@available(iOS 13.0, macOS 10.15, *)
+public protocol DIAnalyticsProvider : Swift.Sendable {
+  func trackEvent(_ event: Swift.String, parameters: [Swift.String : Any]?)
+  func trackError(_ error: any Swift.Error, context: [Swift.String : Any]?)
+  func trackPerformance(_ metric: Swift.String, value: Swift.Double, unit: Swift.String?)
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+final public class DefaultDIAnalyticsProvider : GoDareDI.DIAnalyticsProvider, Swift.Sendable {
+  public static let shared: GoDareDI.DefaultDIAnalyticsProvider
+  final public func trackEvent(_ event: Swift.String, parameters: [Swift.String : Any]?)
+  final public func trackError(_ error: any Swift.Error, context: [Swift.String : Any]?)
+  final public func trackPerformance(_ metric: Swift.String, value: Swift.Double, unit: Swift.String?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+final public class ConsoleDIAnalyticsProvider : GoDareDI.DIAnalyticsProvider, Swift.Sendable {
+  public static let shared: GoDareDI.ConsoleDIAnalyticsProvider
+  final public func trackEvent(_ event: Swift.String, parameters: [Swift.String : Any]?)
+  final public func trackError(_ error: any Swift.Error, context: [Swift.String : Any]?)
+  final public func trackPerformance(_ metric: Swift.String, value: Swift.Double, unit: Swift.String?)
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public protocol DICrashlyticsProvider : Swift.Sendable {
+  func logError(_ error: any Swift.Error, context: [Swift.String : Any]?)
+  func logEvent(_ event: Swift.String, parameters: [Swift.String : Any]?)
+  func setUserIdentifier(_ identifier: Swift.String)
+  func setCustomValue(_ value: Any, forKey key: Swift.String)
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+final public class DefaultDICrashlyticsProvider : GoDareDI.DICrashlyticsProvider, Swift.Sendable {
+  public static let shared: GoDareDI.DefaultDICrashlyticsProvider
+  final public func logError(_ error: any Swift.Error, context: [Swift.String : Any]?)
+  final public func logEvent(_ event: Swift.String, parameters: [Swift.String : Any]?)
+  final public func setUserIdentifier(_ identifier: Swift.String)
+  final public func setCustomValue(_ value: Any, forKey key: Swift.String)
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public struct DICrashlyticsConfig : Swift.Sendable {
+  public let enabled: Swift.Bool
+  public let logLevel: GoDareDI.CrashlyticsLogLevel
+  public let autoCrashReporting: Swift.Bool
+  public let customKeys: [Swift.String : Swift.String]
+  public init(enabled: Swift.Bool = true, logLevel: GoDareDI.CrashlyticsLogLevel = .info, autoCrashReporting: Swift.Bool = true, customKeys: [Swift.String : Swift.String] = [:])
+}
+@available(iOS 13.0, macOS 10.15, *)
+public enum CrashlyticsLogLevel : Swift.String, Swift.CaseIterable, Swift.Sendable {
+  case debug
+  case info
+  case warning
+  case error
+  case fatal
+  public init?(rawValue: Swift.String)
+  @available(iOS 13.0, macOS 10.15, *)
+  public typealias AllCases = [GoDareDI.CrashlyticsLogLevel]
+  @available(iOS 13.0, macOS 10.15, *)
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.CrashlyticsLogLevel] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@available(iOS 13.0, macOS 10.15, *)
+final public class DICrashlyticsManager : Swift.Sendable {
+  public init(provider: any GoDareDI.DICrashlyticsProvider = DefaultDICrashlyticsProvider.shared, config: GoDareDI.DICrashlyticsConfig = DICrashlyticsConfig())
+  final public func logDependencyError(_ error: any Swift.Error, dependencyType: Swift.String, context: [Swift.String : Any]? = nil)
+  final public func logRegistrationEvent(_ event: Swift.String, dependencyType: Swift.String, parameters: [Swift.String : Any]? = nil)
+  final public func logResolutionEvent(_ event: Swift.String, dependencyType: Swift.String, parameters: [Swift.String : Any]? = nil)
+  final public func logPerformanceIssue(_ issue: Swift.String, dependencyType: Swift.String, metrics: [Swift.String : Any]? = nil)
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public protocol DIDashboardSyncProvider : Swift.Sendable {
+  func syncDependencyInfo(_ info: GoDareDI.DependencyInfo) async throws
+  func syncDashboardData(_ data: GoDareDI.DashboardData) async throws
+  func getDashboardData() async throws -> GoDareDI.DashboardData
+}
+@available(iOS 13.0, macOS 10.15, *)
+public struct DependencyInfo : Swift.Sendable, Swift.Codable {
+  public let id: Swift.String
+  public let type: Swift.String
+  public let scope: Swift.String
+  public let lifetime: Swift.String?
+  public let dependencies: [Swift.String]
+  public let timestamp: Foundation.Date
+  public init(id: Swift.String, type: Swift.String, scope: Swift.String, lifetime: Swift.String? = nil, dependencies: [Swift.String] = [])
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@available(iOS 13.0, macOS 10.15, *)
+public struct DashboardData : Swift.Sendable, Swift.Codable {
+  public let totalDependencies: Swift.Int
+  public let scopedDependencies: Swift.Int
+  public let singletonDependencies: Swift.Int
+  public let transientDependencies: Swift.Int
+  public let circularDependencies: [Swift.String]
+  public let performanceIssues: [Swift.String]
+  public let lastUpdated: Foundation.Date
+  public init(totalDependencies: Swift.Int, scopedDependencies: Swift.Int, singletonDependencies: Swift.Int, transientDependencies: Swift.Int, circularDependencies: [Swift.String] = [], performanceIssues: [Swift.String] = [])
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+final public class DefaultDashboardSyncProvider : GoDareDI.DIDashboardSyncProvider, Swift.Sendable {
+  public static let shared: GoDareDI.DefaultDashboardSyncProvider
+  final public func syncDependencyInfo(_ info: GoDareDI.DependencyInfo) async throws
+  final public func syncDashboardData(_ data: GoDareDI.DashboardData) async throws
+  final public func getDashboardData() async throws -> GoDareDI.DashboardData
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public enum DIAnalyticsError : Swift.Error, Swift.Sendable {
+  case invalidURL
+  case syncFailed
+  case networkError(any Swift.Error)
+  case encodingError(any Swift.Error)
+  case decodingError(any Swift.Error)
+}
+@available(iOS 13.0, macOS 10.15, *)
+public protocol DITokenValidationProvider : Swift.Sendable {
+  func validateToken(_ token: Swift.String) async throws -> GoDareDI.TokenValidationResult
+  func refreshToken(_ token: Swift.String) async throws -> Swift.String
+  func revokeToken(_ token: Swift.String) async throws
+}
+@available(iOS 13.0, macOS 10.15, *)
+public struct TokenValidationResult : Swift.Sendable, Swift.Codable {
+  public let isValid: Swift.Bool
+  public let expiresAt: Foundation.Date?
+  public let permissions: [Swift.String]
+  public let userId: Swift.String?
+  public let plan: Swift.String?
+  public init(isValid: Swift.Bool, expiresAt: Foundation.Date? = nil, permissions: [Swift.String] = [], userId: Swift.String? = nil, plan: Swift.String? = nil)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+final public class DefaultDITokenValidationProvider : GoDareDI.DITokenValidationProvider, Swift.Sendable {
+  public static let shared: GoDareDI.DefaultDITokenValidationProvider
+  final public func validateToken(_ token: Swift.String) async throws -> GoDareDI.TokenValidationResult
+  final public func refreshToken(_ token: Swift.String) async throws -> Swift.String
+  final public func revokeToken(_ token: Swift.String) async throws
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public enum DITokenValidationError : Swift.Error, Swift.Sendable {
+  case invalidURL
+  case invalidResponse
+  case invalidToken
+  case tokenExpired
+  case refreshFailed
+  case revokeFailed
+  case serverError(Swift.Int)
+  case networkError(any Swift.Error)
+  case invalidTokenFormat
+  case validationFailed(any Swift.Error)
+}
+@_Concurrency.MainActor public protocol AdvancedDIContainer : Swift.Sendable {
+  @_Concurrency.MainActor func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor func registerSync<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor func registerSync<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor func resolve<T>() async throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor func resolve<T>(_ type: T.Type) async throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor func resolveSync<T>() throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor func resolveSync<T>(_ type: T.Type) throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor func createScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor func disposeScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor func setCurrentScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor func getCurrentScope() -> Swift.String
+  @_Concurrency.MainActor func validateDependencies() async throws
+  @_Concurrency.MainActor func getDependencyGraph() async -> GoDareDI.DependencyGraph
+  @_Concurrency.MainActor func analyzeDependencyGraph() async -> GoDareDI.GraphAnalysis
+  @_Concurrency.MainActor func analyzeDependencyGraphWithMetrics() async -> GoDareDI.GraphAnalysis
+  @_Concurrency.MainActor func isRegistered<T>(_ type: T.Type) -> Swift.Bool
+  @_Concurrency.MainActor func getPerformanceMetrics() async -> GoDareDI.PerformanceMetrics
+  @_Concurrency.MainActor func preloadDependencies() async
+  @_Concurrency.MainActor func cleanup() async
+  @_Concurrency.MainActor func preloadAllGeneric() async throws
+  @_Concurrency.MainActor func preloadSmart() async throws
+  @_Concurrency.MainActor func preloadViewModelsOnly() async throws
+  @_Concurrency.MainActor func getMetadata<T>(_ type: T.Type) -> GoDareDI.DependencyMetadata?
+  @_Concurrency.MainActor func registerWithMetadata<T>(_ type: T.Type, metadata: GoDareDI.DependencyMetadata)
+  @_Concurrency.MainActor func getMetadata(for key: Swift.String) -> GoDareDI.DependencyMetadata?
+  @_Concurrency.MainActor func getDependencyMap() -> [Swift.String : Swift.Set<Swift.String>]
+  @_Concurrency.MainActor func getRegisteredServicesCount() -> Swift.Int
+  @_Concurrency.MainActor func debugPrintMetadata()
+  @_Concurrency.MainActor func debugPrintFactories()
+}
+@available(iOS 13.0, macOS 10.15, *)
+@_Concurrency.MainActor final public class AdvancedDIContainerImpl : GoDareDI.AdvancedDIContainer, Swift.Sendable {
+  @_Concurrency.MainActor final public var singletons: [Swift.String : any Swift.Sendable]
+  @_Concurrency.MainActor final public var factories: [Swift.String : GoDareDI.AdvancedDIContainerImpl.FactoryType]
+  @_Concurrency.MainActor final public var analyticsProvider: (any GoDareDI.DIAnalyticsProvider)?
+  @_Concurrency.MainActor final public var crashlyticsConfig: GoDareDI.DICrashlyticsConfig?
+  public enum FactoryType : Swift.Sendable {
+    case sync(@Sendable (any GoDareDI.AdvancedDIContainer) throws -> any Swift.Sendable)
+    case async(@Sendable (any GoDareDI.AdvancedDIContainer) async throws -> any Swift.Sendable)
+  }
+  @_Concurrency.MainActor public init(config: GoDareDI.DIContainerConfig = DIContainerConfig())
+  @_Concurrency.MainActor final public func configureAnalytics(provider: (any GoDareDI.DIAnalyticsProvider)? = nil, crashlytics: GoDareDI.DICrashlyticsConfig? = nil)
+  @_Concurrency.MainActor final public var token: Swift.String? {
+    get
+  }
+  @_Concurrency.MainActor final public var hasValidToken: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isFreemiumMode: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func upgradeToPremium(token: Swift.String) async throws
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+public actor ContainerBuilder : Swift.Sendable {
+  public init(config: GoDareDI.DIContainerConfig = DIContainerConfig()) async
+  public func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope = .singleton, lifetime: GoDareDI.DependencyLifetime = .application, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerSync<T>(_ type: T.Type, scope: GoDareDI.DependencyScope = .singleton, lifetime: GoDareDI.DependencyLifetime = .application, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerInstance<T>(_ type: T.Type, instance: T, scope: GoDareDI.DependencyScope = .singleton) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerModule(_ module: any GoDareDI.DIModule) async -> GoDareDI.ContainerBuilder
+  public func build() async throws -> any GoDareDI.AdvancedDIContainer
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+public protocol DIModule : Swift.Sendable {
+  func configure(container: any GoDareDI.AdvancedDIContainer) async throws
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.ContainerBuilder {
+  public func registerService<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerRepository<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerUseCase<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+  public func registerViewModel<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async -> GoDareDI.ContainerBuilder where T : Swift.Sendable
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainer {
+  @_Concurrency.MainActor public func registerService<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerRepository<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerUseCase<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerViewModel<T>(_ type: T.Type, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerInstance<T>(_ type: T.Type, instance: T, scope: GoDareDI.DependencyScope = .singleton) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerBatch<T>(_ types: [T.Type], scope: GoDareDI.DependencyScope = .singleton, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer, T.Type) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerIf<T>(_ condition: Swift.Bool, _ type: T.Type, scope: GoDareDI.DependencyScope = .singleton, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor public func registerForEnvironment<T>(_ type: T.Type, scope: GoDareDI.DependencyScope = .singleton, development: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T, production: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+}
+@available(iOS 13.0, macOS 10.15, *)
+public struct ContainerFactory : Swift.Sendable {
+  public static func create(config: GoDareDI.DIContainerConfig = DIContainerConfig(), configure: @escaping @Sendable (GoDareDI.ContainerBuilder) async -> GoDareDI.ContainerBuilder = { $0 }) async throws -> any GoDareDI.AdvancedDIContainer
+  public static func createWithModules(config: GoDareDI.DIContainerConfig = DIContainerConfig(), modules: [any GoDareDI.DIModule]) async throws -> any GoDareDI.AdvancedDIContainer
+}
+public struct DIContainerConfig : Swift.Sendable {
+  public let maxCircularDependencyDepth: Swift.Int
+  public let enableCircularDependencyDetection: Swift.Bool
+  public let enableDependencyTracking: Swift.Bool
+  public let enablePerformanceMetrics: Swift.Bool
+  public let enableCaching: Swift.Bool
+  public init(maxCircularDependencyDepth: Swift.Int = 3, enableCircularDependencyDetection: Swift.Bool = true, enableDependencyTracking: Swift.Bool = true, enablePerformanceMetrics: Swift.Bool = true, enableCaching: Swift.Bool = true)
+  public static let strict: GoDareDI.DIContainerConfig
+  public static let lenient: GoDareDI.DIContainerConfig
+  public static let disabled: GoDareDI.DIContainerConfig
+  public static let performance: GoDareDI.DIContainerConfig
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func validateDependencies() async throws
+  @_Concurrency.MainActor final public func getDependencyGraph() async -> GoDareDI.DependencyGraph
+  @_Concurrency.MainActor final public func analyzeDependencyGraph() async -> GoDareDI.GraphAnalysis
+  @_Concurrency.MainActor final public func analyzeDependencyGraphWithMetrics() async -> GoDareDI.GraphAnalysis
+  @_Concurrency.MainActor final public func getDependencyMap() -> [Swift.String : Swift.Set<Swift.String>]
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func getPerformanceMetrics() async -> GoDareDI.PerformanceMetrics
+  @_Concurrency.MainActor final public func cleanup() async
+  @_Concurrency.MainActor final public func debugPrintMetadata()
+  @_Concurrency.MainActor final public func debugPrintFactories()
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func getRegisteredServicesCount() -> Swift.Int
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func preloadDependencies() async
+  @_Concurrency.MainActor final public func preloadAllGeneric() async throws
+  @_Concurrency.MainActor final public func preloadSmart() async throws
+  @_Concurrency.MainActor final public func preloadViewModelsOnly() async throws
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor final public func register<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime = .application, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor final public func registerSync<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime = .application, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor final public func registerSync<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) throws -> T) where T : Swift.Sendable
+  @_Concurrency.MainActor final public func getMetadata<T>(_ type: T.Type) -> GoDareDI.DependencyMetadata?
+  @_Concurrency.MainActor final public func registerWithMetadata<T>(_ type: T.Type, metadata: GoDareDI.DependencyMetadata)
+  @_Concurrency.MainActor final public func getMetadata(for key: Swift.String) -> GoDareDI.DependencyMetadata?
+  @_Concurrency.MainActor final public func isRegistered<T>(_ type: T.Type) -> Swift.Bool
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func resolve<T>() async throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor final public func resolve<T>(_ type: T.Type) async throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor final public func resolveSync<T>() throws -> T where T : Swift.Sendable
+  @_Concurrency.MainActor final public func resolveSync<T>(_ type: T.Type) throws -> T where T : Swift.Sendable
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func createScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor final public func disposeScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor final public func setCurrentScope(_ scopeId: Swift.String) async
+  @_Concurrency.MainActor final public func getCurrentScope() -> Swift.String
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+@_Concurrency.MainActor public class GoDareDILicense : Swift.Sendable {
+  public enum LicenseType : Swift.String, Swift.CaseIterable, Swift.Sendable {
+    case trial
+    case personal
+    case commercial
+    case enterprise
+    public var maxApps: Swift.Int {
+      get
+    }
+    public var maxUsers: Swift.Int {
+      get
+    }
+    public init?(rawValue: Swift.String)
+    @available(iOS 13.0, macOS 10.15, *)
+    public typealias AllCases = [GoDareDI.GoDareDILicense.LicenseType]
+    @available(iOS 13.0, macOS 10.15, *)
+    public typealias RawValue = Swift.String
+    nonisolated public static var allCases: [GoDareDI.GoDareDILicense.LicenseType] {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public struct TokenResponse : Swift.Codable, Swift.Sendable {
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  @_Concurrency.MainActor public static func validateToken() async throws -> GoDareDI.GoDareDILicense.TokenResponse
+  @_Concurrency.MainActor public static func validateLocalToken() -> Swift.Bool
+  @_Concurrency.MainActor public static func setToken(_ token: Swift.String)
+  @_Concurrency.MainActor public static func hasFeature(_ feature: Swift.String) async -> Swift.Bool
+  @_Concurrency.MainActor public static func canCreateApp() async -> Swift.Bool
+  @_Concurrency.MainActor public static func canCreateUser() async -> Swift.Bool
+  @objc deinit
+}
+public enum GoDareDILicenseError : Swift.Error, Foundation.LocalizedError {
+  case noLicenseKey
+  case invalidLicense
+  case licenseExpired
+  case networkError
+  case serverError
+  case featureNotAvailable
+  case alreadyInitialized
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public static func == (a: GoDareDI.GoDareDILicenseError, b: GoDareDI.GoDareDILicenseError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.GoDareDILicense {
+  @_Concurrency.MainActor public static func getTokenStatus() async -> Swift.String
+  @_Concurrency.MainActor public static func getTokenInfo() async -> [Swift.String : Any]
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, macOS 10.15, *)
+@_Concurrency.MainActor public class GoDareDISecureInit : Swift.Sendable {
+  @_Concurrency.MainActor public static func initialize() async throws -> any GoDareDI.AdvancedDIContainer
+  @_Concurrency.MainActor public static func validateToken() async throws -> GoDareDI.GoDareDILicense.TokenResponse
+  @_Concurrency.MainActor public static func hasFeature(_ feature: Swift.String) async -> Swift.Bool
+  @_Concurrency.MainActor public static func canCreateApp() async -> Swift.Bool
+  @_Concurrency.MainActor public static func canCreateUser() async -> Swift.Bool
+  @_Concurrency.MainActor public static func getTokenInfo() -> [Swift.String : Any]?
+  @_Concurrency.MainActor public static func reset()
+  @objc deinit
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.AdvancedDIContainerImpl {
+  @_Concurrency.MainActor final public func registerSecure<T>(_ type: T.Type, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime, factory: @escaping @Sendable (any GoDareDI.AdvancedDIContainer) async throws -> T) async throws where T : Swift.Sendable
+  @_Concurrency.MainActor final public func resolveSecure<T>() async throws -> T where T : Swift.Sendable
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.GoDareDISecureInit {
+  @_Concurrency.MainActor public static func trackUsage(_ feature: Swift.String) async
+  @_Concurrency.MainActor public static func checkUsageLimits() async -> Swift.Bool
+}
+public enum DependencyScope : Swift.String, Swift.CaseIterable, Swift.Codable, Swift.Sendable {
+  case singleton
+  case scoped
+  case transient
+  case lazy
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.DependencyScope]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.DependencyScope] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum DependencyLifetime : Swift.String, Swift.Hashable, Swift.CaseIterable, Swift.Codable, Swift.Sendable {
+  case application
+  case session
+  case request
+  case custom
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.DependencyLifetime]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.DependencyLifetime] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DependencyMetadata : Swift.Codable, Swift.Sendable {
+  public let scope: GoDareDI.DependencyScope
+  public let lifetime: GoDareDI.DependencyLifetime
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct PerformanceMetrics : Swift.Codable, Swift.Sendable {
+  public let averageResolutionTime: Foundation.TimeInterval
+  public let cacheHitRate: Swift.Double
+  public let memoryUsage: Swift.Double
+  public let totalResolutions: Swift.Int
+  public let circularDependencyCount: Swift.Int
+  public init(averageResolutionTime: Foundation.TimeInterval, cacheHitRate: Swift.Double, memoryUsage: Swift.Double, totalResolutions: Swift.Int, circularDependencyCount: Swift.Int)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct CircularDependencyException : Foundation.LocalizedError, Swift.Codable, Swift.Sendable {
+  public let message: Swift.String
+  public let cycle: [Swift.String]
+  public init(_ message: Swift.String, cycle: [Swift.String] = [])
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum DependencyResolutionError : Foundation.LocalizedError, Swift.Codable, Swift.Sendable {
+  case notRegistered(Swift.String)
+  case circularDependency([Swift.String])
+  case scopeNotFound(Swift.String)
+  case factoryError(Swift.String)
+  case validationError(Swift.String)
+  case typeMismatch(Swift.String)
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct GraphNode : Swift.Hashable, Swift.Codable, Swift.Sendable {
+  public let id: Swift.String
+  public let type: Swift.String
+  public let scope: GoDareDI.DependencyScope
+  public let lifetime: GoDareDI.DependencyLifetime
+  public init(id: Swift.String, type: Swift.String, scope: GoDareDI.DependencyScope, lifetime: GoDareDI.DependencyLifetime)
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: GoDareDI.GraphNode, rhs: GoDareDI.GraphNode) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct GraphEdge : Swift.Hashable, Swift.Codable, Swift.Sendable {
+  public let from: Swift.String
+  public let to: Swift.String
+  public let type: GoDareDI.EdgeType
+  public init(from: Swift.String, to: Swift.String, type: GoDareDI.EdgeType = .dependency)
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: GoDareDI.GraphEdge, rhs: GoDareDI.GraphEdge) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum EdgeType : Swift.String, Swift.Codable, Swift.Sendable {
+  case dependency
+  case circular
+  case weak
+  case strong
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DependencyNode : Swift.Hashable, Swift.Codable, Swift.Sendable {
+  public let scope: GoDareDI.DependencyScope
+  public let type: GoDareDI.NodeType
+  public let category: GoDareDI.NodeCategory
+  public let complexity: GoDareDI.ComplexityLevel
+  public let performanceMetrics: GoDareDI.NodePerformanceMetrics
+  public let metadata: [Swift.String : Swift.String]
+  public let tags: [Swift.String]
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: GoDareDI.DependencyNode, rhs: GoDareDI.DependencyNode) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum NodeType : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case service
+  case repository
+  case useCase
+  case viewModel
+  case controller
+  case manager
+  case factory
+  case utility
+  case model
+  case `protocol`
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.NodeType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.NodeType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum NodeCategory : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case infrastructure
+  case data
+  case domain
+  case presentation
+  case crossCutting
+  case external
+  case business
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.NodeCategory]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.NodeCategory] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ComplexityLevel : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case low
+  case medium
+  case high
+  case critical
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.ComplexityLevel]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.ComplexityLevel] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct NodePerformanceMetrics : Swift.Codable, Swift.Sendable {
+  public let resolutionTime: Foundation.TimeInterval
+  public let memoryFootprint: Swift.Double
+  public let cacheHitRate: Swift.Double
+  public let resolutionCount: Swift.Int
+  public let lastResolved: Foundation.Date?
+  public init(resolutionTime: Foundation.TimeInterval, memoryFootprint: Swift.Double, cacheHitRate: Swift.Double, resolutionCount: Swift.Int, lastResolved: Foundation.Date?)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct DependencyEdge : Swift.Hashable, Swift.Codable, Swift.Sendable {
+  public let relationshipType: GoDareDI.RelationshipType
+  public let strength: GoDareDI.RelationshipStrength
+  public let direction: GoDareDI.EdgeDirection
+  public let performanceImpact: GoDareDI.PerformanceImpact
+  public let metadata: [Swift.String : Swift.String]
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: GoDareDI.DependencyEdge, rhs: GoDareDI.DependencyEdge) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum RelationshipType : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case dependency
+  case composition
+  case aggregation
+  case inheritance
+  case implementation
+  case association
+  case injection
+  case factory
+  case callback
+  case event
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.RelationshipType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.RelationshipType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum RelationshipStrength : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case weak
+  case moderate
+  case strong
+  case critical
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.RelationshipStrength]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.RelationshipStrength] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum EdgeDirection : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case unidirectional
+  case bidirectional
+  case circular
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.EdgeDirection]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.EdgeDirection] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum PerformanceImpact : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case none
+  case low
+  case medium
+  case high
+  case critical
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.PerformanceImpact]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.PerformanceImpact] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DependencyGraph : Swift.Codable, Swift.Sendable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct GraphAnalysis : Swift.Codable, Swift.Sendable {
+  public let complexityMetrics: GoDareDI.ComplexityMetrics
+  public let performanceMetrics: GoDareDI.GraphPerformanceMetrics
+  public let architectureMetrics: GoDareDI.ArchitectureMetrics
+  public let healthScore: GoDareDI.HealthScore
+  public let recommendations: [GoDareDI.Recommendation]
+  public let clusters: [GoDareDI.NodeCluster]
+  public let criticalPaths: [GoDareDI.CriticalPath]
+  public init(hasCircularDependencies: Swift.Bool, totalNodes: Swift.Int, totalDependencies: Swift.Int, maxDepth: Swift.Int, circularDependencyChains: [[Swift.String]], analysisTime: Foundation.TimeInterval, memoryUsage: Swift.Double, cacheEfficiency: Swift.Double, isComplete: Swift.Bool, complexityMetrics: GoDareDI.ComplexityMetrics, performanceMetrics: GoDareDI.GraphPerformanceMetrics, architectureMetrics: GoDareDI.ArchitectureMetrics, healthScore: GoDareDI.HealthScore, recommendations: [GoDareDI.Recommendation], clusters: [GoDareDI.NodeCluster], criticalPaths: [GoDareDI.CriticalPath])
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ComplexityMetrics : Swift.Codable, Swift.Sendable {
+  public let cyclomaticComplexity: Swift.Int
+  public let couplingScore: Swift.Double
+  public let cohesionScore: Swift.Double
+  public let fanIn: Swift.Int
+  public let fanOut: Swift.Int
+  public let instability: Swift.Double
+  public let abstractness: Swift.Double
+  public let distanceFromMainSequence: Swift.Double
+  public init(cyclomaticComplexity: Swift.Int, couplingScore: Swift.Double, cohesionScore: Swift.Double, fanIn: Swift.Int, fanOut: Swift.Int, instability: Swift.Double, abstractness: Swift.Double, distanceFromMainSequence: Swift.Double)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct GraphPerformanceMetrics : Swift.Codable, Swift.Sendable {
+  public let averageResolutionTime: Foundation.TimeInterval
+  public let slowestResolution: Foundation.TimeInterval
+  public let fastestResolution: Foundation.TimeInterval
+  public let totalMemoryFootprint: Swift.Double
+  public let cacheHitRate: Swift.Double
+  public let bottleneckNodes: [Swift.String]
+  public let performanceTrend: GoDareDI.PerformanceTrend
+  public init(averageResolutionTime: Foundation.TimeInterval, slowestResolution: Foundation.TimeInterval, fastestResolution: Foundation.TimeInterval, totalMemoryFootprint: Swift.Double, cacheHitRate: Swift.Double, bottleneckNodes: [Swift.String], performanceTrend: GoDareDI.PerformanceTrend)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum PerformanceTrend : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case improving
+  case stable
+  case degrading
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.PerformanceTrend]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.PerformanceTrend] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct ArchitectureMetrics : Swift.Codable, Swift.Sendable {
+  public let layerViolations: Swift.Int
+  public let dependencyInversionViolations: Swift.Int
+  public let singleResponsibilityViolations: Swift.Int
+  public let openClosedViolations: Swift.Int
+  public let liskovSubstitutionViolations: Swift.Int
+  public let interfaceSegregationViolations: Swift.Int
+  public let architectureCompliance: Swift.Double
+  public init(layerViolations: Swift.Int, dependencyInversionViolations: Swift.Int, singleResponsibilityViolations: Swift.Int, openClosedViolations: Swift.Int, liskovSubstitutionViolations: Swift.Int, interfaceSegregationViolations: Swift.Int, architectureCompliance: Swift.Double)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct HealthScore : Swift.Codable, Swift.Sendable {
+  public let overall: Swift.Double
+  public let performance: Swift.Double
+  public let maintainability: Swift.Double
+  public let testability: Swift.Double
+  public let scalability: Swift.Double
+  public let security: Swift.Double
+  public let reliability: Swift.Double
+  public init(overall: Swift.Double, performance: Swift.Double, maintainability: Swift.Double, testability: Swift.Double, scalability: Swift.Double, security: Swift.Double, reliability: Swift.Double)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Recommendation : Swift.Codable, Swift.Sendable {
+  public let type: GoDareDI.RecommendationType
+  public let priority: GoDareDI.RecommendationPriority
+  public let title: Swift.String
+  public let description: Swift.String
+  public let affectedNodes: [Swift.String]
+  public let estimatedImpact: Swift.String
+  public let effort: GoDareDI.EffortLevel
+  public init(type: GoDareDI.RecommendationType, priority: GoDareDI.RecommendationPriority, title: Swift.String, description: Swift.String, affectedNodes: [Swift.String], estimatedImpact: Swift.String, effort: GoDareDI.EffortLevel)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum RecommendationType : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case performance
+  case architecture
+  case maintainability
+  case security
+  case scalability
+  case testing
+  case documentation
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.RecommendationType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.RecommendationType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum RecommendationPriority : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case low
+  case medium
+  case high
+  case critical
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.RecommendationPriority]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.RecommendationPriority] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum EffortLevel : Swift.String, Swift.Codable, Swift.Sendable, Swift.CaseIterable {
+  case low
+  case medium
+  case high
+  case veryHigh
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [GoDareDI.EffortLevel]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [GoDareDI.EffortLevel] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct NodeCluster : Swift.Codable, Swift.Sendable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let nodes: [Swift.String]
+  public let cohesion: Swift.Double
+  public let coupling: Swift.Double
+  public let purpose: Swift.String
+  public init(id: Swift.String, name: Swift.String, nodes: [Swift.String], cohesion: Swift.Double, coupling: Swift.Double, purpose: Swift.String)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct CriticalPath : Swift.Codable, Swift.Sendable {
+  public let id: Swift.String
+  public let nodes: [Swift.String]
+  public let totalTime: Foundation.TimeInterval
+  public let bottleneck: Swift.String
+  public let impact: GoDareDI.PerformanceImpact
+  public init(id: Swift.String, nodes: [Swift.String], totalTime: Foundation.TimeInterval, bottleneck: Swift.String, impact: GoDareDI.PerformanceImpact)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.CrashlyticsLogLevel : Swift.Equatable {}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.CrashlyticsLogLevel : Swift.Hashable {}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.CrashlyticsLogLevel : Swift.RawRepresentable {}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.GoDareDILicense.LicenseType : Swift.Equatable {}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.GoDareDILicense.LicenseType : Swift.Hashable {}
+@available(iOS 13.0, macOS 10.15, *)
+extension GoDareDI.GoDareDILicense.LicenseType : Swift.RawRepresentable {}
+extension GoDareDI.GoDareDILicenseError : Swift.Equatable {}
+extension GoDareDI.GoDareDILicenseError : Swift.Hashable {}
+extension GoDareDI.DependencyScope : Swift.Equatable {}
+extension GoDareDI.DependencyScope : Swift.Hashable {}
+extension GoDareDI.DependencyScope : Swift.RawRepresentable {}
+extension GoDareDI.DependencyLifetime : Swift.RawRepresentable {}
+extension GoDareDI.EdgeType : Swift.Equatable {}
+extension GoDareDI.EdgeType : Swift.Hashable {}
+extension GoDareDI.EdgeType : Swift.RawRepresentable {}
+extension GoDareDI.NodeType : Swift.Equatable {}
+extension GoDareDI.NodeType : Swift.Hashable {}
+extension GoDareDI.NodeType : Swift.RawRepresentable {}
+extension GoDareDI.NodeCategory : Swift.Equatable {}
+extension GoDareDI.NodeCategory : Swift.Hashable {}
+extension GoDareDI.NodeCategory : Swift.RawRepresentable {}
+extension GoDareDI.ComplexityLevel : Swift.Equatable {}
+extension GoDareDI.ComplexityLevel : Swift.Hashable {}
+extension GoDareDI.ComplexityLevel : Swift.RawRepresentable {}
+extension GoDareDI.RelationshipType : Swift.Equatable {}
+extension GoDareDI.RelationshipType : Swift.Hashable {}
+extension GoDareDI.RelationshipType : Swift.RawRepresentable {}
+extension GoDareDI.RelationshipStrength : Swift.Equatable {}
+extension GoDareDI.RelationshipStrength : Swift.Hashable {}
+extension GoDareDI.RelationshipStrength : Swift.RawRepresentable {}
+extension GoDareDI.EdgeDirection : Swift.Equatable {}
+extension GoDareDI.EdgeDirection : Swift.Hashable {}
+extension GoDareDI.EdgeDirection : Swift.RawRepresentable {}
+extension GoDareDI.PerformanceImpact : Swift.Equatable {}
+extension GoDareDI.PerformanceImpact : Swift.Hashable {}
+extension GoDareDI.PerformanceImpact : Swift.RawRepresentable {}
+extension GoDareDI.PerformanceTrend : Swift.Equatable {}
+extension GoDareDI.PerformanceTrend : Swift.Hashable {}
+extension GoDareDI.PerformanceTrend : Swift.RawRepresentable {}
+extension GoDareDI.RecommendationType : Swift.Equatable {}
+extension GoDareDI.RecommendationType : Swift.Hashable {}
+extension GoDareDI.RecommendationType : Swift.RawRepresentable {}
+extension GoDareDI.RecommendationPriority : Swift.Equatable {}
+extension GoDareDI.RecommendationPriority : Swift.Hashable {}
+extension GoDareDI.RecommendationPriority : Swift.RawRepresentable {}
+extension GoDareDI.EffortLevel : Swift.Equatable {}
+extension GoDareDI.EffortLevel : Swift.Hashable {}
+extension GoDareDI.EffortLevel : Swift.RawRepresentable {}
