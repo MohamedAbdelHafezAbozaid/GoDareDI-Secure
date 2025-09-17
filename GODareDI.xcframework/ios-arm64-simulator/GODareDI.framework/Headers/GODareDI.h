@@ -34,31 +34,6 @@ typedef NS_ENUM(NSInteger, DependencyLifetime) {
     DependencyLifetimeCustom = 3
 };
 
-// Performance Metrics
-@interface PerformanceMetrics : NSObject
-@property (nonatomic, assign) NSTimeInterval averageResolutionTime;
-@property (nonatomic, assign) double cacheHitRate;
-@property (nonatomic, assign) double memoryUsage;
-@property (nonatomic, assign) NSInteger totalResolutions;
-@property (nonatomic, assign) NSInteger circularDependencyCount;
-@end
-
-// Dependency Metadata
-@interface DependencyMetadata : NSObject
-@property (nonatomic, strong) NSString *type;
-@property (nonatomic, assign) DependencyScope scope;
-@property (nonatomic, assign) DependencyLifetime lifetime;
-@property (nonatomic, assign) BOOL lazy;
-@property (nonatomic, strong) NSArray<NSString *> *dependencies;
-@property (nonatomic, strong) NSDate *registrationTime;
-@property (nonatomic, strong) NSDate *lastAccessed;
-@end
-
-// SwiftUI Integration (if available)
-#if __has_include(<SwiftUI/SwiftUI.h>)
-@import SwiftUI;
-#endif
-
 // Main initialization function
 void godare_init(void);
 int godare_version(void);

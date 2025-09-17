@@ -28,15 +28,5 @@
     <string>iphoneos</string>
     <key>DTSDKName</key>
     <string>iphoneos</string>
-    <key>DTXcode</key>
-    <string>1500</string>
-    <key>DTXcodeBuild</key>
-    <string>15A240d</string>
-    <key>DTCompiler</key>
-    <string>com.apple.compilers.llvm.clang.1_0</string>
-    <key>DTPlatformBuild</key>
-    <string>22F76</string>
-    <key>DTPlatformVersion</key>
-    <string>18.5</string>
 </dict>
 </plist>

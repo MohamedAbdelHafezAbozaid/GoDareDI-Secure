@@ -5,5 +5,4 @@ framework module GODareDI {
     module * { export * }
     
     link framework "Foundation"
-    link framework "SwiftUI"
 }
