@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "framework": "GODareDI",
+  "platforms": ["ios"],
+  "architectures": ["arm64"],
+  "minimum_os_version": "13.0",
+  "swift_version": "6.0",
+  "interface_format_version": "1.0",
+  "created_at": "2025-09-17T09:17:57Z",
+  "validation_checks": {
+    "binary_artifacts": true,
+    "swift_interfaces": true,
+    "module_maps": true,
+    "umbrella_headers": true,
+    "info_plists": true,
+    "xcframework_structure": true
+  }
+}

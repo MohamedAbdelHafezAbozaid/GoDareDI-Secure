@@ -1,0 +1,241 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: 6.0.0
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-library-evolution
+import Foundation
+import SwiftUI
+@_exported import struct Foundation.UUID
+@available(iOS 13.0, *)
+public protocol AdvancedDIContainer : Sendable {
+  func register<T : Sendable>(_ type: T.Type, scope: DependencyScope, lifetime: DependencyLifetime, factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T)
+  func register<T : Sendable>(_ type: T.Type, scope: DependencyScope, factory: @escaping @Sendable (AdvancedDIContainer) async throws -> T)
+  func registerSync<T : Sendable>(_ type: T.Type, scope: DependencyScope, lifetime: DependencyLifetime, factory: @escaping @Sendable (AdvancedDIContainer) throws -> T)
+  func registerSync<T : Sendable>(_ type: T.Type, scope: DependencyScope, factory: @escaping @Sendable (AdvancedDIContainer) throws -> T)
+  func resolve<T : Sendable>() async throws -> T
+  func resolve<T : Sendable>(_ type: T.Type) async throws -> T
+  func resolveSync<T : Sendable>() throws -> T
+  func resolveSync<T : Sendable>(_ type: T.Type) throws -> T
+  func createScope(_ scopeId: String) async
+  func disposeScope(_ scopeId: String) async
+  func setCurrentScope(_ scopeId: String) async
+  func getCurrentScope() -> String
+  func validateDependencies() async throws
+  func getDependencyGraph() async -> DependencyGraph
+  func analyzeDependencyGraph() async -> GraphAnalysis
+  func analyzeDependencyGraphWithMetrics() async -> GraphAnalysis
+  func isRegistered<T>(_ type: T.Type) -> Bool
+  func getPerformanceMetrics() async -> PerformanceMetrics
+  func preloadDependencies() async
+  func cleanup() async
+  func preloadAllGeneric() async throws
+  func preloadSmart() async throws
+  func preloadViewModelsOnly() async throws
+  func getMetadata<T>(_ type: T.Type) -> DependencyMetadata?
+  func registerWithMetadata<T>(_ type: T.Type, metadata: DependencyMetadata)
+  func getMetadata(for key: String) -> DependencyMetadata?
+  func getDependencyMap() -> [String : Set<String>]
+  func getRegisteredServicesCount() -> Int
+  func debugPrintMetadata()
+  func debugPrintFactories()
+}
+@available(iOS 13.0, *)
+public enum DependencyScope : String, CaseIterable, Codable, Sendable {
+  case singleton = "singleton"
+  case scoped = "scoped"
+  case transient = "transient"
+  case lazy = "lazy"
+}
+@available(iOS 13.0, *)
+public enum DependencyLifetime : String, Hashable, CaseIterable, Codable, Sendable {
+  case application = "application"
+  case session = "session"
+  case request = "request"
+  case custom = "custom"
+}
+@available(iOS 13.0, *)
+public struct DependencyMetadata : Codable, Sendable {
+  public let type: String
+  public let scope: DependencyScope
+  public let lifetime: DependencyLifetime
+  let lazy: Bool
+  let dependencies: [String]
+  let registrationTime: Date
+  let lastAccessed: Date?
+  public init(type: Any.Type, scope: DependencyScope, lifetime: DependencyLifetime, lazy: Bool = false, dependencies: [String] = [])
+  mutating func updateLastAccessed()
+}
+@available(iOS 13.0, *)
+public struct PerformanceMetrics : Codable, Sendable {
+  public let averageResolutionTime: TimeInterval
+  public let cacheHitRate: Double
+  public let memoryUsage: Double
+  public let totalResolutions: Int
+  public let circularDependencyCount: Int
+  public init(averageResolutionTime: TimeInterval, cacheHitRate: Double, memoryUsage: Double, totalResolutions: Int, circularDependencyCount: Int)
+}
+@available(iOS 13.0, *)
+public struct DependencyGraph : Sendable {
+  public let nodes: [DependencyNode]
+  public let edges: [DependencyEdge]
+  public let analysis: GraphAnalysis
+  public init(nodes: [DependencyNode], edges: [DependencyEdge], analysis: GraphAnalysis)
+}
+@available(iOS 13.0, *)
+public struct DependencyNode : Sendable {
+  public let id: String
+  public let scope: DependencyScope
+  public let dependencies: [String]
+  public let layer: Int
+  public let isCircular: Bool
+  public let position: CGPoint
+  public let type: NodeType
+  public let category: NodeCategory
+  public let complexity: NodeComplexity
+  public let performanceMetrics: NodePerformanceMetrics
+  public let metadata: [String : String]
+  public let tags: [String]
+  public init(id: String, scope: DependencyScope, dependencies: [String], layer: Int, isCircular: Bool, position: CGPoint, type: NodeType, category: NodeCategory, complexity: NodeComplexity, performanceMetrics: NodePerformanceMetrics, metadata: [String : String], tags: [String])
+}
+@available(iOS 13.0, *)
+public struct DependencyEdge : Sendable {
+  public let from: String
+  public let to: String
+  public let relationship: String
+  public let isCircular: Bool
+  public let relationshipType: RelationshipType
+  public let strength: RelationshipStrength
+  public let direction: RelationshipDirection
+  public let performanceImpact: PerformanceImpact
+  public let metadata: [String : String]
+  public init(from: String, to: String, relationship: String, isCircular: Bool, relationshipType: RelationshipType, strength: RelationshipStrength, direction: RelationshipDirection, performanceImpact: PerformanceImpact, metadata: [String : String])
+}
+@available(iOS 13.0, *)
+public struct GraphAnalysis : Sendable {
+  public let hasCircularDependencies: Bool
+  public let totalNodes: Int
+  public let totalDependencies: Int
+  public let maxDepth: Int
+  public let circularDependencyChains: [[String]]
+  public let analysisTime: TimeInterval
+  public let memoryUsage: Double
+  public let cacheEfficiency: Double
+  public let isComplete: Bool
+  public let complexityMetrics: ComplexityMetrics
+  public let performanceMetrics: GraphPerformanceMetrics
+  public let architectureMetrics: ArchitectureMetrics
+  public let healthScore: HealthScore
+  public let recommendations: [String]
+  public let clusters: [[String]]
+  public let criticalPaths: [[String]]
+  public init(hasCircularDependencies: Bool, totalNodes: Int, totalDependencies: Int, maxDepth: Int, circularDependencyChains: [[String]], analysisTime: TimeInterval, memoryUsage: Double, cacheEfficiency: Double, isComplete: Bool, complexityMetrics: ComplexityMetrics, performanceMetrics: GraphPerformanceMetrics, architectureMetrics: ArchitectureMetrics, healthScore: HealthScore, recommendations: [String], clusters: [[String]], criticalPaths: [[String]])
+}
+@available(iOS 13.0, *)
+public enum NodeType : String, CaseIterable, Codable, Sendable {
+  case service = "service"
+  case repository = "repository"
+  case viewModel = "viewModel"
+  case useCase = "useCase"
+  case dataSource = "dataSource"
+  case network = "network"
+  case storage = "storage"
+  case analytics = "analytics"
+  case other = "other"
+}
+@available(iOS 13.0, *)
+public enum NodeCategory : String, CaseIterable, Codable, Sendable {
+  case business = "business"
+  case data = "data"
+  case presentation = "presentation"
+  case infrastructure = "infrastructure"
+  case external = "external"
+  case other = "other"
+}
+@available(iOS 13.0, *)
+public enum NodeComplexity : String, CaseIterable, Codable, Sendable {
+  case low = "low"
+  case medium = "medium"
+  case high = "high"
+  case critical = "critical"
+}
+@available(iOS 13.0, *)
+public struct NodePerformanceMetrics : Codable, Sendable {
+  public let resolutionTime: TimeInterval
+  public let memoryFootprint: Int
+  public let cacheHitRate: Double
+  public let resolutionCount: Int
+  public let lastResolved: Date
+  public init(resolutionTime: TimeInterval, memoryFootprint: Int, cacheHitRate: Double, resolutionCount: Int, lastResolved: Date)
+}
+@available(iOS 13.0, *)
+public enum RelationshipType : String, CaseIterable, Codable, Sendable {
+  case dependency = "dependency"
+  case composition = "composition"
+  case aggregation = "aggregation"
+  case inheritance = "inheritance"
+  case implementation = "implementation"
+  case other = "other"
+}
+@available(iOS 13.0, *)
+public enum RelationshipStrength : String, CaseIterable, Codable, Sendable {
+  case weak = "weak"
+  case medium = "medium"
+  case strong = "strong"
+  case critical = "critical"
+}
+@available(iOS 13.0, *)
+public enum RelationshipDirection : String, CaseIterable, Codable, Sendable {
+  case unidirectional = "unidirectional"
+  case bidirectional = "bidirectional"
+  case circular = "circular"
+}
+@available(iOS 13.0, *)
+public enum PerformanceImpact : String, CaseIterable, Codable, Sendable {
+  case none = "none"
+  case low = "low"
+  case medium = "medium"
+  case high = "high"
+  case critical = "critical"
+}
+@available(iOS 13.0, *)
+public struct ComplexityMetrics : Codable, Sendable {
+  public let cyclomaticComplexity: Int
+  public let cognitiveComplexity: Int
+  public let maintainabilityIndex: Int
+  public init(cyclomaticComplexity: Int, cognitiveComplexity: Int, maintainabilityIndex: Int)
+}
+@available(iOS 13.0, *)
+public struct GraphPerformanceMetrics : Codable, Sendable {
+  public let averageResolutionTime: TimeInterval
+  public let slowestResolution: TimeInterval
+  public let fastestResolution: TimeInterval
+  public let totalMemoryFootprint: Int
+  public let cacheHitRate: Double
+  public let bottleneckNodes: [String]
+  public let performanceTrend: String
+  public init(averageResolutionTime: TimeInterval, slowestResolution: TimeInterval, fastestResolution: TimeInterval, totalMemoryFootprint: Int, cacheHitRate: Double, bottleneckNodes: [String], performanceTrend: String)
+}
+@available(iOS 13.0, *)
+public struct ArchitectureMetrics : Codable, Sendable {
+  public let couplingScore: Double
+  public let cohesionScore: Double
+  public let layeredArchitecture: Bool
+  public let dependencyInversion: Bool
+  public init(couplingScore: Double, cohesionScore: Double, layeredArchitecture: Bool, dependencyInversion: Bool)
+}
+@available(iOS 13.0, *)
+public struct HealthScore : Codable, Sendable {
+  public let overall: Int
+  public let performance: Int
+  public let maintainability: Int
+  public let testability: Int
+  public let scalability: Int
+  public let security: Int
+  public let reliability: Int
+  public init(overall: Int, performance: Int, maintainability: Int, testability: Int, scalability: Int, security: Int, reliability: Int)
+}
+@available(iOS 17.0, *)
+@MainActor public struct DependencyGraphView : SwiftUI.View {
+  public init(container: AdvancedDIContainer)
+  public var body: some SwiftUI.View { get }
+}
+public func godare_init()
+public func godare_version() -> Int32
