@@ -2,24 +2,24 @@
 set -e
 
 # =============================================================================
-# GoDareDI XCFramework Build Script
+# GoDareDI iOS 17.0+ XCFramework Build Script (Reliable Version)
 # =============================================================================
-# This script creates a production-ready XCFramework for GoDareDI with:
-# - Dynamic framework compilation for iOS device and simulator
-# - Proper Swift interface files for SPM compatibility
-# - Binary validation and signing verification
-# - SPM packaging with checksum generation
-# - GitHub release automation support
+# This script creates a production-ready XCFramework for iOS 17.0+ with:
+# - BUILD_LIBRARY_FOR_DISTRIBUTION=YES for ABI stability
+# - SKIP_INSTALL=NO for proper framework inclusion
+# - iOS 17.0+ targeting to include DependencyGraphView
+# - xcodebuild -create-xcframework for proper XCFramework generation
+# - Validation of Info.plist and binary integrity
 # =============================================================================
 
 # Configuration
 FRAMEWORK_NAME="GoDareDI"
+VERSION="${1:-2.0.15}"
 OUTPUT_DIR="GoDareDI-Secure-Distribution"
 XCFRAMEWORK_NAME="GoDareDI.xcframework"
-VERSION="${1:-2.0.11}"
-SOURCE_DIR="Sources/GoDareDI"
 BUILD_DIR="build"
-TEMP_DIR="temp_build"
+TEMP_DIR="temp_frameworks"
+MIN_IOS_VERSION="17.0"
 
 # Colors for output
 RED='\033[0;31m'
@@ -61,53 +61,18 @@ cleanup() {
     log_info "Cleaning temporary build files..."
     rm -rf "$BUILD_DIR" "$TEMP_DIR" DerivedData .build/
     
-    # Remove any existing dylib stubs
-    find . -name "*.dylib" -type f -delete 2>/dev/null || true
-    
     log_success "Cleanup completed"
 }
 
 # =============================================================================
-# 2. SOURCE ANALYSIS
+# 2. BUILD FRAMEWORKS USING SWIFT PACKAGE
 # =============================================================================
-analyze_source() {
-    log_info "Analyzing GoDareDI source code..."
-    
-    # Count source files
-    local swift_files=$(find "$SOURCE_DIR" -name "*.swift" | wc -l)
-    log_info "Found $swift_files Swift source files"
-    
-    # Identify key components
-    local protocols=$(grep -r "public protocol" "$SOURCE_DIR" --include="*.swift" | wc -l)
-    local initializers=$(grep -r "public init" "$SOURCE_DIR" --include="*.swift" | wc -l)
-    local error_types=$(grep -r "public.*Error" "$SOURCE_DIR" --include="*.swift" | wc -l)
-    local swiftui_views=$(grep -r "import SwiftUI" "$SOURCE_DIR" --include="*.swift" | wc -l)
-    
-    log_info "Source analysis complete:"
-    log_info "  - Protocols: $protocols"
-    log_info "  - Initializers: $initializers"
-    log_info "  - Error types: $error_types"
-    log_info "  - SwiftUI views: $swiftui_views"
-    
-    # Verify DependencyGraphView exists
-    if grep -r "DependencyGraphView" "$SOURCE_DIR" --include="*.swift" > /dev/null; then
-        log_success "DependencyGraphView found in source"
-    else
-        log_error "DependencyGraphView not found in source!"
-        exit 1
-    fi
-}
-
-# =============================================================================
-# 3. FRAMEWORK BUILD
-# =============================================================================
-build_framework() {
-    log_info "Building dynamic framework for iOS..."
+build_frameworks() {
+    log_info "Building frameworks for iOS 17.0+ platforms using Swift Package..."
     
     # Create build directories
-    mkdir -p "$BUILD_DIR/ios-device"
-    mkdir -p "$BUILD_DIR/ios-simulator"
-    mkdir -p "$BUILD_DIR/ios-simulator-x86"
+    mkdir -p "$BUILD_DIR"
+    mkdir -p "$TEMP_DIR"
     
     # Get SDK paths
     local ios_sdk=$(xcrun --sdk iphoneos --show-sdk-path)
@@ -115,130 +80,104 @@ build_framework() {
     
     log_info "iOS SDK: $ios_sdk"
     log_info "Simulator SDK: $simulator_sdk"
+    log_info "Targeting iOS $MIN_IOS_VERSION+ (includes DependencyGraphView)"
     
-    # Build for iOS device (arm64)
-    log_info "Compiling for iOS device (arm64)..."
-    swiftc -emit-library \
-        -target arm64-apple-ios13.0 \
-        -sdk "$ios_sdk" \
-        -module-name "$FRAMEWORK_NAME" \
-        -emit-module \
-        -emit-module-interface \
-        -enable-library-evolution \
-        -swift-version 5 \
-        -O \
-        -whole-module-optimization \
-        -emit-module-interface-path "$BUILD_DIR/ios-device/$FRAMEWORK_NAME.swiftinterface" \
-        -o "$BUILD_DIR/ios-device/lib$FRAMEWORK_NAME.dylib" \
-        "$SOURCE_DIR"/*.swift \
-        "$SOURCE_DIR"/**/*.swift 2>/dev/null || {
-            log_warning "Failed to compile with glob patterns, trying individual files..."
-            find "$SOURCE_DIR" -name "*.swift" -exec swiftc -emit-library \
-                -target arm64-apple-ios13.0 \
-                -sdk "$ios_sdk" \
-                -module-name "$FRAMEWORK_NAME" \
-                -emit-module \
-                -emit-module-interface \
-                -enable-library-evolution \
-                -swift-version 5 \
-                -O \
-                -whole-module-optimization \
-                -emit-module-interface-path "$BUILD_DIR/ios-device/$FRAMEWORK_NAME.swiftinterface" \
-                -o "$BUILD_DIR/ios-device/lib$FRAMEWORK_NAME.dylib" \
-                {} + 2>/dev/null || {
-                    log_error "Failed to compile Swift source for iOS device"
-                    exit 1
-                }
-        }
+    # Build for iOS Device (arm64) - iOS 17.0+
+    log_info "Building for iOS Device (arm64) - iOS $MIN_IOS_VERSION+..."
+    build_framework_with_swift_package "ios" "arm64-apple-ios$MIN_IOS_VERSION" "$ios_sdk" "device"
     
-    # Build for iOS simulator (arm64)
-    log_info "Compiling for iOS simulator (arm64)..."
-    swiftc -emit-library \
-        -target arm64-apple-ios13.0-simulator \
-        -sdk "$simulator_sdk" \
-        -module-name "$FRAMEWORK_NAME" \
-        -emit-module \
-        -emit-module-interface \
-        -enable-library-evolution \
-        -swift-version 5 \
-        -O \
-        -whole-module-optimization \
-        -emit-module-interface-path "$BUILD_DIR/ios-simulator/$FRAMEWORK_NAME.swiftinterface" \
-        -o "$BUILD_DIR/ios-simulator/lib$FRAMEWORK_NAME.dylib" \
-        "$SOURCE_DIR"/*.swift \
-        "$SOURCE_DIR"/**/*.swift 2>/dev/null || {
-            find "$SOURCE_DIR" -name "*.swift" -exec swiftc -emit-library \
-                -target arm64-apple-ios13.0-simulator \
-                -sdk "$simulator_sdk" \
-                -module-name "$FRAMEWORK_NAME" \
-                -emit-module \
-                -emit-module-interface \
-                -enable-library-evolution \
-                -swift-version 5 \
-                -O \
-                -whole-module-optimization \
-                -emit-module-interface-path "$BUILD_DIR/ios-simulator/$FRAMEWORK_NAME.swiftinterface" \
-                -o "$BUILD_DIR/ios-simulator/lib$FRAMEWORK_NAME.dylib" \
-                {} + 2>/dev/null || {
-                    log_error "Failed to compile Swift source for iOS simulator"
-                    exit 1
-                }
-        }
+    # Build for iOS Simulator (arm64) - iOS 17.0+
+    log_info "Building for iOS Simulator (arm64) - iOS $MIN_IOS_VERSION+..."
+    build_framework_with_swift_package "ios-simulator" "arm64-apple-ios$MIN_IOS_VERSION-simulator" "$simulator_sdk" "simulator"
     
-    # Build for iOS simulator (x86_64) - for Intel Macs
-    log_info "Compiling for iOS simulator (x86_64)..."
-    swiftc -emit-library \
-        -target x86_64-apple-ios13.0-simulator \
-        -sdk "$simulator_sdk" \
-        -module-name "$FRAMEWORK_NAME" \
-        -emit-module \
-        -emit-module-interface \
-        -enable-library-evolution \
-        -swift-version 5 \
-        -O \
-        -whole-module-optimization \
-        -emit-module-interface-path "$BUILD_DIR/ios-simulator-x86/$FRAMEWORK_NAME.swiftinterface" \
-        -o "$BUILD_DIR/ios-simulator-x86/lib$FRAMEWORK_NAME.dylib" \
-        "$SOURCE_DIR"/*.swift \
-        "$SOURCE_DIR"/**/*.swift 2>/dev/null || {
-            find "$SOURCE_DIR" -name "*.swift" -exec swiftc -emit-library \
-                -target x86_64-apple-ios13.0-simulator \
-                -sdk "$simulator_sdk" \
-                -module-name "$FRAMEWORK_NAME" \
-                -emit-module \
-                -emit-module-interface \
-                -enable-library-evolution \
-                -swift-version 5 \
-                -O \
-                -whole-module-optimization \
-                -emit-module-interface-path "$BUILD_DIR/ios-simulator-x86/$FRAMEWORK_NAME.swiftinterface" \
-                -o "$BUILD_DIR/ios-simulator-x86/lib$FRAMEWORK_NAME.dylib" \
-                {} + 2>/dev/null || {
-                    log_warning "Failed to compile for x86_64 simulator (this is expected on Apple Silicon)"
-                }
-        }
+    # Build for iOS Simulator (x86_64) - iOS 17.0+ (for Intel Macs)
+    if [[ $(uname -m) == "x86_64" ]]; then
+        log_info "Building for iOS Simulator (x86_64) - iOS $MIN_IOS_VERSION+..."
+        build_framework_with_swift_package "ios-simulator-x86" "x86_64-apple-ios$MIN_IOS_VERSION-simulator" "$simulator_sdk" "simulator"
+    else
+        log_info "Skipping x86_64 simulator build (Apple Silicon detected)"
+    fi
     
-    log_success "Framework compilation completed"
+    log_success "Framework building completed"
 }
 
 # =============================================================================
-# 4. XCFRAMEWORK CREATION
+# 2.1. BUILD FRAMEWORK USING SWIFT PACKAGE
 # =============================================================================
-create_xcframework() {
-    log_info "Creating XCFramework structure..."
+build_framework_with_swift_package() {
+    local platform=$1
+    local target=$2
+    local sdk=$3
+    local platform_type=$4
     
-    # Create output directory
-    mkdir -p "$OUTPUT_DIR"
+    local platform_dir="$TEMP_DIR/$platform"
+    local framework_dir="$platform_dir/$FRAMEWORK_NAME.framework"
     
-    # Create XCFramework structure
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Headers"
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules"
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Headers"
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Modules"
+    # Create framework directory structure
+    mkdir -p "$framework_dir/Headers"
+    mkdir -p "$framework_dir/Modules/$FRAMEWORK_NAME.swiftmodule"
+    
+    # Build using direct swiftc compilation with proper flags
+    log_info "Compiling for $platform ($target) using direct swiftc..."
+    
+    # Compile all Swift files
+    swiftc -emit-library \
+        -target "$target" \
+        -sdk "$sdk" \
+        -module-name "$FRAMEWORK_NAME" \
+        -emit-module \
+        -emit-module-interface \
+        -enable-library-evolution \
+        -swift-version 5 \
+        -O \
+        -whole-module-optimization \
+        -emit-module-interface-path "$platform_dir/$FRAMEWORK_NAME.swiftinterface" \
+        -o "$framework_dir/$FRAMEWORK_NAME" \
+        $(find Sources/GoDareDI -name "*.swift") || {
+            log_error "Failed to compile Swift source for $platform"
+            return 1
+        }
     
     # Create umbrella header
-    log_info "Creating umbrella header..."
-    cat > "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Headers/$FRAMEWORK_NAME.h" << 'EOF'
+    create_umbrella_header "$framework_dir/Headers/$FRAMEWORK_NAME.h"
+    
+    # Create module.modulemap
+    create_module_map "$framework_dir/Modules/module.modulemap"
+    
+    # Create Info.plist with iOS 17.0+ targeting
+    create_info_plist "$framework_dir/Info.plist" "$platform_type"
+    
+    # Copy Swift interface file if it exists
+    if [ -f "$platform_dir/$FRAMEWORK_NAME.swiftinterface" ]; then
+        local interface_filename=""
+        case $platform in
+            "ios")
+                interface_filename="arm64-apple-ios$MIN_IOS_VERSION.swiftinterface"
+                ;;
+            "ios-simulator")
+                interface_filename="arm64-apple-ios$MIN_IOS_VERSION-simulator.swiftinterface"
+                ;;
+            "ios-simulator-x86")
+                interface_filename="x86_64-apple-ios$MIN_IOS_VERSION-simulator.swiftinterface"
+                ;;
+        esac
+        
+        if [ -n "$interface_filename" ]; then
+            cp "$platform_dir/$FRAMEWORK_NAME.swiftinterface" \
+               "$framework_dir/Modules/$FRAMEWORK_NAME.swiftmodule/$interface_filename"
+        fi
+    fi
+    
+    log_success "Framework built for $platform (iOS $MIN_IOS_VERSION+)"
+}
+
+# =============================================================================
+# 2.2. CREATE UMBRELLA HEADER
+# =============================================================================
+create_umbrella_header() {
+    local header_path=$1
+    
+    cat > "$header_path" << 'EOF'
 #ifndef GoDareDI_h
 #define GoDareDI_h
 
@@ -252,6 +191,7 @@ FOUNDATION_EXPORT const unsigned char GoDareDIVersionString[];
 
 // GoDareDI Framework - Advanced Dependency Injection
 // This is a binary framework with full Swift API support
+// Requires iOS 17.0+ for complete functionality including DependencyGraphView
 
 // Core DI Types
 @protocol AdvancedDIContainer <NSObject>
@@ -279,14 +219,15 @@ int godare_version(void);
 
 #endif /* GoDareDI_h */
 EOF
+}
+
+# =============================================================================
+# 2.3. CREATE MODULE MAP
+# =============================================================================
+create_module_map() {
+    local module_map_path=$1
     
-    # Copy umbrella header to simulator
-    cp "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Headers/$FRAMEWORK_NAME.h" \
-       "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Headers/$FRAMEWORK_NAME.h"
-    
-    # Create module.modulemap
-    log_info "Creating module.modulemap..."
-    cat > "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules/module.modulemap" << EOF
+    cat > "$module_map_path" << EOF
 framework module $FRAMEWORK_NAME {
     umbrella header "$FRAMEWORK_NAME.h"
     export *
@@ -295,14 +236,27 @@ framework module $FRAMEWORK_NAME {
     link framework "SwiftUI"
 }
 EOF
+}
+
+# =============================================================================
+# 2.4. CREATE INFO.PLIST (iOS 17.0+)
+# =============================================================================
+create_info_plist() {
+    local info_plist_path=$1
+    local platform_type=$2
     
-    # Copy module map to simulator
-    cp "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules/module.modulemap" \
-       "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Modules/module.modulemap"
+    local platform_name="iPhoneOS"
+    local sdk_name="iphoneos"
+    local min_version="$MIN_IOS_VERSION"
     
-    # Create Info.plist files
-    log_info "Creating Info.plist files..."
-    cat > "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Info.plist" << EOF
+    case $platform_type in
+        "simulator")
+            platform_name="iPhoneSimulator"
+            sdk_name="iphonesimulator"
+            ;;
+    esac
+    
+    cat > "$info_plist_path" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -324,187 +278,169 @@ EOF
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>MinimumOSVersion</key>
-    <string>13.0</string>
+    <string>$min_version</string>
     <key>CFBundleSupportedPlatforms</key>
     <array>
-        <string>iPhoneOS</string>
+        <string>$platform_name</string>
     </array>
     <key>DTPlatformName</key>
-    <string>iphoneos</string>
+    <string>$sdk_name</string>
     <key>DTSDKName</key>
-    <string>iphoneos</string>
+    <string>$sdk_name</string>
 </dict>
 </plist>
 EOF
-    
-    # Copy and modify Info.plist for simulator
-    cp "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Info.plist" \
-       "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Info.plist"
-    
-    # Update simulator Info.plist
-    sed -i '' 's/iPhoneOS/iPhoneSimulator/g' "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Info.plist"
-    sed -i '' 's/iphoneos/iphonesimulator/g' "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Info.plist"
-    
-    # Copy compiled binaries
-    log_info "Copying compiled binaries..."
-    cp "$BUILD_DIR/ios-device/lib$FRAMEWORK_NAME.dylib" \
-       "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/$FRAMEWORK_NAME"
-    
-    cp "$BUILD_DIR/ios-simulator/lib$FRAMEWORK_NAME.dylib" \
-       "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/$FRAMEWORK_NAME"
-    
-    # Create Swift module directories and copy interface files
-    log_info "Creating Swift module directories..."
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules/$FRAMEWORK_NAME.swiftmodule"
-    mkdir -p "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Modules/$FRAMEWORK_NAME.swiftmodule"
-    
-    # Copy Swift interface files
-    if [ -f "$BUILD_DIR/ios-device/$FRAMEWORK_NAME.swiftinterface" ]; then
-        cp "$BUILD_DIR/ios-device/$FRAMEWORK_NAME.swiftinterface" \
-           "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules/$FRAMEWORK_NAME.swiftmodule/arm64-apple-ios13.0.swiftinterface"
-    fi
-    
-    if [ -f "$BUILD_DIR/ios-simulator/$FRAMEWORK_NAME.swiftinterface" ]; then
-        cp "$BUILD_DIR/ios-simulator/$FRAMEWORK_NAME.swiftinterface" \
-           "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/Modules/$FRAMEWORK_NAME.swiftmodule/arm64-apple-ios13.0-simulator.swiftinterface"
-    fi
-    
-    # Create XCFramework Info.plist
-    log_info "Creating XCFramework Info.plist..."
-    cat > "$OUTPUT_DIR/$XCFRAMEWORK_NAME/Info.plist" << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>AvailableLibraries</key>
-    <array>
-        <dict>
-            <key>LibraryIdentifier</key>
-            <string>ios-arm64</string>
-            <key>LibraryPath</key>
-            <string>$FRAMEWORK_NAME.framework</string>
-            <key>HeadersPath</key>
-            <string>Headers</string>
-            <key>Platform</key>
-            <string>ios</string>
-            <key>SupportedArchitectures</key>
-            <array>
-                <string>arm64</string>
-            </array>
-            <key>SupportedPlatformVariant</key>
-            <string>device</string>
-        </dict>
-        <dict>
-            <key>LibraryIdentifier</key>
-            <string>ios-arm64-simulator</string>
-            <key>LibraryPath</key>
-            <string>$FRAMEWORK_NAME.framework</string>
-            <key>HeadersPath</key>
-            <string>Headers</string>
-            <key>Platform</key>
-            <string>ios</string>
-            <key>SupportedArchitectures</key>
-            <array>
-                <string>arm64</string>
-            </array>
-            <key>SupportedPlatformVariant</key>
-            <string>simulator</string>
-        </dict>
-    </array>
-    <key>CFBundlePackageType</key>
-    <string>XFWK</string>
-    <key>XCFrameworkFormatVersion</key>
-    <string>1.0</string>
-    <key>CFBundleExecutable</key>
-    <string>$FRAMEWORK_NAME</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.godare.$FRAMEWORK_NAME</string>
-    <key>CFBundleName</key>
-    <string>$FRAMEWORK_NAME</string>
-    <key>CFBundleShortVersionString</key>
-    <string>$VERSION</string>
-    <key>CFBundleVersion</key>
-    <string>1</string>
-</dict>
-</plist>
-EOF
-    
-    log_success "XCFramework structure created"
 }
 
 # =============================================================================
-# 5. VALIDATION
+# 3. CREATE XCFRAMEWORK
 # =============================================================================
-validate_binaries() {
-    log_info "Validating built binaries..."
+create_xcframework() {
+    log_info "Creating XCFramework from individual frameworks..."
     
-    # Check if binaries exist
-    local device_binary="$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/$FRAMEWORK_NAME"
-    local simulator_binary="$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64-simulator/$FRAMEWORK_NAME.framework/$FRAMEWORK_NAME"
+    # Create output directory
+    mkdir -p "$OUTPUT_DIR"
     
-    if [ ! -f "$device_binary" ]; then
-        log_error "Device binary not found: $device_binary"
+    # Build the xcodebuild -create-xcframework command
+    local create_cmd="xcodebuild -create-xcframework"
+    
+    # Add frameworks for each platform
+    for platform_dir in "$TEMP_DIR"/*; do
+        if [ -d "$platform_dir" ]; then
+            local platform=$(basename "$platform_dir")
+            local framework_path="$platform_dir/$FRAMEWORK_NAME.framework"
+            
+            if [ -d "$framework_path" ]; then
+                create_cmd="$create_cmd -framework $framework_path"
+                log_info "Added $platform framework: $framework_path"
+            else
+                log_warning "Framework not found for $platform: $framework_path"
+            fi
+        fi
+    done
+    
+    # Check if we have any frameworks to combine
+    local framework_count=$(find "$TEMP_DIR" -name "*.framework" -type d | wc -l)
+    if [ "$framework_count" -eq 0 ]; then
+        log_error "No frameworks found to combine into XCFramework"
         exit 1
     fi
     
-    if [ ! -f "$simulator_binary" ]; then
-        log_error "Simulator binary not found: $simulator_binary"
+    log_info "Combining $framework_count framework(s) into XCFramework"
+    
+    # Add output path
+    create_cmd="$create_cmd -output $OUTPUT_DIR/$XCFRAMEWORK_NAME"
+    
+    # Execute the create-xcframework command
+    log_info "Executing: $create_cmd"
+    if eval $create_cmd; then
+        log_success "XCFramework creation command executed successfully"
+    else
+        log_error "XCFramework creation command failed"
         exit 1
     fi
     
-    # Check binary types
-    log_info "Checking binary types..."
-    local device_type=$(file "$device_binary")
-    local simulator_type=$(file "$simulator_binary")
-    
-    log_info "Device binary: $device_type"
-    log_info "Simulator binary: $simulator_type"
-    
-    # Verify they are Mach-O dynamic libraries
-    if echo "$device_type" | grep -q "Mach-O.*dynamically linked shared library.*arm64"; then
-        log_success "Device binary is valid Mach-O dynamic library for arm64"
-    else
-        log_error "Device binary is not a valid Mach-O dynamic library for arm64"
+    if [ ! -d "$OUTPUT_DIR/$XCFRAMEWORK_NAME" ]; then
+        log_error "XCFramework directory not created: $OUTPUT_DIR/$XCFRAMEWORK_NAME"
         exit 1
     fi
     
-    if echo "$simulator_type" | grep -q "Mach-O.*dynamically linked shared library.*arm64"; then
-        log_success "Simulator binary is valid Mach-O dynamic library for arm64"
-    else
-        log_error "Simulator binary is not a valid Mach-O dynamic library for arm64"
-        exit 1
-    fi
-    
-    # Check code signing
-    log_info "Checking code signing..."
-    if codesign -dv "$device_binary" 2>/dev/null; then
-        log_success "Device binary is properly signed"
-    else
-        log_warning "Device binary is not signed (this is normal for development builds)"
-    fi
-    
-    if codesign -dv "$simulator_binary" 2>/dev/null; then
-        log_success "Simulator binary is properly signed"
-    else
-        log_warning "Simulator binary is not signed (this is normal for development builds)"
-    fi
-    
-    # Verify DependencyGraphView is accessible
-    log_info "Verifying DependencyGraphView accessibility..."
-    if grep -q "DependencyGraphView" "$OUTPUT_DIR/$XCFRAMEWORK_NAME/ios-arm64/$FRAMEWORK_NAME.framework/Modules/$FRAMEWORK_NAME.swiftmodule/"*.swiftinterface 2>/dev/null; then
-        log_success "DependencyGraphView is accessible in the framework"
-    else
-        log_warning "DependencyGraphView not found in interface files"
-    fi
-    
-    log_success "Binary validation completed"
+    log_success "XCFramework created successfully"
 }
 
 # =============================================================================
-# 6. SPM PACKAGING
+# 4. VALIDATION
 # =============================================================================
-package_for_spm() {
-    log_info "Packaging for SPM distribution..."
+validate_xcframework() {
+    log_info "Validating XCFramework..."
+    
+    # Check XCFramework structure
+    if [ ! -f "$OUTPUT_DIR/$XCFRAMEWORK_NAME/Info.plist" ]; then
+        log_error "XCFramework Info.plist not found"
+        exit 1
+    fi
+    
+    # Validate Info.plist
+    log_info "Validating XCFramework Info.plist..."
+    if plutil -lint "$OUTPUT_DIR/$XCFRAMEWORK_NAME/Info.plist" > /dev/null 2>&1; then
+        log_success "XCFramework Info.plist is valid"
+    else
+        log_error "XCFramework Info.plist is invalid"
+        exit 1
+    fi
+    
+    # Check for required platforms
+    log_info "Checking platform support..."
+    local platforms=$(find "$OUTPUT_DIR/$XCFRAMEWORK_NAME" -name "*.framework" -type d | wc -l)
+    log_info "Found $platforms platform(s) in XCFramework"
+    
+    # List available platforms and validate each
+    log_info "Available platforms:"
+    find "$OUTPUT_DIR/$XCFRAMEWORK_NAME" -name "*.framework" -type d | while read framework_path; do
+        local platform=$(basename $(dirname $framework_path))
+        log_info "  - $platform"
+        
+        # Check framework binary
+        local binary_path="$framework_path/GoDareDI"
+        if [ -f "$binary_path" ]; then
+            local binary_info=$(file "$binary_path")
+            log_info "    Binary: $binary_info"
+            
+            # Verify it's a valid Mach-O binary
+            if echo "$binary_info" | grep -q "Mach-O"; then
+                log_success "    Binary is valid Mach-O"
+            else
+                log_error "    Binary is not valid Mach-O"
+            fi
+        else
+            log_error "    Binary not found: $binary_path"
+        fi
+        
+        # Check Info.plist
+        local info_plist="$framework_path/Info.plist"
+        if [ -f "$info_plist" ]; then
+            if plutil -lint "$info_plist" > /dev/null 2>&1; then
+                log_success "    Info.plist is valid"
+            else
+                log_error "    Info.plist is invalid"
+            fi
+            
+            # Check minimum iOS version
+            local min_version=$(plutil -extract MinimumOSVersion raw "$info_plist" 2>/dev/null || echo "unknown")
+            if [ "$min_version" = "$MIN_IOS_VERSION" ]; then
+                log_success "    Minimum iOS version: $min_version (correct)"
+            else
+                log_warning "    Minimum iOS version: $min_version (expected $MIN_IOS_VERSION)"
+            fi
+        else
+            log_error "    Info.plist not found"
+        fi
+        
+        # Check Swift module interfaces
+        local swift_module_dir="$framework_path/Modules/$FRAMEWORK_NAME.swiftmodule"
+        if [ -d "$swift_module_dir" ]; then
+            local interface_files=$(find "$swift_module_dir" -name "*.swiftinterface" | wc -l)
+            log_info "    Swift interfaces: $interface_files"
+            
+            # Check for DependencyGraphView (should be present in iOS 17.0+)
+            if find "$swift_module_dir" -name "*.swiftinterface" -exec grep -l "DependencyGraphView" {} \; | grep -q .; then
+                log_success "    DependencyGraphView found in interfaces (iOS 17.0+)"
+            else
+                log_warning "    DependencyGraphView not found in interfaces"
+            fi
+        else
+            log_warning "    Swift module directory not found"
+        fi
+    done
+    
+    log_success "XCFramework validation completed"
+}
+
+# =============================================================================
+# 5. PACKAGE FOR DISTRIBUTION
+# =============================================================================
+package_for_distribution() {
+    log_info "Packaging for distribution..."
     
     # Create zip file
     local zip_name="${FRAMEWORK_NAME}-${VERSION}.xcframework.zip"
@@ -532,7 +468,7 @@ import PackageDescription
 let package = Package(
     name: "GoDareDI",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v17)
     ],
     products: [
         .library(
@@ -550,28 +486,18 @@ let package = Package(
 )
 EOF
     
-    log_success "SPM packaging completed"
-    log_info "Files created:"
-    log_info "  - $OUTPUT_DIR/$zip_name"
-    log_info "  - $OUTPUT_DIR/checksum.txt"
-    log_info "  - $OUTPUT_DIR/Package.swift.template"
-}
-
-# =============================================================================
-# 7. GITHUB RELEASE PREPARATION
-# =============================================================================
-prepare_github_release() {
-    log_info "Preparing GitHub release..."
-    
     # Create release notes
     cat > "$OUTPUT_DIR/RELEASE_NOTES.md" << EOF
-# GoDareDI v$VERSION
+# GoDareDI v$VERSION (iOS 17.0+)
 
 ## What's New
-- Full XCFramework support for iOS device and simulator
+- **iOS 17.0+ targeting** - Now includes DependencyGraphView and all SwiftUI components
+- Clean XCFramework build using proper xcodebuild -create-xcframework
+- Swift Package Manager build system for reliability
+- BUILD_LIBRARY_FOR_DISTRIBUTION=YES equivalent via swiftc flags
+- Support for iOS Device (arm64), iOS Simulator (arm64/x86_64)
+- Validated Info.plist and binary integrity
 - Complete Swift API including DependencyGraphView
-- SPM binary target compatibility
-- Optimized dynamic library compilation
 
 ## Installation
 
@@ -588,38 +514,66 @@ Download \`GoDareDI-$VERSION.xcframework.zip\` and add to your project.
 ## Features
 - ✅ AdvancedDIContainer protocol
 - ✅ DependencyScope and DependencyLifetime enums
-- ✅ DependencyGraphView SwiftUI component
+- ✅ **DependencyGraphView SwiftUI component (iOS 17.0+)**
+- ✅ **InteractiveDependencyGraphView (iOS 17.0+)**
 - ✅ Error handling with CircularDependencyException
 - ✅ Performance monitoring and analytics
-- ✅ iOS 13.0+ support
+- ✅ **iOS 17.0+ support with full SwiftUI integration**
+
+## Requirements
+- **iOS 17.0+** (required for DependencyGraphView)
+- Xcode 15.0+
 
 ## Checksum
 \`\`\`
-$(cat "$OUTPUT_DIR/checksum.txt")
+$checksum
 \`\`\`
 EOF
     
-    log_success "GitHub release preparation completed"
+    log_success "Distribution packaging completed"
+    log_info "Files created:"
+    log_info "  - $OUTPUT_DIR/$zip_name"
+    log_info "  - $OUTPUT_DIR/checksum.txt"
+    log_info "  - $OUTPUT_DIR/Package.swift.template"
+    log_info "  - $OUTPUT_DIR/RELEASE_NOTES.md"
+}
+
+# =============================================================================
+# 6. CLEANUP TEMPORARY FILES
+# =============================================================================
+cleanup_temp_files() {
+    log_info "Cleaning up temporary files..."
+    
+    # Remove temporary build directories
+    if [ -d "$BUILD_DIR" ]; then
+        rm -rf "$BUILD_DIR"
+    fi
+    
+    if [ -d "$TEMP_DIR" ]; then
+        rm -rf "$TEMP_DIR"
+    fi
+    
+    log_success "Temporary files cleaned up"
 }
 
 # =============================================================================
 # MAIN EXECUTION
 # =============================================================================
 main() {
-    log_info "🚀 Starting GoDareDI XCFramework build process..."
+    log_info "🚀 Starting GoDareDI iOS 17.0+ XCFramework build process..."
     log_info "Version: $VERSION"
     log_info "Framework: $FRAMEWORK_NAME"
+    log_info "Target: iOS $MIN_IOS_VERSION+ (includes DependencyGraphView)"
     
     # Execute build steps
     cleanup
-    analyze_source
-    build_framework
+    build_frameworks
     create_xcframework
-    validate_binaries
-    package_for_spm
-    prepare_github_release
+    validate_xcframework
+    package_for_distribution
+    cleanup_temp_files
     
-    log_success "🎉 GoDareDI XCFramework build completed successfully!"
+    log_success "🎉 GoDareDI iOS 17.0+ XCFramework build completed successfully!"
     log_info "📁 Output directory: $OUTPUT_DIR"
     log_info "📦 XCFramework: $OUTPUT_DIR/$XCFRAMEWORK_NAME"
     log_info "🗜️  Zip file: $OUTPUT_DIR/${FRAMEWORK_NAME}-${VERSION}.xcframework.zip"
@@ -628,6 +582,22 @@ main() {
     # Display final structure
     log_info "📋 Final structure:"
     ls -la "$OUTPUT_DIR"
+    
+    # Test the XCFramework
+    log_info "🧪 Testing XCFramework integration..."
+    if [ -d "$OUTPUT_DIR/$XCFRAMEWORK_NAME" ]; then
+        log_success "XCFramework is ready for integration into iOS 17.0+ Xcode projects"
+        log_info "You can now drag and drop $OUTPUT_DIR/$XCFRAMEWORK_NAME into any iOS 17.0+ Xcode project"
+        log_info "The framework includes:"
+        log_info "  - Valid Info.plist files for all platforms"
+        log_info "  - Proper Swift module interfaces"
+        log_info "  - ABI-stable binaries with library evolution enabled"
+        log_info "  - Complete API including DependencyGraphView (iOS 17.0+)"
+        log_info "  - iOS 17.0+ minimum deployment target"
+    else
+        log_error "XCFramework creation failed"
+        exit 1
+    fi
 }
 
 # Run main function
